@@ -1,35 +1,36 @@
 "use client";
 
 // localStorage-backed progress, shared across components via useSyncExternalStore.
-// Two independent lists:
-//   - learned surahs        (number[])         key: lq:learned:v1
-//   - learned sections      (string[] "s:i")   key: lq:sections:v1
+// Keyed by guide SLUG (not surah number) because passages can share a number
+// (e.g. ayat-al-kursi and al-baqarah-last-2 are both surah 2).
+//   - learned guides    (string[] of slugs)        key: lq:learned:v2
+//   - learned sections  (string[] "slug:index")    key: lq:sections:v2
 // No backend, no login.
 
 import { useSyncExternalStore, useCallback } from "react";
 
-function createStore<T extends string | number>(key: string) {
-  let cache: T[] | null = null;
+function createStore(key: string) {
+  let cache: string[] | null = null;
   const listeners = new Set<() => void>();
 
-  function read(): T[] {
+  function read(): string[] {
     if (cache) return cache;
     if (typeof window === "undefined") return (cache = []);
     try {
       const raw = window.localStorage.getItem(key);
-      cache = raw ? (JSON.parse(raw) as T[]) : [];
+      cache = raw ? (JSON.parse(raw) as string[]) : [];
     } catch {
       cache = [];
     }
     return cache;
   }
 
-  function write(next: T[]): void {
+  function write(next: string[]): void {
     cache = next;
     try {
       window.localStorage.setItem(key, JSON.stringify(next));
     } catch {
-      /* storage unavailable (private mode) — keep in-memory only */
+      /* storage unavailable — keep in-memory only */
     }
     listeners.forEach((l) => l());
   }
@@ -38,7 +39,7 @@ function createStore<T extends string | number>(key: string) {
     listeners.add(cb);
     const onStorage = (e: StorageEvent) => {
       if (e.key === key) {
-        cache = null; // re-read after another tab's write
+        cache = null;
         cb();
       }
     };
@@ -49,71 +50,59 @@ function createStore<T extends string | number>(key: string) {
     };
   }
 
-  function has(value: T): boolean {
-    return read().includes(value);
+  function has(v: string): boolean {
+    return read().includes(v);
   }
 
-  function set(value: T, on: boolean): void {
+  function set(v: string, on: boolean): void {
     const cur = read();
-    const present = cur.includes(value);
-    if (on && !present) write([...cur, value]);
-    else if (!on && present) write(cur.filter((v) => v !== value));
+    const present = cur.includes(v);
+    if (on && !present) write([...cur, v]);
+    else if (!on && present) write(cur.filter((x) => x !== v));
   }
 
-  return { read, write, subscribe, has, set };
+  return { read, subscribe, has, set };
 }
 
-const EMPTY: never[] = [];
+const EMPTY: string[] = [];
 
-// ── Surahs ──────────────────────────────────────────────────────────────
-const surahStore = createStore<number>("lq:learned:v1");
+// ── Learned guides (by slug) ────────────────────────────────────────────
+const guideStore = createStore("lq:learned:v2");
 
-export function useLearned(): number[] {
-  return useSyncExternalStore(surahStore.subscribe, surahStore.read, () => EMPTY);
+export function useLearned(): string[] {
+  return useSyncExternalStore(guideStore.subscribe, guideStore.read, () => EMPTY);
 }
 
-export function useIsLearned(num: number): boolean {
-  return useLearned().includes(num);
+export function useIsLearned(slug: string): boolean {
+  return useLearned().includes(slug);
 }
 
-export function setLearned(num: number, value: boolean): void {
-  surahStore.set(num, value);
+export function setLearned(slug: string, value: boolean): void {
+  guideStore.set(slug, value);
 }
 
-export function useToggleLearned(num: number): () => void {
-  return useCallback(() => surahStore.set(num, !surahStore.has(num)), [num]);
+export function useToggleLearned(slug: string): () => void {
+  return useCallback(() => guideStore.set(slug, !guideStore.has(slug)), [slug]);
 }
 
-// ── Sections (within a surah) ───────────────────────────────────────────
-const sectionStore = createStore<string>("lq:sections:v1");
-const secKey = (surah: number, index: number) => `${surah}:${index}`;
+// ── Learned sections (by "slug:index") ──────────────────────────────────
+const sectionStore = createStore("lq:sections:v2");
+const secKey = (slug: string, index: number) => `${slug}:${index}`;
 
-/** Every learned section key ("surah:index") across all surahs (reactive). */
+/** Every learned section key ("slug:index") across all guides (reactive). */
 export function useAllLearnedSectionKeys(): string[] {
-  return useSyncExternalStore(
-    sectionStore.subscribe,
-    sectionStore.read,
-    () => EMPTY
-  );
+  return useSyncExternalStore(sectionStore.subscribe, sectionStore.read, () => EMPTY);
 }
 
-/** All learned section indices for a surah (reactive). */
-export function useLearnedSections(surah: number): number[] {
-  const all = useSyncExternalStore(
-    sectionStore.subscribe,
-    sectionStore.read,
-    () => EMPTY
-  );
-  const prefix = `${surah}:`;
+/** Learned section indices for one guide (reactive). */
+export function useLearnedSections(slug: string): number[] {
+  const all = useAllLearnedSectionKeys();
+  const prefix = `${slug}:`;
   return all
     .filter((k) => k.startsWith(prefix))
     .map((k) => Number(k.slice(prefix.length)));
 }
 
-export function setSectionLearned(
-  surah: number,
-  index: number,
-  value: boolean
-): void {
-  sectionStore.set(secKey(surah, index), value);
+export function setSectionLearned(slug: string, index: number, value: boolean): void {
+  sectionStore.set(secKey(slug, index), value);
 }

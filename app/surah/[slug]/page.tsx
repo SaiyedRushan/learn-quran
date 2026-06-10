@@ -40,8 +40,8 @@ export default async function SurahPage({
   if (!entry) notFound();
 
   const verses = getVerseData(entry.number);
-  const guide = getGuide(entry.number);
-  const { prev, next } = neighbours(entry.number);
+  const guide = getGuide(entry.slug);
+  const { prev, next } = neighbours(entry.slug);
 
   return (
     <>

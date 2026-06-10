@@ -1,6 +1,6 @@
 import type { SurahGuide } from "@/content/types";
 
-// Registry of authored guides, keyed by surah number.
+// Registry of all authored guides (content.ts keys them by meta.slug).
 import s78 from "./78-an-naba";
 import s79 from "./79-an-naaziaat";
 import s80 from "./80-abasa";
@@ -39,42 +39,16 @@ import s112 from "./112-al-ikhlaas";
 import s113 from "./113-al-falaq";
 import s114 from "./114-an-naas";
 
-export const guides: Record<number, SurahGuide> = {
-  78: s78,
-  79: s79,
-  80: s80,
-  81: s81,
-  82: s82,
-  83: s83,
-  84: s84,
-  85: s85,
-  86: s86,
-  87: s87,
-  88: s88,
-  89: s89,
-  90: s90,
-  91: s91,
-  92: s92,
-  93: s93,
-  94: s94,
-  95: s95,
-  96: s96,
-  97: s97,
-  98: s98,
-  99: s99,
-  100: s100,
-  101: s101,
-  102: s102,
-  103: s103,
-  104: s104,
-  105: s105,
-  106: s106,
-  107: s107,
-  108: s108,
-  109: s109,
-  110: s110,
-  111: s111,
-  112: s112,
-  113: s113,
-  114: s114,
-};
+// Recommended Recitations collection
+import gYasin from "./36-yasin";
+import gMulk from "./67-al-mulk";
+import gKahf from "./18-al-kahf-protection";
+import gKursi from "./2-ayat-al-kursi";
+import gBaqarah from "./2-al-baqarah-last-2";
+
+export const guides: SurahGuide[] = [
+  s78, s79, s80, s81, s82, s83, s84, s85, s86, s87, s88, s89, s90, s91, s92,
+  s93, s94, s95, s96, s97, s98, s99, s100, s101, s102, s103, s104, s105, s106,
+  s107, s108, s109, s110, s111, s112, s113, s114,
+  gYasin, gMulk, gKahf, gKursi, gBaqarah,
+];

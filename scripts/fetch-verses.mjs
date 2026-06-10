@@ -51,7 +51,8 @@ function ordinal(n) {
 // (e.g. "بِّسْمِ"), so we compare against the bare letters "بسم". No genuine
 // Juz 30 surah begins its first ayah with "بسم".
 function stripBismillah(text) {
-  const bare = (s) => s.replace(/[ؐ-ًؚ-ٰٟۖ-ۭـ\s]/g, "");
+  // strip tatweel, all Arabic diacritics (Unicode nonspacing marks) and spaces
+  const bare = (s) => s.replace(/ـ/g, "").replace(/\p{Mn}/gu, "").replace(/\s+/g, "");
   const tokens = text.trim().split(/\s+/);
   if (tokens.length > 4 && bare(text).startsWith("بسم")) {
     return tokens.slice(4).join(" ").trim();

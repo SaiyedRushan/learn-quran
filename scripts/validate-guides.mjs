@@ -1,9 +1,10 @@
 // Content-integrity check for the authored guides.
-//   1. Sections cover verses 1..verseCount contiguously (no gaps / overlaps).
-//   2. Each section's display groups cover from..to contiguously.
-//   3. meta.verseCount matches the verified verse data.
-//   4. Every vocab Arabic string is a substring of the verified surah text
-//      (normalized) — catches hand-typed / mistyped Arabic.
+//   1. Each section's display groups cover its from..to (no gaps).
+//   2. Every ayah a section references exists in the guide's verse data.
+//   3. verseCount is consistent (full surahs: == numberOfAyahs and 1..N covered;
+//      passages: == the number of ayahs the sections cover).
+//   4. Every vocab Arabic string appears in the verse text (diacritic-insensitive)
+//      — catches hand-typed / mistyped Arabic.
 //
 // Run: node --experimental-strip-types scripts/validate-guides.mjs
 
@@ -16,6 +17,7 @@ const GUIDES = path.join(ROOT, "content", "guides");
 const QURAN = path.join(ROOT, "content", "quran");
 
 const norm = (s) => s.normalize("NFC").replace(/\s+/g, " ").trim();
+const stripMn = (s) => norm(s).replace(/ـ/g, "").replace(/\p{Mn}/gu, "");
 
 const files = readdirSync(GUIDES)
   .filter((f) => /^\d+-.+\.ts$/.test(f))
@@ -30,47 +32,53 @@ for (const file of files) {
   const mod = await import(pathToFileURL(path.join(GUIDES, file)).href);
   const g = mod.default;
   const verses = JSON.parse(readFileSync(path.join(QURAN, `${num}.json`), "utf8"));
-  const N = verses.numberOfAyahs;
+  const present = new Set(verses.ayahs.map((a) => a.number));
+  const isPassage = g.meta.collection === "virtues";
   const label = `${num} ${g.meta.slug}`;
-
-  if (g.meta.verseCount !== N)
-    (problems++, console.log(`✗ ${label}: meta.verseCount ${g.meta.verseCount} ≠ data ${N}`));
-
-  // section coverage
-  const covered = new Set();
   let secOk = true;
+
+  const covered = new Set();
   for (const sec of g.sections) {
     for (let v = sec.from; v <= sec.to; v++) {
       if (covered.has(v)) (secOk = false), console.log(`✗ ${label}: verse ${v} in 2+ sections`);
       covered.add(v);
+      if (!present.has(v))
+        (secOk = false), console.log(`✗ ${label}: section references v${v} not in verse data`);
     }
-    // group coverage within section
     const gc = new Set();
-    for (const grp of sec.groups)
-      for (let v = grp.from; v <= grp.to; v++) gc.add(v);
+    for (const grp of sec.groups) for (let v = grp.from; v <= grp.to; v++) gc.add(v);
     for (let v = sec.from; v <= sec.to; v++)
       if (!gc.has(v)) (secOk = false), console.log(`✗ ${label}: §"${sec.title}" v${v} not in any group`);
   }
-  for (let v = 1; v <= N; v++)
-    if (!covered.has(v)) (secOk = false), console.log(`✗ ${label}: verse ${v} not covered by any section`);
+
+  if (isPassage) {
+    if (g.meta.verseCount !== covered.size)
+      (secOk = false),
+        console.log(`✗ ${label}: meta.verseCount ${g.meta.verseCount} ≠ covered ${covered.size}`);
+  } else {
+    if (g.meta.verseCount !== verses.numberOfAyahs)
+      (secOk = false),
+        console.log(`✗ ${label}: meta.verseCount ${g.meta.verseCount} ≠ data ${verses.numberOfAyahs}`);
+    for (let v = 1; v <= verses.numberOfAyahs; v++)
+      if (!covered.has(v)) (secOk = false), console.log(`✗ ${label}: verse ${v} not covered`);
+  }
   if (!secOk) problems++;
 
-  // vocab tokens present in surah text
+  // vocab tokens present in the (covered) verse text
   const haystack = norm(verses.ayahs.map((a) => a.arabic).join(" "));
-  const haystackNoDiacritics = haystack.replace(/[ً-ٰٟۖ-ۭـ]/g, "");
+  const haystackND = stripMn(haystack);
   for (const grp of g.vocab || [])
     for (const item of grp.items) {
       vocabChecked++;
       const needle = norm(item.arabic);
-      const needleND = needle.replace(/[ً-ٰٟۖ-ۭـ]/g, "");
-      // allow exact or diacritic-insensitive match (vocab may drop case endings)
+      const needleND = stripMn(needle);
       const tokenOk =
         haystack.includes(needle) ||
-        haystackNoDiacritics.includes(needleND) ||
-        needle.split(" ").every((w) => haystackNoDiacritics.includes(w.replace(/[ً-ٰٟۖ-ۭـ]/g, "")));
+        haystackND.includes(needleND) ||
+        needleND.split(" ").every((w) => w && haystackND.includes(w));
       if (!tokenOk) {
         vocabMissing++;
-        console.log(`  ⚠ ${label}: vocab "${item.arabic}" (${item.roman}) not found in surah text`);
+        console.log(`  ⚠ ${label}: vocab "${item.arabic}" (${item.roman}) not found in verse text`);
       }
     }
 }

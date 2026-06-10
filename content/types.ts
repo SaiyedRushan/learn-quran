@@ -36,20 +36,27 @@ export interface SurahStat {
   value: string;
 }
 
+/** Which collection a guide belongs to on the home page. */
+export type Collection = "juz30" | "virtues";
+
 /** Surah metadata for the banner + index card. */
 export interface SurahMeta {
   number: number; // 1..114
-  slug: string; // "al-mutaffifin"
+  slug: string; // "al-mutaffifin" (unique per guide; passages use distinct slugs)
   name: string; // "Al-Mutaffifin"
   epithet: string; // "The Defrauders"
   arabicName: string; // "سُورَةُ الْمُطَفِّفِين"
-  juz: number; // primary juz (30 for everything we ship first)
+  juz: number; // primary juz
   revelationType: "Makkan" | "Madinan";
   /** Free-text detail shown in the meta line, e.g. "Transitional (late Makkan / early Madinan)". */
   revelationDetail: string;
   verseCount: number;
   rukus?: number;
   stats: SurahStat[]; // Verses / Words / Letters / Revelation order, etc.
+  /** Defaults to "juz30". "virtues" = the Recommended Recitations collection. */
+  collection?: Collection;
+  /** For partial passages, the verse reference shown in the meta line, e.g. "Al-Baqarah 285–286". */
+  passageRef?: string;
 }
 
 /** A context / hadith callout in the overview. */

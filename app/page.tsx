@@ -3,7 +3,7 @@ import SurahIndexView, { type SurahListItem } from "@/components/SurahIndexView"
 
 export default function Home() {
   const surahs: SurahListItem[] = surahIndex.map((s) => {
-    const guide = getGuide(s.number);
+    const guide = getGuide(s.slug);
     return {
       number: s.number,
       slug: s.slug,
@@ -15,6 +15,9 @@ export default function Home() {
       revelationOrdinal: s.revelationOrdinal,
       status: guide?.reviewStatus ?? "draft",
       sectionCount: guide?.sections.length ?? 0,
+      collection: s.collection,
+      note: s.note,
+      passageRef: s.passageRef,
     };
   });
 

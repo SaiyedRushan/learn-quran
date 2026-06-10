@@ -31,15 +31,26 @@ function rangeLabel(from: number, to: number): string {
 export default function SurahGuideView({guide, verses}: {guide: SurahGuide; verses: VerseData}) {
   const [tab, setTab] = useState<"sections" | "vocab" | "recitation">("sections");
   const [open, setOpen] = useState<Set<number>>(new Set([0])); // first section open
-  const learned = useIsLearned(guide.meta.number);
-  const toggle = useToggleLearned(guide.meta.number);
-  const learnedSections = new Set(useLearnedSections(guide.meta.number));
+  const learned = useIsLearned(guide.meta.slug);
+  const toggle = useToggleLearned(guide.meta.slug);
+  const learnedSections = new Set(useLearnedSections(guide.meta.slug));
 
   const m = guide.meta;
   const sectionsTotal = guide.sections.length;
   const sectionsDone = guide.sections.filter((_, i) => learnedSections.has(i)).length;
   const secPct = sectionsTotal ? Math.round((sectionsDone / sectionsTotal) * 100) : 0;
-  const metaLine = [`Surah ${m.number}`, `Juz ${m.juz}`, m.revelationDetail || m.revelationType, `${m.verseCount} verses`, m.rukus ? `${m.rukus} ruku'` : null]
+  const verseWord = `${m.verseCount} verse${m.verseCount === 1 ? "" : "s"}`;
+  const metaLine = (
+    m.collection === "virtues"
+      ? [m.passageRef || `Surah ${m.number}`, m.revelationDetail || m.revelationType, verseWord]
+      : [
+          `Surah ${m.number}`,
+          `Juz ${m.juz}`,
+          m.revelationDetail || m.revelationType,
+          verseWord,
+          m.rukus ? `${m.rukus} ruku'` : null,
+        ]
+  )
     .filter(Boolean)
     .join(" · ");
 
@@ -180,7 +191,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
                 <button
                   className={`sec-check ${secDone ? "done" : ""}`}
                   aria-label={secDone ? "Mark section as not learned" : "Mark section as learned"}
-                  onClick={() => setSectionLearned(guide.meta.number, i, !secDone)}
+                  onClick={() => setSectionLearned(guide.meta.slug, i, !secDone)}
                 >
                   ✓
                 </button>
