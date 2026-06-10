@@ -50,8 +50,14 @@ a { color: inherit; text-decoration: none; }
 .brand-mark {
   width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
   background: linear-gradient(140deg, #1D9E75, #0f6e56);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-serif); font-size: 18px; color: #fff; line-height: 1;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.brand-glyph { width: 100%; height: 100%; display: block; }
+.brand-glyph text {
+  font-family: var(--font-serif);
+  font-size: 46px;
+  fill: #fff;
+  text-anchor: middle;
 }
 .brand-text { font-size: 15px; font-weight: 600; color: var(--color-text-primary); white-space: nowrap; }
 .brand-sub { font-size: 11px; color: var(--color-text-tertiary); }

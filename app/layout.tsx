@@ -29,7 +29,11 @@ export default function RootLayout({
         <header className="site-header">
           <div className="site-header-inner">
             <Link href="/" className="brand">
-              <span className="brand-mark">ق</span>
+              <span className="brand-mark" aria-hidden="true">
+                <svg className="brand-glyph" viewBox="0 0 64 64">
+                  <text x="32.2" y="42.6">ق</text>
+                </svg>
+              </span>
               <span>
                 <span className="brand-text">Learn Quran</span>
                 <span className="brand-sub" style={{ display: "block" }}>
