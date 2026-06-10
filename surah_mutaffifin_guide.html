@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Surah Al-Mutaffifin — Memorization Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Scheherazade+New:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-serif: 'Amiri Quran', 'Scheherazade New', 'Traditional Arabic', 'Geeza Pro', serif;
+      --color-background-primary: #1c1c1e;
+      --color-background-secondary: #141416;
+      --color-text-primary: #f0f0ec;
+      --color-text-secondary: #a8a8a0;
+      --color-text-tertiary: #606060;
+      --color-border-secondary: #2e2e32;
+      --color-border-tertiary: #252528;
+      --border-radius-md: 8px;
+      --border-radius-lg: 12px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-background-secondary);
+      color: var(--color-text-primary);
+      padding: 16px;
+      line-height: 1.5;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    .wrap { max-width: 680px; margin: 0 auto; }
+
+    /* ── Top banner ── */
+    .top { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
+    .surah-name { font-size: 22px; font-weight: 600; color: var(--color-text-primary); }
+    .meta { font-size: 13px; color: var(--color-text-secondary); margin-top: 3px; }
+    .ar-title { font-size: 28px; color: #1D9E75; font-family: var(--font-serif); direction: rtl; text-align: right; margin-top: 10px; line-height: 1.9; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+    .stat { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 8px 10px; }
+    .sl { font-size: 11px; color: var(--color-text-tertiary); }
+    .sv { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+
+    /* ── Overview ── */
+    .overview { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin-bottom: 1.25rem; }
+    .ov-title { font-size: 15px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 10px; }
+    .ov-text { font-size: 14px; color: var(--color-text-secondary); line-height: 1.75; }
+    .hadith-banner { background: #0d2e24; border-left: 3px solid #1D9E75; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; padding: 10px 14px; margin-top: 12px; }
+    .hb-label { font-size: 11px; font-weight: 600; color: #4fd4a8; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+    .hb-text { font-size: 13px; color: #a0cfc0; font-style: italic; line-height: 1.65; }
+    .hb-attr { font-size: 11px; color: #4fd4a8; margin-top: 4px; font-style: normal; }
+    .theme-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .theme-pill { font-size: 12px; padding: 4px 10px; border-radius: var(--border-radius-md); white-space: nowrap; }
+    .tp-teal   { background: #0d2e24; color: #4fd4a8; }
+    .tp-purple { background: #1e1a3a; color: #a89ef5; }
+    .tp-amber  { background: #2a1f08; color: #e0a84a; }
+    .tp-coral  { background: #2a1010; color: #e07a6a; }
+    .tp-slate  { background: #1e2030; color: #8a9ab8; }
+
+    /* ── Tabs ── */
+    .tabs { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
+    .tab { font-size: 13px; padding: 7px 16px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); transition: all .15s; user-select: none; }
+    .tab.active { background: #1D9E75; color: #fff; border-color: #1D9E75; }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── Section cards ── */
+    .sec-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); margin-bottom: 10px; overflow: hidden; }
+    .sec-hdr { display: flex; align-items: center; gap: 10px; padding: 11px 14px; cursor: pointer; background: var(--color-background-secondary); user-select: none; }
+    .sec-hdr:active { background: #222226; }
+    .sec-badge { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: var(--border-radius-md); white-space: nowrap; flex-shrink: 0; }
+    .sec-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); flex: 1; min-width: 0; }
+    .sec-range { font-size: 12px; color: var(--color-text-tertiary); white-space: nowrap; }
+    .chev { font-size: 11px; color: var(--color-text-tertiary); transition: transform .2s; flex-shrink: 0; }
+    .chev.open { transform: rotate(90deg); }
+    .sec-body { padding: 14px; display: none; border-top: 0.5px solid var(--color-border-tertiary); }
+    .sec-body.open { display: block; }
+
+    /* ── Verse blocks ── */
+    .verses { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+    .vrow { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; }
+    .vnum { font-size: 11px; color: var(--color-text-tertiary); margin-bottom: 4px; }
+    .var { font-size: 20px; direction: rtl; text-align: right; color: #4fd4a8; font-family: var(--font-serif); line-height: 2.1; margin-bottom: 6px; }
+    .vtrans { font-size: 13px; color: var(--color-text-secondary); font-style: italic; line-height: 1.6; }
+
+    /* ── Notes ── */
+    .theme-note { background: #1e1a3a; border-radius: var(--border-radius-md); padding: 9px 12px; margin-bottom: 12px; }
+    .tn-label { font-size: 11px; font-weight: 600; color: #a89ef5; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+    .tn-text { font-size: 13px; color: #c0baf0; line-height: 1.65; }
+    .mem-tip { background: #2a1f08; border-radius: var(--border-radius-md); padding: 9px 12px; margin-top: 10px; }
+    .mt-label { font-size: 11px; font-weight: 600; color: #e0a84a; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+    .mt-text { font-size: 13px; color: #c8a870; line-height: 1.65; }
+    .extra-note { background: #2a1010; border-radius: var(--border-radius-md); padding: 9px 12px; margin-top: 8px; }
+    .en-label { font-size: 11px; font-weight: 600; color: #e07a6a; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+    .en-text { font-size: 13px; color: #c08078; line-height: 1.65; }
+    .teal-note { background: #0d2e24; border-radius: var(--border-radius-md); padding: 9px 12px; margin-top: 8px; }
+    .tl-label { font-size: 11px; font-weight: 600; color: #4fd4a8; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+    .tl-text { font-size: 13px; color: #a0cfc0; line-height: 1.65; }
+
+    /* ── Vocab ── */
+    .vocab-section-title { font-size: 11px; font-weight: 600; color: var(--color-text-secondary); margin: 16px 0 8px; text-transform: uppercase; letter-spacing: .07em; }
+    .vocab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .vcard { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 10px 12px; }
+    .vc-ar { font-size: 22px; direction: rtl; color: #4fd4a8; font-family: var(--font-serif); margin-bottom: 3px; line-height: 1.9; }
+    .vc-roman { font-size: 12px; color: #1D9E75; font-style: italic; margin-bottom: 2px; }
+    .vc-en { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 2px; }
+    .vc-where { font-size: 11px; color: var(--color-text-tertiary); }
+
+    /* ── Recitation ── */
+    .rec-card { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 14px; margin-bottom: 10px; background: var(--color-background-primary); }
+    .rc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .rc-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; flex-shrink: 0; background: #E1F5EE; color: #0F6E56; }
+    .rc-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+    .rc-sub { font-size: 12px; color: var(--color-text-secondary); }
+    .rc-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 7px; }
+    .rc-dot { width: 5px; height: 5px; border-radius: 50%; background: #1D9E75; flex-shrink: 0; margin-top: 6px; }
+    .rc-text { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+    .divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 14px 0; }
+    .sub-label { font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 8px; }
+    .stop-row { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); margin-bottom: 6px; }
+    .stop-v { font-size: 12px; font-weight: 600; color: #1D9E75; min-width: 44px; flex-shrink: 0; padding-top: 1px; }
+    .stop-text { font-size: 13px; color: var(--color-text-secondary); line-height: 1.55; }
+
+    @media (max-width: 420px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .vocab-grid { grid-template-columns: 1fr; }
+      .var { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Top Banner -->
+  <div class="top">
+    <div class="surah-name">Surah Al-Mutaffifin — The Defrauders</div>
+    <div class="meta">Surah 83 · Juz 30 · Transitional (late Makkan / early Madinan) · 36 verses · 1 ruku'</div>
+    <div class="ar-title">سُورَةُ الْمُطَفِّفِين</div>
+    <div class="stats">
+      <div class="stat"><div class="sl">Verses</div><div class="sv">36</div></div>
+      <div class="stat"><div class="sl">Words</div><div class="sv">169</div></div>
+      <div class="stat"><div class="sl">Letters</div><div class="sv">742</div></div>
+      <div class="stat"><div class="sl">Revelation order</div><div class="sv">86th</div></div>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <div class="overview">
+    <div class="ov-title">Overview</div>
+    <div class="ov-text">
+      Al-Mutaffifin is the longest surah in Juz Amma and stands apart from its neighbours. Most scholars classify it as the last Makkan surah or the first Madinan surah — revealed at the transitional moment of Hijrah. This gives it a unique character: it opens with the concrete, street-level sin of short-changing in trade, then rapidly expands to cosmic proportions, covering the record books of the wicked and righteous, the visions of Paradise, and a remarkable reversal scene where the tables are turned on the mockers.<br><br>
+      The surah's genius is its structure: it begins with a very specific, almost mundane social evil — cheating in weights and measures — and reveals it as a symptom of the deepest spiritual disease: disbelief in the Day of Recompense. If you truly believed you would stand before Allah, you would never shortchange anyone by even a grain. The economic crime and the theological crime are the same crime.
+    </div>
+    <div class="hadith-banner">
+      <div class="hb-label">Historical context</div>
+      <div class="hb-text">"When the Prophet ﷺ came to Madinah, they were the worst people in weights and measures. Then Allah revealed: 'Woe to Al-Mutaffifin.' After that, they became well-known for their honesty in weighing and measuring."</div>
+      <div class="hb-attr">— Reported by al-Hakim, al-Nasa'i, and Ibn Majah with a sound chain</div>
+    </div>
+    <div class="hadith-banner" style="margin-top:8px;">
+      <div class="hb-label">Sunnah pairing — Ibn Mas'ud (ra)</div>
+      <div class="hb-text">"The Prophet ﷺ used to recite Al-Mutaffifin and Surah Abasa together in a single rak'ah of qiyam al-layl."</div>
+      <div class="hb-attr">— Abu Dawud 1396, authenticated by al-Albani</div>
+    </div>
+    <div class="theme-row">
+      <span class="theme-pill tp-amber">Fraud in weights &amp; measures</span>
+      <span class="theme-pill tp-coral">Sijjin — record of the wicked</span>
+      <span class="theme-pill tp-teal">Illiyyun — record of the righteous</span>
+      <span class="theme-pill tp-purple">Delights of Paradise</span>
+      <span class="theme-pill tp-slate">The great reversal — mockers mocked</span>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('sections',this)">Sections</div>
+    <div class="tab" onclick="showTab('vocab',this)">Arabic Vocab</div>
+    <div class="tab" onclick="showTab('recitation',this)">Recitation Guide</div>
+  </div>
+
+  <!-- ══════════════ SECTIONS ══════════════ -->
+  <div class="panel active" id="sections">
+
+    <!-- Section 1 -->
+    <div class="sec-card">
+      <div class="sec-hdr" onclick="tog(this)">
+        <span class="sec-badge tp-amber">Section 1</span>
+        <span class="sec-title">Woe to the Defrauders — The Crime Defined</span>
+        <span class="sec-range">vv. 1–6</span>
+        <span class="chev">▶</span>
+      </div>
+      <div class="sec-body">
+        <div class="theme-note">
+          <div class="tn-label">Core message</div>
+          <div class="tn-text">The surah opens with one of the Qur'an's most direct condemnations: <em>waylun lil-mutaffifin</em> — woe, destruction, to those who defraud. The crime is precisely defined: they demand full measure when receiving but short-change others when giving. Then comes the cure — don't they think they will stand before Allah on a momentous Day?</div>
+        </div>
+        <div class="verses">
+          <div class="vrow">
+            <div class="vnum">1</div>
+            <div class="var">وَيْلٌ لِّلْمُطَفِّفِينَ</div>
+            <div class="vtrans">Woe to the defrauders [those who give short measure]!</div>
+          </div>
+          <div class="vrow">
+            <div class="vnum">2–3</div>
+            <div class="var">ٱلَّذِينَ إِذَا ٱكْتَالُوا۟ عَلَى ٱلنَّاسِ يَسْتَوْفُونَ • وَإِذَا كَالُوهُمْ أَو وَّزَنُوهُمْ يُخْسِرُونَ</div>
+            <div class="vtrans">Those who, when they take measure from people, take in full — but when they measure or weigh for others, they give less.</div>
+          </div>
+          <div class="vrow">
+            <div class="vnum">4–6</div>
+            <div class="var">أَلَا يَظُنُّ أُو۟لَٰٓئِكَ أَنَّهُم مَّبْعُوثُونَ • لِيَوْمٍ عَظِيمٍ • يَوْمَ يَقُومُ ٱلنَّاسُ لِرَبِّ ٱلْعَٰلَمِينَ</div>
+            <div class="vtrans">Do they not think that they will be resurrected — for a Tremendous Day — the Day when mankind will stand before the Lord of all the worlds?</div>
+          </div>
+        </div>
+        <div class="mem-tip">
+          <div class="mt-label">Memory hook — the crime in two verses</div>
+          <div class="mt-text">Verses 2–3 are a perfect before/after pair: <em>idha aktalu 'alan-nas yastawfun</em> (when they take — full) vs. <em>idha kaluhum aw wazanuhum yukhsirun</em> (when they give — short). One action, two standards. Then vv.4–6 answer with three escalating lines: resurrection → tremendous Day → standing before the Lord of all worlds. Learn the escalation: <em>mab'uthun → yawmin 'azim → rabbil 'alamin</em>.</div>
+        </div>
+        <div class="extra-note">
+          <div class="en-label">Broader meaning of tatfif</div>
+          <div class="en-text">Scholars extend the meaning of <em>tatfif</em> (short-changing) beyond trade: any relationship where you demand your full rights but withhold what others are owed — in time, attention, trust, fairness — is a form of tatfif. The surah is as relevant to modern workplaces and families as it was to Madinan markets.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="sec-card">
+      <div class="sec-hdr" onclick="tog(this)">
+        <span class="sec-badge tp-coral">Section 2</span>
+        <span class="sec-title">Sijjin — The Record of the Wicked</span>
+        <span class="sec-range">vv. 7–17</span>
+        <span class="chev">▶</span>
+      </div>
+      <div class="sec-body">
+        <div class="theme-note">
+          <div class="tn-label">Core message</div>
+          <div class="tn-text">The record of the wicked is in <em>Sijjin</em> — a word whose exact nature scholars have debated, but which conveys something lowly, confined, and permanent. The surah then names the root sin behind all wrongdoing: <em>ran 'ala qalbih</em> — their hearts have been sealed by the accumulation of their own sins. Then comes the devastating punishment: they will be veiled from seeing their Lord.</div>
+        </div>
+        <div class="verses">
+          <div class="vrow">
+            <div class="vnum">7–9</div>
+            <div class="var">كَلَّآ إِنَّ كِتَٰبَ ٱلْفُجَّارِ لَفِى سِجِّينٍ • وَمَآ أَدْرَىٰكَ مَا سِجِّينٌ • كِتَٰبٌ مَّرْقُومٌ</div>
+            <div class="vtrans">No! Indeed the record of the wicked is in Sijjin — and what will make you know what Sijjin is? — A register inscribed [and sealed].</div>
+          </div>
+          <div class="vrow">
+            <div class="vnum">10–12</div>
+            <div class="var">وَيْلٌ يَوْمَئِذٍ لِّلْمُكَذِّبِينَ • ٱلَّذِينَ يُكَذِّبُونَ بِيَوْمِ ٱلدِّينِ • وَمَا يُكَذِّبُ بِهِۦٓ إِلَّا كُلُّ مُعْتَدٍ أَثِيمٍ</div>
+            <div class="vtrans">Woe on that Day to the deniers — those who deny the Day of Recompense — and none denies it except every sinful transgressor.</div>
+          </div>
+          <div class="vrow">
+            <div class="vnum">13–14</div>
+            <div class="var">إِذَا تُتْلَىٰ عَلَيْهِ ءَايَٰتُنَا قَالَ أَسَٰطِيرُ ٱلْأَوَّلِينَ • كَلَّا بَلْ رَانَ عَلَىٰ قُلُوبِهِم مَّا كَانُوا۟ يَكْسِبُونَ</div>
+            <div class="vtrans">When Our verses are recited to him he says: "Legends of the ancients!" — No! Rather, their hearts have been sealed by what they used to earn.</div>
+          </div>
+          <div class="vrow">
+            <div class="vnum">15–17</div>
+            <div class="var">كَلَّآ إِنَّهُمْ عَن رَّبِّهِمْ يَوْمَئِذٍ لَّمَحْجُوبُونَ • ثُمَّ إِنَّهُمْ لَصَالُوا۟ ٱلْجَحِيمِ • ثُمَّ يُقَالُ هَٰذَا ٱلَّذِى كُنتُم بِهِۦ تُكَذِّبُونَ</div>
+            <div class="vtrans">No! Indeed on that Day they will be veiled from their Lord — then they will enter the blaze of Hell — then it will be said: "This is what you used to deny."</div>
+          </div>
+        </div>
+        <div class="mem-tip">
+          <div class="mt-label">Memory hook — Sijjin, Ran, Hijab (three key concepts)</div>
+          <div class="mt-text">Three concepts anchor this section: <strong>Sijjin</strong> (the lowly record — vv.7–9), <strong>Ran</strong> (the seal on the heart — v.14), and <strong>Hijab</strong> (being veiled from Allah — v.15). They form a cause-and-effect chain: sins accumulate → heart is sealed → unable to believe → veiled from Allah on the Day. Learn it as a three-step descent.</div>
+        </div>
+        <div class="teal-note">
+          <div class="tl-label">The concept of Ran — v.14</div>
+          <div class="tl-text">The Prophet ﷺ said: "When a believer commits a sin, a black dot appears on his heart. If he repents, it is polished away. But if he persists, it spreads until his heart is completely covered — that is the <em>ran</em> that Allah mentions." <em>(Tirmidhi 3334, hasan sahih)</em> — This is the only verse in the Qur'an where the word <em>ran</em> appears.</div>
+        </div>
+        <div class="extra-note">
+          <div class="en-label">The greatest punishment — v.15</div>
+          <div class="en-text">Imam Shafi'i took v.15 as proof that believers will see Allah in the Hereafter — the logic being: if being veiled from Allah is the punishment for the wicked, then seeing Him must be the reward of the righteous. This verse is one of the key proofs for the ru'yatullah (vision of Allah) doctrine in Sunni theology.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="sec-card">
+      <div class="sec-hdr" onclick="tog(this)">
+        <span class="sec-badge tp-teal">Section 3</span>
+        <span class="sec-title">Illiyyun — The Record of the Righteous</span>
+        <span class="sec-range">vv. 18–28</span>
+        <span class="chev">▶</span>
+      </div>
+      <div class="sec-body">
+        <div class="theme-note">
+          <div class="tn-label">Core message</div>
+          <div class="tn-text">In direct contrast to Sijjin, the record of the righteous is in <em>Illiyyun</em> — exalted, elevated, witnessed by the close angels. The surah then paints a lush portrait of Paradise: the righteous reclining on thrones, gazing at the beauty around them, drinking sealed wine whose seal is musk, blended with the spring of Tasnim from which only the nearest to Allah drink.</div>
+        </div>
+        <div class="verses">
+          <div class="vrow">
+            <div class="vnum">18–21</div>
+            <div class="var">كَلَّآ إِنَّ كِتَٰبَ ٱلْأَبْرَارِ لَفِى عِلِّيِّينَ • وَمَآ أَدْرَىٰكَ مَا عِلِّيُّونَ • كِتَٰبٌ مَّرْقُومٌ • يَشْهَدُهُ ٱلْمُقَرَّبُونَ</div>
+            <div class="vtrans">No! Indeed the record of the righteous is in Illiyyun — and what will make you know what Illiyyun is? — A register inscribed — witnessed by those brought near [to Allah].</div>
+          </div>
+          <div class="vrow">
+            <div class="vnum">22–24</div>
+            <div class="var">إِنَّ ٱلْأَبْرَارَ لَفِى نَعِيمٍ • عَلَى ٱلْأَرَآئِكِ يَنظُرُونَ • تَعْرِفُ فِى وُجُوهِهِمْ نَضْرَةَ ٱلنَّعِيمِ</div>
+            <div class="vtrans">Indeed the righteous will be in bliss — on thrones, gazing — you will recognise on their faces the radiance of bliss.</div>
+          </div>
+          <div class="vrow">
+            <div class="vnum">25–28</div>
+            <div class="var">يُسْقَوْنَ مِن رَّحِيقٍ مَّخْتُومٍ • خِتَٰمُهُۥ مِسْكٌ وَفِى ذَٰلِكَ فَلْيَتَنَافَسِ ٱلْمُتَنَٰفِسُونَ • وَمِزَاجُهُۥ مِن تَسْنِيمٍ • عَيْنًا يَشْرَبُ بِهَا ٱلْمُقَرَّبُونَ</div>
+            <div class="vtrans">They will be given a drink of pure sealed wine — its seal is musk — and for this let the competitors compete — blended with Tasnim — a spring from which those brought near to Allah will drink.</div>
+          </div>
+        </div>
+        <div class="mem-tip">
+          <div class="mt-label">Memory hook — Sijjin vs Illiyyun mirror structure</div>
+          <div class="mt-text">Verses 7–9 (Sijjin) and 18–21 (Illiyyun) are almost word-for-word mirrors: <em>inna kitabal-fujjar lafi sijjin</em> / <em>inna kitabal-abrar lafi 'illiyyin</em>. Then both ask: <em>wa ma adra-ka ma…?</em> Then both answer: <em>kitabun marqum</em>. Once you know one block, you know both — just swap Sijjin for Illiyyun and fujjar for abrar. The mirror structure is the memory tool.</div>
+        </div>
+        <div class="teal-note">
+          <div class="tl-label">Key phrase — v.26</div>
+          <div class="tl-text"><em>Wa fi dhalika falyatanafasil-mutanafisun</em> — "and for this let the competitors compete." This verse is often quoted by scholars on the topic of competing in good deeds. The word <em>tanafus</em> (competition/rivalry) is used — but here, healthy, praiseworthy competition for the akhirah. Not for dunya.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="sec-card">
+      <div class="sec-hdr" onclick="tog(this)">
+        <span class="sec-badge tp-slate">Section 4</span>
+        <span class="sec-title">The Mockers — and Their Reversal</span>
+        <span class="sec-range">vv. 29–36</span>
+        <span class="chev">▶</span>
+      </div>
+      <div class="sec-body">
+        <div class="theme-note">
+          <div class="tn-label">Core message</div>
+          <div class="tn-text">In Makkah, the disbelievers would mock the believers openly — laughing, winking, calling them "the misguided ones." This section names that behaviour precisely, then announces its total reversal: on the Day of Judgment, the believers will be on elevated thrones laughing at the disbelievers as they enter Hell. The last verse closes with a challenge: haven't the wrongdoers been paid back for what they used to do?</div>
+        </div>
+        <div class="verses">
+          <div class="vrow">
+            <div class="vnum">29–33</div>
+            <div class="var">إِنَّ ٱلَّذِينَ أَجْرَمُوا۟ كَانُوا۟ مِنَ ٱلَّذِينَ ءَامَنُوا۟ يَضْحَكُونَ • وَإِذَا مَرُّوا۟ بِهِمْ يَتَغَامَزُونَ • وَإِذَا ٱنقَلَبُوٓا۟ إِلَىٰٓ أَهْلِهِمُ ٱنقَلَبُوا۟ فَكِهِينَ • وَإِذَا رَأَوْهُمْ قَالُوٓا۟ إِنَّ هَٰٓؤُلَآءِ لَضَآلُّونَ • وَمَآ أُرْسِلُوا۟ عَلَيْهِمْ حَٰفِظِينَ</div>
+            <div class="vtrans">Indeed those who were guilty used to laugh at those who believed — and when they passed by them, they would wink at each other — and when they returned to their families, they returned rejoicing in mockery — and when they saw them, they said: "Surely these are the ones who have gone astray!" — yet they were not sent as guardians over them.</div>
+          </div>
+          <div class="vrow">
+            <div class="vnum">34–36</div>
+            <div class="var">فَٱلْيَوْمَ ٱلَّذِينَ ءَامَنُوا۟ مِنَ ٱلْكُفَّارِ يَضْحَكُونَ • عَلَى ٱلْأَرَآئِكِ يَنظُرُونَ • هَلْ ثُوِّبَ ٱلْكُفَّارُ مَا كَانُوا۟ يَفْعَلُونَ</div>
+            <div class="vtrans">So today those who believed are laughing at the disbelievers — on thrones, gazing — are the disbelievers not being paid back for what they used to do?</div>
+          </div>
+        </div>
+        <div class="mem-tip">
+          <div class="mt-label">Memory hook — four scenes of mockery, then the flip</div>
+          <div class="mt-text">Verses 29–33 paint four snapshots of the mockers: (1) they laughed publicly, (2) they winked as believers passed, (3) they went home celebrating, (4) they called believers "misguided." Four scenes of humiliation. Then v.34 flips everything: <em>fal-yawma</em> — SO TODAY — the believers laugh. The word <em>yad-hakun</em> (they laugh) appears in both v.29 and v.34, creating a deliberate echo that is the memory key.</div>
+        </div>
+        <div class="extra-note">
+          <div class="en-label">Note — v.33 "they were not sent as guardians"</div>
+          <div class="en-text">This short phrase is a powerful rebuke: who appointed the mockers as arbiters of who is guided or misguided? They had no authority over the believers. Today this verse speaks to anyone who dismisses or ridicules the religious commitments of others — the Qur'an says: you were never appointed their guardian.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end sections -->
+
+  <!-- ══════════════ VOCAB ══════════════ -->
+  <div class="panel" id="vocab">
+
+    <div class="vocab-section-title">Section 1 — The crime and the cure (vv. 1–6)</div>
+    <div class="vocab-grid">
+      <div class="vcard"><div class="vc-ar">وَيْلٌ</div><div class="vc-roman">waylun</div><div class="vc-en">Woe / destruction</div><div class="vc-where">v.1 — one of the Qur'an's strongest condemnations; appears again in v.10</div></div>
+      <div class="vcard"><div class="vc-ar">ٱلْمُطَفِّفِينَ</div><div class="vc-roman">al-mutaffifin</div><div class="vc-en">The defrauders / those who give short measure</div><div class="vc-where">v.1 — from tatfif: skimping small amounts fraudulently</div></div>
+      <div class="vcard"><div class="vc-ar">ٱكْتَالُوا۟</div><div class="vc-roman">aktalu</div><div class="vc-en">They took by measure</div><div class="vc-where">v.2 — when receiving for themselves</div></div>
+      <div class="vcard"><div class="vc-ar">يَسْتَوْفُونَ</div><div class="vc-roman">yastawfun</div><div class="vc-en">They take in full</div><div class="vc-where">v.2 — demand every last drop of what is owed to them</div></div>
+      <div class="vcard"><div class="vc-ar">يُخْسِرُونَ</div><div class="vc-roman">yukhsirun</div><div class="vc-en">They cause loss / give short</div><div class="vc-where">v.3 — when giving to others</div></div>
+      <div class="vcard"><div class="vc-ar">مَبْعُوثُونَ</div><div class="vc-roman">mab'uthun</div><div class="vc-en">They will be resurrected</div><div class="vc-where">v.4 — the belief that would cure their fraud</div></div>
+      <div class="vcard"><div class="vc-ar">يَوْمٍ عَظِيمٍ</div><div class="vc-roman">yawmin 'azim</div><div class="vc-en">A Tremendous Day</div><div class="vc-where">v.5 — the scale of what awaits</div></div>
+      <div class="vcard"><div class="vc-ar">رَبِّ ٱلْعَٰلَمِينَ</div><div class="vc-roman">rabb al-'alamin</div><div class="vc-en">Lord of all the worlds</div><div class="vc-where">v.6 — before Whom all mankind will stand</div></div>
+    </div>
+
+    <div class="vocab-section-title">Section 2 — Sijjin and the sealed heart (vv. 7–17)</div>
+    <div class="vocab-grid">
+      <div class="vcard"><div class="vc-ar">سِجِّينٌ</div><div class="vc-roman">sijjin</div><div class="vc-en">Sijjin — the lowly record</div><div class="vc-where">v.7 — from sijn (prison); the low, confined register of the wicked</div></div>
+      <div class="vcard"><div class="vc-ar">كِتَٰبٌ مَّرْقُومٌ</div><div class="vc-roman">kitabun marqum</div><div class="vc-en">A register inscribed / clearly written</div><div class="vc-where">v.9 — permanently recorded, cannot be altered</div></div>
+      <div class="vcard"><div class="vc-ar">ٱلْمُكَذِّبِينَ</div><div class="vc-roman">al-mukaththibin</div><div class="vc-en">The deniers / those who reject</div><div class="vc-where">v.10 — those who deny the Day of Recompense</div></div>
+      <div class="vcard"><div class="vc-ar">مُعْتَدٍ أَثِيمٍ</div><div class="vc-roman">mu'tadin athim</div><div class="vc-en">Sinful transgressor</div><div class="vc-where">v.12 — the character profile of every denier</div></div>
+      <div class="vcard"><div class="vc-ar">أَسَٰطِيرُ ٱلْأَوَّلِينَ</div><div class="vc-roman">asatir al-awwalin</div><div class="vc-en">Legends / myths of the ancients</div><div class="vc-where">v.13 — their dismissal of the Qur'an</div></div>
+      <div class="vcard"><div class="vc-ar">رَانَ</div><div class="vc-roman">rana</div><div class="vc-en">Has sealed / covered / rusted over</div><div class="vc-where">v.14 — unique word in the Qur'an; the sin-seal on the heart</div></div>
+      <div class="vcard"><div class="vc-ar">مَحْجُوبُونَ</div><div class="vc-roman">mahjubun</div><div class="vc-en">Veiled / screened from</div><div class="vc-where">v.15 — veiled from seeing Allah — the greatest punishment</div></div>
+      <div class="vcard"><div class="vc-ar">لَصَالُوا۟ ٱلْجَحِيمِ</div><div class="vc-roman">la-salu al-jahim</div><div class="vc-en">They will burn in the blaze</div><div class="vc-where">v.16 — consequence after the veil</div></div>
+    </div>
+
+    <div class="vocab-section-title">Section 3 — Illiyyun and Paradise (vv. 18–28)</div>
+    <div class="vocab-grid">
+      <div class="vcard"><div class="vc-ar">عِلِّيُّونَ</div><div class="vc-roman">'illiyyun</div><div class="vc-en">Illiyyun — the exalted record</div><div class="vc-where">v.18 — from 'ala (high); the elevated register of the righteous</div></div>
+      <div class="vcard"><div class="vc-ar">ٱلْمُقَرَّبُونَ</div><div class="vc-roman">al-muqarrabun</div><div class="vc-en">Those brought near / the closest to Allah</div><div class="vc-where">v.21 & v.28 — the highest rank of angels and believers</div></div>
+      <div class="vcard"><div class="vc-ar">ٱلْأَرَآئِكِ</div><div class="vc-roman">al-ara'ik</div><div class="vc-en">Thrones / raised couches</div><div class="vc-where">v.23 — the resting place of the righteous in Paradise</div></div>
+      <div class="vcard"><div class="vc-ar">نَضْرَةَ ٱلنَّعِيمِ</div><div class="vc-roman">nadrat al-na'im</div><div class="vc-en">The radiance / glow of bliss</div><div class="vc-where">v.24 — visible on their faces; joy made luminous</div></div>
+      <div class="vcard"><div class="vc-ar">رَحِيقٍ مَّخْتُومٍ</div><div class="vc-roman">rahiqin makhtum</div><div class="vc-en">Pure sealed wine</div><div class="vc-where">v.25 — the finest drink of Paradise, sealed for them</div></div>
+      <div class="vcard"><div class="vc-ar">خِتَٰمُهُۥ مِسْكٌ</div><div class="vc-roman">khitamuhu misk</div><div class="vc-en">Its seal is musk</div><div class="vc-where">v.26 — fragrance of the seal; opposite of worldly wine's smell</div></div>
+      <div class="vcard"><div class="vc-ar">فَلْيَتَنَافَسِ ٱلْمُتَنَٰفِسُونَ</div><div class="vc-roman">falyatanafas al-mutanafisun</div><div class="vc-en">Let the competitors compete</div><div class="vc-where">v.26 — the famous call to race for the akhirah</div></div>
+      <div class="vcard"><div class="vc-ar">تَسْنِيمٍ</div><div class="vc-roman">tasnim</div><div class="vc-en">Tasnim — the highest spring in Paradise</div><div class="vc-where">v.27 — drunk pure by the muqarrabun; blended for others</div></div>
+    </div>
+
+    <div class="vocab-section-title">Section 4 — Mockers and the reversal (vv. 29–36)</div>
+    <div class="vocab-grid">
+      <div class="vcard"><div class="vc-ar">أَجْرَمُوا۟</div><div class="vc-roman">ajramu</div><div class="vc-en">Were guilty / committed crimes</div><div class="vc-where">v.29 — the Makkan disbelievers who mocked</div></div>
+      <div class="vcard"><div class="vc-ar">يَضْحَكُونَ</div><div class="vc-roman">yadhakun</div><div class="vc-en">They laugh</div><div class="vc-where">v.29 & v.34 — appears twice; the key echo of the reversal</div></div>
+      <div class="vcard"><div class="vc-ar">يَتَغَامَزُونَ</div><div class="vc-roman">yataghamizun</div><div class="vc-en">They wink / signal mockingly</div><div class="vc-where">v.30 — subtle mockery as believers passed by</div></div>
+      <div class="vcard"><div class="vc-ar">فَكِهِينَ</div><div class="vc-roman">fakihin</div><div class="vc-en">Rejoicing / delighted</div><div class="vc-where">v.31 — they went home pleased with their mockery</div></div>
+      <div class="vcard"><div class="vc-ar">ضَآلُّونَ</div><div class="vc-roman">dallun</div><div class="vc-en">Those who have gone astray</div><div class="vc-where">v.32 — their label for the believers; reversed on the Day</div></div>
+      <div class="vcard"><div class="vc-ar">حَٰفِظِينَ</div><div class="vc-roman">hafidhin</div><div class="vc-en">Guardians / overseers</div><div class="vc-where">v.33 — they were never appointed to judge the believers</div></div>
+      <div class="vcard"><div class="vc-ar">فَٱلْيَوْمَ</div><div class="vc-roman">fal-yawma</div><div class="vc-en">So today / but on this Day</div><div class="vc-where">v.34 — the pivot word of the great reversal</div></div>
+      <div class="vcard"><div class="vc-ar">هَلْ ثُوِّبَ</div><div class="vc-roman">hal thuwwiba</div><div class="vc-en">Have they not been repaid / rewarded</div><div class="vc-where">v.36 — the surah's closing rhetorical question</div></div>
+    </div>
+
+  </div><!-- end vocab -->
+
+  <!-- ══════════════ RECITATION ══════════════ -->
+  <div class="panel" id="recitation">
+
+    <div class="rec-card" style="background:#0d2e24; border-color:#1D9E75;">
+      <div class="hb-label" style="margin-bottom:6px;">Important note on length</div>
+      <div class="hb-text" style="color:#a0cfc0; font-style:italic; font-size:13px; line-height:1.65;">At 36 verses, Al-Mutaffifin is the longest surah in Juz Amma — roughly 2.5–3 minutes at a measured pace. It is almost always split across two rak'ahs in Tarawih and Tahajjud. The Prophet ﷺ paired it with Surah Abasa (80) in a single rak'ah during qiyam al-layl, making both together one extended rak'ah.</div>
+    </div>
+
+    <div class="rec-card">
+      <div class="rc-header">
+        <div class="rc-icon">A</div>
+        <div>
+          <div class="rc-title">Full surah — single rak'ah</div>
+          <div class="rc-sub">Verses 1–36 · following the Prophetic practice with Surah Abasa</div>
+        </div>
+      </div>
+      <div class="rc-row"><div class="rc-dot"></div><div class="rc-text">The Prophet ﷺ recited Al-Mutaffifin and Abasa (80) together in one rak'ah. If following this sunnah, recite Abasa first then Al-Mutaffifin in the same rak'ah — the combined length is manageable for Tahajjud.</div></div>
+      <div class="rc-row"><div class="rc-dot"></div><div class="rc-text">Reciting the full surah alone in one rak'ah is also valid and gives the complete thematic arc its full impact: social crime → spiritual disease → record books → Paradise → the great reversal.</div></div>
+      <div class="rc-row"><div class="rc-dot"></div><div class="rc-text">The closing verse — <em>hal thuwwibal-kuffaru ma kanu yaf'alun</em> — is a rhetorical question that lands powerfully before ruku'.</div></div>
+    </div>
+
+    <div class="rec-card">
+      <div class="rc-header">
+        <div class="rc-icon">B</div>
+        <div>
+          <div class="rc-title">Two-part split — most common Tarawih division</div>
+          <div class="rc-sub">Split at v.17 or v.28</div>
+        </div>
+      </div>
+      <div class="rc-row"><div class="rc-dot"></div><div class="rc-text"><strong>Option 1 — split at v.17 (recommended):</strong> Rak'ah 1 covers vv.1–17 — the crime, Sijjin, the sealed heart, and the punishment of being veiled from Allah, ending on <em>hadha alladhi kuntum bihi tukaththibun</em> — a devastating close. Rak'ah 2 covers vv.18–36 — Illiyyun, Paradise, and the reversal.</div></div>
+      <div class="rc-row"><div class="rc-dot"></div><div class="rc-text"><strong>Option 2 — split at v.28:</strong> Rak'ah 1 covers vv.1–28 — everything up to and including the Tasnim spring. Rak'ah 2 covers vv.29–36 — the mockery passage and the reversal. Shorter second rak'ah but a powerful one.</div></div>
+    </div>
+
+    <div class="rec-card">
+      <div class="rc-header">
+        <div class="rc-icon">C</div>
+        <div>
+          <div class="rc-title">Three-part split — extended qiyam nights</div>
+          <div class="rc-sub">Breaks at v.6, v.17, and v.28</div>
+        </div>
+      </div>
+      <div class="rc-row"><div class="rc-dot"></div><div class="rc-text"><strong>Rak'ah 1 — vv.1–6:</strong> The crime defined and the cure. Short and punchy — ends on <em>yawma yaqumun-nasu li-rabbil-'alamin</em>.</div></div>
+      <div class="rc-row"><div class="rc-dot"></div><div class="rc-text"><strong>Rak'ah 2 — vv.7–17:</strong> Sijjin, the sealed heart, the veil from Allah. The darkest section of the surah — powerful as its own rak'ah.</div></div>
+      <div class="rc-row"><div class="rc-dot"></div><div class="rc-text"><strong>Rak'ah 3 — vv.18–36:</strong> Illiyyun, Paradise, and the full reversal. Starts with the mirror image of rak'ah 2 and ends on a triumphant rhetorical question.</div></div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="sub-label">Natural stopping points used by reciters</div>
+
+    <div class="stop-row">
+      <div class="stop-v">v.6</div>
+      <div class="stop-text"><em>yawma yaqumun-nasu li-rabbil-'alamin</em> — end of the opening section. The escalation to "Lord of all the worlds" makes a strong, complete landing before ruku'.</div>
+    </div>
+    <div class="stop-row">
+      <div class="stop-v">v.9</div>
+      <div class="stop-text"><em>kitabun marqum</em> — end of the Sijjin description. Short but resonant — the permanently inscribed register is a complete thought.</div>
+    </div>
+    <div class="stop-row">
+      <div class="stop-v">v.17</div>
+      <div class="stop-text"><em>hadha alladhi kuntum bihi tukaththibun</em> — most popular mid-surah stop. The taunt "this is what you used to deny" — delivered to the wicked in Hellfire — is one of the most powerful verse-endings in this surah.</div>
+    </div>
+    <div class="stop-row">
+      <div class="stop-v">v.21</div>
+      <div class="stop-text"><em>yashhaduhu al-muqarrabun</em> — end of the Illiyyun description. Stopping here creates a tight Sijjin/Illiyyun rak'ah (vv.7–21) for those who prefer the two record-books together.</div>
+    </div>
+    <div class="stop-row">
+      <div class="stop-v">v.28</div>
+      <div class="stop-text"><em>'aynan yashabu bihal-muqarrabun</em> — end of the Paradise description. Leaving the mockery reversal for its own rak'ah gives it full weight and impact.</div>
+    </div>
+    <div class="stop-row">
+      <div class="stop-v">v.36</div>
+      <div class="stop-text"><em>hal thuwwibal-kuffaru ma kanu yaf'alun</em> — the final verse. A rhetorical question that needs no answer — and therefore needs no more words. Perfect before ruku'.</div>
+    </div>
+
+  </div><!-- end recitation -->
+
+</div><!-- end wrap -->
+
+<script>
+  function showTab(id, el) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    el.classList.add('active');
+  }
+  function tog(hdr) {
+    const body = hdr.nextElementSibling;
+    const chev = hdr.querySelector('.chev');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    chev.classList.toggle('open', !isOpen);
+  }
+</script>
+</body>
+</html>
