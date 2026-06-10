@@ -204,21 +204,23 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
 
       {/* Vocab */}
       <div className={`panel ${tab === "vocab" ? "active" : ""}`}>
-        {guide.vocab.map((grp, gi) => (
-          <div key={gi}>
-            <div className='vocab-section-title'>{grp.title}</div>
-            <div className='vocab-grid'>
-              {grp.items.map((v, vi) => (
-                <div className='vcard' key={vi}>
-                  <div className='vc-ar'>{v.arabic}</div>
-                  <div className='vc-roman'>{v.roman}</div>
-                  <div className='vc-en'>{v.english}</div>
-                  <div className='vc-where'>{v.where}</div>
-                </div>
-              ))}
+        <div className='vocab-list'>
+          {guide.vocab.map((grp, gi) => (
+            <div className='vocab-group' key={gi}>
+              <div className='vocab-section-title'>{grp.title}</div>
+              <div className='vocab-grid'>
+                {grp.items.map((v, vi) => (
+                  <div className='vcard' key={vi}>
+                    <div className='vc-ar'>{v.arabic}</div>
+                    <div className='vc-roman'>{v.roman}</div>
+                    <div className='vc-en'>{v.english}</div>
+                    <div className='vc-where'>{v.where}</div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Recitation */}
