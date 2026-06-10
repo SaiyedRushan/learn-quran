@@ -125,6 +125,21 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
         )}
       </div>
 
+      {/* Before you begin — make dua */}
+      <div className='dua-tip'>
+        <div className='dua-tip-head'>
+          <span className='dua-tip-icon'>🤲</span>
+          <span className='dua-tip-label'>Before you begin</span>
+        </div>
+        <div className='dua-tip-text'>
+          Start with sincerity — ask Allah to make this easy for you and to let what you learn benefit you. A short dua to begin with:
+        </div>
+        <div className='dua-tip-ar'>رَبِّ زِدْنِي عِلْمًا</div>
+        <div className='dua-tip-en'>
+          <em>Rabbi zidni ‘ilma</em> — “My Lord, increase me in knowledge.” (Qur'an 20:114)
+        </div>
+      </div>
+
       {/* Tabs */}
       <div className='tabs'>
         <button className={`tab ${tab === "sections" ? "active" : ""}`} onClick={() => setTab("sections")}>
