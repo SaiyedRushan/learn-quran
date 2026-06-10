@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useLearned, setLearned, useAllLearnedSectionKeys } from "@/lib/progress";
+import { searchSurahs } from "@/lib/search";
 
 export interface SurahListItem {
   number: number;
@@ -19,6 +21,10 @@ export interface SurahListItem {
 const MAX_SEGMENTS = 8; // beyond this, fall back to a continuous bar
 
 export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) {
+  const [query, setQuery] = useState("");
+  const searching = query.trim().length > 0;
+  const filtered = searchSurahs(query, surahs);
+
   const learned = useLearned();
   const learnedSet = new Set(learned);
 
@@ -57,9 +63,57 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
         )}
       </div>
 
-      <div className="list-heading">Juz 30 · Juz Amma — {surahs.length} surahs</div>
-      <div className="surah-list">
-        {surahs.map((s) => {
+      <div className="search">
+        <svg
+          className="search-icon"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          aria-hidden="true"
+        >
+          <circle cx="11" cy="11" r="7" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input
+          className="search-input"
+          type="search"
+          inputMode="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search by name, meaning, or Arabic…"
+          aria-label="Search surahs"
+          autoComplete="off"
+        />
+        {searching && (
+          <button
+            className="search-clear"
+            aria-label="Clear search"
+            onClick={() => setQuery("")}
+          >
+            ×
+          </button>
+        )}
+      </div>
+
+      <div className="list-heading">
+        {searching
+          ? `${filtered.length} result${filtered.length === 1 ? "" : "s"}`
+          : `Juz 30 · Juz Amma — ${surahs.length} surahs`}
+      </div>
+
+      {filtered.length === 0 ? (
+        <div className="search-empty">
+          No surahs match “{query.trim()}”.
+          <br />
+          Try a different spelling, the meaning, or the Arabic name.
+        </div>
+      ) : (
+        <div className="surah-list">
+          {filtered.map((s) => {
           const isDone = learnedSet.has(s.number);
           const secLearned = learnedHere(s);
           const secComplete = s.sectionCount > 0 && secLearned === s.sectionCount;
@@ -114,7 +168,8 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
             </Link>
           );
         })}
-      </div>
+        </div>
+      )}
     </>
   );
 }
