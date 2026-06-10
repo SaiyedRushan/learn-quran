@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import Link from "next/link";
 import SettingsControl from "@/components/SettingsControl";
+import {Analytics} from "@vercel/analytics/next";
 import "./globals.css";
 
 // Applies saved font-size settings before paint, avoiding a flash of default size.
@@ -60,6 +61,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           . The teaching commentary (overviews, memory hooks, vocabulary notes, and recitation guidance) is an educational aid — guides marked “draft” are pending review by a
           qualified scholar. Please verify any point of religious ruling with a trusted teacher.
         </footer>
+        <Analytics />
       </body>
     </html>
   );
