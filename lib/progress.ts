@@ -88,6 +88,15 @@ export function useToggleLearned(num: number): () => void {
 const sectionStore = createStore<string>("lq:sections:v1");
 const secKey = (surah: number, index: number) => `${surah}:${index}`;
 
+/** Every learned section key ("surah:index") across all surahs (reactive). */
+export function useAllLearnedSectionKeys(): string[] {
+  return useSyncExternalStore(
+    sectionStore.subscribe,
+    sectionStore.read,
+    () => EMPTY
+  );
+}
+
 /** All learned section indices for a surah (reactive). */
 export function useLearnedSections(surah: number): number[] {
   const all = useSyncExternalStore(

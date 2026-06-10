@@ -2,17 +2,21 @@ import { surahIndex, getGuide } from "@/lib/content";
 import SurahIndexView, { type SurahListItem } from "@/components/SurahIndexView";
 
 export default function Home() {
-  const surahs: SurahListItem[] = surahIndex.map((s) => ({
-    number: s.number,
-    slug: s.slug,
-    name: s.name,
-    epithet: s.epithet,
-    arabicName: s.arabicName,
-    verseCount: s.verseCount,
-    revelationType: s.revelationType,
-    revelationOrdinal: s.revelationOrdinal,
-    status: getGuide(s.number)?.reviewStatus ?? "draft",
-  }));
+  const surahs: SurahListItem[] = surahIndex.map((s) => {
+    const guide = getGuide(s.number);
+    return {
+      number: s.number,
+      slug: s.slug,
+      name: s.name,
+      epithet: s.epithet,
+      arabicName: s.arabicName,
+      verseCount: s.verseCount,
+      revelationType: s.revelationType,
+      revelationOrdinal: s.revelationOrdinal,
+      status: guide?.reviewStatus ?? "draft",
+      sectionCount: guide?.sections.length ?? 0,
+    };
+  });
 
   return (
     <>
