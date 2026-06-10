@@ -47,10 +47,13 @@ function ordinal(n) {
 }
 
 // Strip the leading bismillah (4 tokens) from ayah 1's Arabic text.
+// Detection is diacritic-insensitive: some surahs encode the bāʾ with a shadda
+// (e.g. "بِّسْمِ"), so we compare against the bare letters "بسم". No genuine
+// Juz 30 surah begins its first ayah with "بسم".
 function stripBismillah(text) {
-  const tokens = text.split(/\s+/);
-  // bismillah = بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ (4 words)
-  if (tokens.length > 4 && tokens[0].startsWith("بِسْمِ")) {
+  const bare = (s) => s.replace(/[ؐ-ًؚ-ٰٟۖ-ۭـ\s]/g, "");
+  const tokens = text.trim().split(/\s+/);
+  if (tokens.length > 4 && bare(text).startsWith("بسم")) {
     return tokens.slice(4).join(" ").trim();
   }
   return text;
