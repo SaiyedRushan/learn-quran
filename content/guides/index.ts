@@ -40,7 +40,6 @@ import s113 from "./113-al-falaq";
 import s114 from "./114-an-naas";
 
 // Recommended Recitations collection
-import gYasin from "./36-yasin";
 import gMulk from "./67-al-mulk";
 import gKahf from "./18-al-kahf-protection";
 import gKursi from "./2-ayat-al-kursi";
@@ -50,5 +49,5 @@ export const guides: SurahGuide[] = [
   s78, s79, s80, s81, s82, s83, s84, s85, s86, s87, s88, s89, s90, s91, s92,
   s93, s94, s95, s96, s97, s98, s99, s100, s101, s102, s103, s104, s105, s106,
   s107, s108, s109, s110, s111, s112, s113, s114,
-  gYasin, gMulk, gKahf, gKursi, gBaqarah,
+  gMulk, gKahf, gKursi, gBaqarah,
 ];

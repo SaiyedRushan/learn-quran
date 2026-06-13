@@ -749,6 +749,7 @@ a {
 .sec-progress .progress-track {
   flex: 1;
   height: 6px;
+  background: var(--color-border-secondary);
 }
 .sp-label {
   font-size: 12px;
@@ -1384,4 +1385,158 @@ a {
   .var {
     font-size: calc(18px * var(--scale-ar));
   }
+}
+
+/* ── Prayer CTA (home) ── */
+.prayer-cta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #0d2e24;
+  border: 0.5px solid #14503c;
+  border-radius: var(--border-radius-lg);
+  padding: 14px 16px;
+  transition: border-color 0.15s, transform 0.05s;
+}
+.prayer-cta:hover {
+  border-color: var(--accent);
+}
+.prayer-cta:active {
+  transform: scale(0.995);
+}
+.prayer-cta-icon {
+  font-size: 22px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.prayer-cta-main {
+  flex: 1;
+  min-width: 0;
+}
+.prayer-cta-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent-bright);
+}
+.prayer-cta-sub {
+  display: block;
+  font-size: 12px;
+  color: #a0cfc0;
+  line-height: 1.5;
+  margin-top: 2px;
+}
+.prayer-cta-arrow {
+  color: var(--accent-bright);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.prayer-cta-count {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-bright);
+  background: #14503c;
+  border-radius: 99px;
+  padding: 3px 9px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Duas page ── */
+.duas-intro {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.75;
+  margin-bottom: 1.25rem;
+}
+.dua-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.dua-card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 14px 16px;
+}
+.dua-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.dua-head-main {
+  flex: 1;
+  min-width: 0;
+}
+.dua-head .sec-check {
+  margin-right: 0;
+}
+.dua-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.dua-when {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+  line-height: 1.5;
+}
+.dua-repeat {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: var(--border-radius-md);
+  white-space: nowrap;
+  background: #2a1f08;
+  color: #e0a84a;
+}
+.dua-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.dua-line {
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-md);
+  padding: 12px 14px;
+}
+.dua-ar {
+  font-family: var(--font-serif);
+  direction: rtl;
+  text-align: right;
+  color: var(--accent-bright);
+  line-height: 2.1;
+  font-size: calc(22px * var(--scale-ar));
+  margin-bottom: 8px;
+}
+.dua-translit {
+  font-size: calc(13px * var(--scale-en));
+  color: #1d9e75;
+  font-style: italic;
+  line-height: 1.6;
+  margin-bottom: 4px;
+}
+.dua-trans {
+  font-size: calc(13px * var(--scale-en));
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+.dua-note {
+  font-size: 12px;
+  color: #c0baf0;
+  background: #1e1a3a;
+  border-radius: var(--border-radius-md);
+  padding: 9px 12px;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+.dua-source {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  margin-top: 10px;
 }

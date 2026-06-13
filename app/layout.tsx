@@ -46,7 +46,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
             </Link>
             <div className='header-actions'>
               <Link href='/' className='header-link'>
-                All Surahs
+                Surahs
+              </Link>
+              <Link href='/duas/' className='header-link'>
+                Duas
               </Link>
               <SettingsControl />
             </div>

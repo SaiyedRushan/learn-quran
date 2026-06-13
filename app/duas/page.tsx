@@ -1,0 +1,47 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import duas from "@/content/duas";
+import DuasView from "@/components/DuasView";
+
+export const metadata: Metadata = {
+  title: "Duas of the Prayer",
+  description:
+    "The essential duas recited in the Islamic prayer — opening supplication, rukūʿ and sujūd, the Tashahhud, the salah on the Prophet ﷺ, duas before the salām, and Duʿāʾ al-Qunūt — with Arabic, transliteration, and translation.",
+};
+
+export default function DuasPage() {
+  return (
+    <>
+      <Link href="/" className="back-link">
+        ← All surahs
+      </Link>
+
+      <div className="top">
+        <div className="surah-name">Duas of the Prayer</div>
+        <div className="meta">
+          The supplications recited in the salah — with transliteration and meaning
+        </div>
+        <div className="ar-title" dir="rtl">
+          أَذْكَارُ الصَّلَاة
+        </div>
+      </div>
+
+      {duas.reviewStatus === "draft" && (
+        <div className="review-banner">
+          <span className="rb-icon">⚠️</span>
+          <div className="rb-text">
+            <strong>Draft — pending scholarly review.</strong> These supplications
+            are compiled from well-known sources, but unlike the Quran text on this
+            site they are not drawn from a verified API. Please confirm the exact
+            wordings — and the madhhab-specific points (especially Duʿāʾ al-Qunūt) —
+            with a qualified teacher and the practice of your school.
+          </div>
+        </div>
+      )}
+
+      <p className="duas-intro">{duas.intro}</p>
+
+      <DuasView duas={duas} />
+    </>
+  );
+}

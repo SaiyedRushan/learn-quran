@@ -146,3 +146,36 @@ export interface SurahGuide {
    */
   reviewStatus: "draft" | "reviewed";
 }
+
+// ──────────────────────────────────────────────────────────────────────────
+// Prayer duas (NOT Quranic verses — authored adhkar, so no verified API). These
+// power the /duas page.
+// ──────────────────────────────────────────────────────────────────────────
+
+/** One line/clause of a dua: Arabic + transliteration + meaning. */
+export interface DuaLine {
+  arabic: string;
+  transliteration: string;
+  translation: string;
+}
+
+export interface Dua {
+  name: string; // e.g. "At-Tahiyyat (Tashahhud)"
+  when: string; // where in the prayer it is said
+  repeat?: string; // e.g. "Three times"
+  lines: DuaLine[];
+  note?: string; // brief how-to / variant note; inline <em>/<strong> allowed
+  source: string; // e.g. "Bukhari & Muslim"
+}
+
+export interface DuaSection {
+  title: string; // group heading, e.g. "Opening the prayer"
+  intro?: string;
+  duas: Dua[];
+}
+
+export interface DuasContent {
+  intro: string;
+  sections: DuaSection[];
+  reviewStatus: "draft" | "reviewed";
+}

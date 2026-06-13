@@ -106,3 +106,15 @@ export function useLearnedSections(slug: string): number[] {
 export function setSectionLearned(slug: string, index: number, value: boolean): void {
   sectionStore.set(secKey(slug, index), value);
 }
+
+// ── Learned prayer duas (by dua name) ───────────────────────────────────
+const duaStore = createStore("lq:duas:v1");
+
+/** Every learned dua key (reactive). */
+export function useLearnedDuaKeys(): string[] {
+  return useSyncExternalStore(duaStore.subscribe, duaStore.read, () => EMPTY);
+}
+
+export function setDuaLearned(id: string, value: boolean): void {
+  duaStore.set(id, value);
+}
