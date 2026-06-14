@@ -28,7 +28,7 @@ const guide: SurahGuide = {
       label: "The protection promised — Sahih Muslim",
       text:
         "“Whoever memorizes ten verses from the beginning of Sūrat al-Kahf will be protected from the Dajjāl.” In another wording, “…from the end of Sūrat al-Kahf.” Both the first ten and the last ten are supported by the authentic narration.",
-      attribution: "— Sahih Muslim",
+      attribution: "— <a class='cite-link' href='https://sunnah.com/muslim:809a' target='_blank' rel='noopener noreferrer'>Sahih Muslim</a>",
     },
     {
       label: "The Friday light",
@@ -163,7 +163,7 @@ const guide: SurahGuide = {
         title: "Memorize the first or last ten — the Dajjāl shield",
         sub: "Verses 1–10 or 101–110 · following the Prophetic promise",
         rows: [
-          "The narration of Sahih Muslim mentions ten verses from the <strong>beginning</strong>; another wording mentions ten from the <strong>end</strong>. Memorizing either set fulfils the promise of protection from the Dajjāl — memorizing both is best.",
+          "The narration of <a class='cite-link' href='https://sunnah.com/muslim:809a' target='_blank' rel='noopener noreferrer'>Sahih Muslim</a> mentions ten verses from the <strong>beginning</strong>; another wording mentions ten from the <strong>end</strong>. Memorizing either set fulfils the promise of protection from the Dajjāl — memorizing both is best.",
           "Begin with whichever set is easier to retain, review it daily until it is firm, then add the second. Aim to recall both the Arabic and the meaning so the verses actually shape the heart against trial.",
           "Many keep the first ten as part of their regular adhkār, recalling that the opening verses end on the duʿāʾ of the youths (v.10) — a fitting plea to carry into one's own day.",
         ],

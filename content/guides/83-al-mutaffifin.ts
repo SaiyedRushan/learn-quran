@@ -28,13 +28,13 @@ const guide: SurahGuide = {
       label: "Historical context",
       text:
         "“When the Prophet ﷺ came to Madinah, they were the worst people in weights and measures. Then Allah revealed: ‘Woe to Al-Mutaffifin.’ After that, they became well-known for their honesty in weighing and measuring.”",
-      attribution: "— Reported by al-Hakim, al-Nasa'i, and Ibn Majah with a sound chain",
+      attribution: "— Reported by al-Hakim, al-Nasa'i, and <a class='cite-link' href='https://sunnah.com/ibnmajah:2223' target='_blank' rel='noopener noreferrer'>Ibn Majah</a> with a sound chain",
     },
     {
       label: "Sunnah pairing — Ibn Mas'ud (ra)",
       text:
         "“The Prophet ﷺ used to recite Al-Mutaffifin and Surah Abasa together in a single rak'ah of qiyam al-layl.”",
-      attribution: "— Abu Dawud 1396, authenticated by al-Albani",
+      attribution: "— <a class='cite-link' href='https://sunnah.com/abudawud:1396' target='_blank' rel='noopener noreferrer'>Abu Dawud 1396</a>, authenticated by al-Albani",
     },
   ],
   themes: [
@@ -106,7 +106,7 @@ const guide: SurahGuide = {
           kind: "teal",
           label: "The concept of Ran — v.14",
           text:
-            "The Prophet ﷺ said: “When a believer commits a sin, a black dot appears on his heart. If he repents, it is polished away. But if he persists, it spreads until his heart is completely covered — that is the <em>ran</em> that Allah mentions.” <em>(Tirmidhi 3334, hasan sahih)</em> — This is the only verse in the Qur'an where the word <em>ran</em> appears.",
+            "The Prophet ﷺ said: “When a believer commits a sin, a black dot appears on his heart. If he repents, it is polished away. But if he persists, it spreads until his heart is completely covered — that is the <em>ran</em> that Allah mentions.” <em>(<a class='cite-link' href='https://sunnah.com/tirmidhi:3334' target='_blank' rel='noopener noreferrer'>Tirmidhi 3334</a>, hasan sahih)</em> — This is the only verse in the Qur'an where the word <em>ran</em> appears.",
         },
         {
           kind: "extra",

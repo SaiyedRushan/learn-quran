@@ -19,7 +19,8 @@ const NOTE_CLASS: Record<GuideNote["kind"], {box: string; label: string; text: s
   teal: {box: "teal-note", label: "tl-label", text: "tl-text"},
 };
 
-/** Render limited inline HTML (<em>, <strong>) from trusted, build-time content. */
+/** Render limited inline HTML (<em>, <strong>, and citation <a> links) from
+ * trusted, build-time content. */
 function Html({html, className}: {html: string; className?: string}) {
   return <div className={className} dangerouslySetInnerHTML={{__html: html}} />;
 }
@@ -122,7 +123,9 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
           <div className='hadith-banner' key={i} style={i > 0 ? {marginTop: 8} : undefined}>
             <div className='hb-label'>{b.label}</div>
             <Html className='hb-text' html={b.text} />
-            {b.attribution && <div className='hb-attr'>{b.attribution}</div>}
+            {b.attribution && (
+              <div className='hb-attr' dangerouslySetInnerHTML={{__html: b.attribution}} />
+            )}
           </div>
         ))}
         {guide.themes.length > 0 && (
@@ -147,7 +150,11 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
         </div>
         <div className='dua-tip-ar'>رَبِّ زِدْنِي عِلْمًا</div>
         <div className='dua-tip-en'>
-          <em>Rabbi zidni ‘ilma</em> — “My Lord, increase me in knowledge.” (Qur'an 20:114)
+          <em>Rabbi zidni ‘ilma</em> — “My Lord, increase me in knowledge.” (
+          <a className='cite-link' href='https://quran.com/20/114' target='_blank' rel='noopener noreferrer'>
+            Qur'an 20:114
+          </a>
+          )
         </div>
       </div>
 

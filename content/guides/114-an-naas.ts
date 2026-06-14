@@ -27,7 +27,7 @@ const guide: SurahGuide = {
       label: "One of the Mu'awwidhatan",
       text:
         "An-Naas and Al-Falaq (113) are together called the Mu'awwidhatan — the two surahs of seeking refuge. The Prophet ﷺ would recite them for protection, including each night before sleep, cupping his hands and reciting them over himself. An-Naas is the closing surah of the Qur'an.",
-      attribution: "— Reported in Sahih al-Bukhari",
+      attribution: "— Reported in <a class='cite-link' href='https://sunnah.com/bukhari:5017' target='_blank' rel='noopener noreferrer'>Sahih al-Bukhari</a>",
     },
   ],
   themes: [

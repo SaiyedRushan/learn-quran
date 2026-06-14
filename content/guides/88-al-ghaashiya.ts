@@ -27,7 +27,7 @@ const guide: SurahGuide = {
       label: "Sunnah pairing — Jumu'ah & the two Eids",
       text:
         "The Prophet ﷺ used to recite Surah Al-A'la (87) and Surah Al-Ghaashiya (88) in the two Eid prayers and in the Friday prayer.",
-      attribution: "— Reported by Muslim in his Sahih",
+      attribution: "— Reported by <a class='cite-link' href='https://sunnah.com/muslim:878a' target='_blank' rel='noopener noreferrer'>Muslim</a> in his Sahih",
     },
   ],
   themes: [

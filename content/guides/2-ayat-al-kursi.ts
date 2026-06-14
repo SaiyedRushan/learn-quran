@@ -28,13 +28,13 @@ const guide: SurahGuide = {
       label: "The greatest verse in the Qur'an",
       text:
         "The Prophet ﷺ asked Ubayy ibn Kaʿb (ra) which verse in the Book of Allah was the greatest. When Ubayy answered “Allāhu lā ilāha illā huwa l-Ḥayyu l-Qayyūm” (Āyat al-Kursī), the Prophet ﷺ struck him on the chest and said: “May knowledge delight you, O Abū l-Mundhir.”",
-      attribution: "— Sahih Muslim",
+      attribution: "— <a class='cite-link' href='https://sunnah.com/muslim:810' target='_blank' rel='noopener noreferrer'>Sahih Muslim</a>",
     },
     {
       label: "After every prayer & before sleep",
       text:
         "“Whoever recites Āyat al-Kursī after every obligatory prayer, nothing prevents him from entering Paradise except death.” And the Prophet ﷺ taught that whoever recites it on going to bed will have a guardian from Allah remain with him, and no devil will approach him until morning.",
-      attribution: "— an-Nasāʾī (graded sahih by al-Albani); Sahih al-Bukhārī",
+      attribution: "— an-Nasāʾī (graded sahih by al-Albani); <a class='cite-link' href='https://sunnah.com/bukhari:2311' target='_blank' rel='noopener noreferrer'>Sahih al-Bukhārī</a>",
     },
   ],
   themes: [
@@ -108,7 +108,7 @@ const guide: SurahGuide = {
         sub: "Verse 2:255 · for reward and protection",
         rows: [
           "<strong>After every fard prayer:</strong> recite it once after the closing salām. “Whoever recites Āyat al-Kursī after every obligatory prayer, nothing prevents him from entering Paradise except death.” <em>(an-Nasāʾī; sahih per al-Albani.)</em>",
-          "<strong>Before sleep:</strong> recite it once on going to bed. The Prophet ﷺ taught that a guardian from Allah will remain with the reciter and no devil will approach him until morning. <em>(Sahih al-Bukhārī — the account of Abu Hurayrah and the shayṭān.)</em>",
+          "<strong>Before sleep:</strong> recite it once on going to bed. The Prophet ﷺ taught that a guardian from Allah will remain with the reciter and no devil will approach him until morning. <em>(<a class='cite-link' href='https://sunnah.com/bukhari:2311' target='_blank' rel='noopener noreferrer'>Sahih al-Bukhārī</a> — the account of Abu Hurayrah and the shayṭān.)</em>",
           "<strong>For protection generally:</strong> because it gathers Allah's names and majesty, reciting it is a means of seeking refuge in Him from harm throughout the day and night.",
         ],
       },

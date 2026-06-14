@@ -64,7 +64,10 @@ export default function DuasView({ duas }: { duas: DuasContent }) {
                       <Html html={dua.note} />
                     </div>
                   )}
-                  <div className="dua-source">{dua.source}</div>
+                  <div
+                    className="dua-source"
+                    dangerouslySetInnerHTML={{ __html: dua.source }}
+                  />
                 </div>
               );
             })}

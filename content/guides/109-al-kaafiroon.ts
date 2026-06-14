@@ -27,7 +27,7 @@ const guide: SurahGuide = {
       label: "A surah of disavowal",
       text:
         "Al-Kaafiroon disavows the worship of every false god. The Prophet ﷺ regularly recited Al-Kaafiroon and Al-Ikhlas together in the two sunnah rak'ahs before Fajr and after Maghrib — the two surahs together affirming pure devotion (Al-Ikhlas) and freedom from false worship (Al-Kaafiroon).",
-      attribution: "— Reported in Muslim and Abu Dawud",
+      attribution: "— Reported in <a class='cite-link' href='https://sunnah.com/muslim:726' target='_blank' rel='noopener noreferrer'>Muslim</a> and <a class='cite-link' href='https://sunnah.com/abudawud:1256' target='_blank' rel='noopener noreferrer'>Abu Dawud</a>",
     },
   ],
   themes: [

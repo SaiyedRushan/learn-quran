@@ -28,13 +28,13 @@ const guide: SurahGuide = {
       label: "“They will suffice him”",
       text:
         "“Whoever recites the last two verses of Sūrat al-Baqarah at night, they will suffice him.” The scholars explain “suffice him” as protection from every harm that night, and as standing in place of qiyām al-layl for the one who is unable to rise.",
-      attribution: "— Sahih al-Bukhārī & Sahih Muslim",
+      attribution: "— <a class='cite-link' href='https://sunnah.com/bukhari:4008' target='_blank' rel='noopener noreferrer'>Sahih al-Bukhārī</a> & <a class='cite-link' href='https://sunnah.com/muslim:807a' target='_blank' rel='noopener noreferrer'>Sahih Muslim</a>",
     },
     {
       label: "Given on the Night of Ascension",
       text:
-        "These two verses were given to the Prophet ﷺ on the night of al-Isrāʾ wa-l-Miʿrāj — a treasure from beneath the Throne, granted to no prophet before him. As each plea of verse 286 was made, Allah responded: <em>qad faʿaltu</em> — “I have done so.”",
-      attribution: "— Sahih Muslim",
+        "On the night of al-Isrāʾ wa-l-Miʿrāj, the Prophet ﷺ was given three gifts: the five daily prayers, the closing verses of Sūrat al-Baqarah, and forgiveness for those of his ummah who associate nothing with Allah. Other narrations add to their honour: an angel descended as none had before with <em>“two lights given to you that were given to no prophet before you”</em> — al-Fātiḥah and the end of al-Baqarah; and as each plea of verse 286 was made, Allah answered <em>qad faʿaltu</em> — “I have done so.”",
+      attribution: "— Sahih Muslim: <a class='cite-link' href='https://sunnah.com/muslim:173' target='_blank' rel='noopener noreferrer'>173</a> (the night journey, Ibn ʿUmar); <a class='cite-link' href='https://sunnah.com/muslim:806' target='_blank' rel='noopener noreferrer'>806</a> (the two lights, Ibn ʿAbbās); <a class='cite-link' href='https://sunnah.com/muslim:126' target='_blank' rel='noopener noreferrer'>126</a> (the “qad faʿaltu” responses, Ibn ʿAbbās)",
     },
   ],
   themes: [
@@ -71,7 +71,7 @@ const guide: SurahGuide = {
           kind: "teal",
           label: "The five pleas of verse 286",
           text:
-            "The duʿā of verse 286 is a model of how to ask Allah, moving in five steps: (1) <strong>do not take us to task</strong> if we forget or fall into error; (2) <strong>do not lay on us a burden</strong> like that laid on the nations before us; (3) <strong>do not charge us</strong> with more than we have the strength to bear; (4) <strong>pardon us, forgive us, and have mercy on us</strong> — three pleas in one breath; (5) <strong>You are our Protector, so grant us victory</strong> over the disbelieving people. To each, Allah answered <em>qad faʿaltu</em> — “I have done so.” <em>(Sahih Muslim.)</em>",
+            "The duʿā of verse 286 is a model of how to ask Allah, moving in five steps: (1) <strong>do not take us to task</strong> if we forget or fall into error; (2) <strong>do not lay on us a burden</strong> like that laid on the nations before us; (3) <strong>do not charge us</strong> with more than we have the strength to bear; (4) <strong>pardon us, forgive us, and have mercy on us</strong> — three pleas in one breath; (5) <strong>You are our Protector, so grant us victory</strong> over the disbelieving people. To each, Allah answered <em>qad faʿaltu</em> — “I have done so.” <em>(<a class='cite-link' href='https://sunnah.com/muslim:126' target='_blank' rel='noopener noreferrer'>Sahih Muslim</a>.)</em>",
         },
         {
           kind: "extra",
@@ -111,8 +111,8 @@ const guide: SurahGuide = {
         title: "The last two verses — every night",
         sub: "Verses 2:285–286 · before sleep",
         rows: [
-          "<strong>At night, before sleep:</strong> recite both verses once. “Whoever recites the last two verses of Sūrat al-Baqarah at night, they will suffice him.” <em>(al-Bukhārī & Muslim.)</em>",
-          "<strong>As a heartfelt duʿā:</strong> verse 286 is itself a supplication. Reciting it attentively is a way of making the very pleas to which Allah answered <em>qad faʿaltu</em> — “I have done so.” <em>(Sahih Muslim.)</em>",
+          "<strong>At night, before sleep:</strong> recite both verses once. “Whoever recites the last two verses of Sūrat al-Baqarah at night, they will suffice him.” <em>(<a class='cite-link' href='https://sunnah.com/bukhari:4008' target='_blank' rel='noopener noreferrer'>al-Bukhārī</a> & <a class='cite-link' href='https://sunnah.com/muslim:807a' target='_blank' rel='noopener noreferrer'>Muslim</a>.)</em>",
+          "<strong>As a heartfelt duʿā:</strong> verse 286 is itself a supplication. Reciting it attentively is a way of making the very pleas to which Allah answered <em>qad faʿaltu</em> — “I have done so.” <em>(<a class='cite-link' href='https://sunnah.com/muslim:126' target='_blank' rel='noopener noreferrer'>Sahih Muslim</a>.)</em>",
           "<strong>Pair with the night adhkār:</strong> many keep these two verses together with Āyat al-Kursī and Sūrat al-Ikhlāṣ, al-Falaq, and an-Nās as part of their protection on going to bed.",
         ],
       },

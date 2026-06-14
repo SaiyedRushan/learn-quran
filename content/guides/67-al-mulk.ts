@@ -28,13 +28,13 @@ const guide: SurahGuide = {
       text:
         "“A sūrah of thirty verses interceded for a man until he was forgiven: <em>Tabāraka lladhī biyadihi l-mulk</em>.” The surah is also called <em>al-māniʿa</em> and <em>al-munjiya</em> — the preventer and the saver — that rescues its companion from the punishment of the grave.",
       attribution:
-        "— Intercession report: Abu Dawud, Tirmidhi, Ibn Majah, graded hasan. Protection from the grave: reported via Ibn Mas'ud, recorded by al-Hakim; graded by some scholars as hasan/sahih.",
+        "— Intercession report: <a class='cite-link' href='https://sunnah.com/abudawud:1400' target='_blank' rel='noopener noreferrer'>Abu Dawud</a>, <a class='cite-link' href='https://sunnah.com/tirmidhi:2891' target='_blank' rel='noopener noreferrer'>Tirmidhi</a>, <a class='cite-link' href='https://sunnah.com/ibnmajah:3786' target='_blank' rel='noopener noreferrer'>Ibn Majah</a>, graded hasan. Protection from the grave: reported via Ibn Mas'ud, recorded by al-Hakim; graded by some scholars as hasan/sahih.",
     },
     {
       label: "Sunnah — recited every night",
       text:
         "“The Prophet ﷺ would not sleep until he recited <em>Alif-Lām-Mīm Tanzīl</em> (As-Sajdah, 32) and <em>Tabāraka lladhī biyadihi l-mulk</em> (Al-Mulk, 67).” Pairing the two before sleep is a well-established nightly practice.",
-      attribution: "— Tirmidhi and Ahmad; graded hasan.",
+      attribution: "— <a class='cite-link' href='https://sunnah.com/tirmidhi:2892' target='_blank' rel='noopener noreferrer'>Tirmidhi 2892</a> (Jābir) & Ahmad. The Tirmidhi chain on its own is graded daʿīf (weak), but al-Albani graded the hadith ṣaḥīḥ on the strength of its corroborating narrations.",
     },
   ],
   themes: [

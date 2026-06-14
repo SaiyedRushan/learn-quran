@@ -27,7 +27,7 @@ const guide: SurahGuide = {
       label: "One of the Mu'awwidhatan",
       text:
         "Al-Falaq and An-Nas (114) are together called the Mu'awwidhatan — the two surahs of seeking refuge. The Prophet ﷺ would recite them for protection, including each night before sleep, cupping his hands and reciting them over himself. They form a daily shield against harm.",
-      attribution: "— Reported in Sahih al-Bukhari",
+      attribution: "— Reported in <a class='cite-link' href='https://sunnah.com/bukhari:5017' target='_blank' rel='noopener noreferrer'>Sahih al-Bukhari</a>",
     },
   ],
   themes: [

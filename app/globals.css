@@ -46,6 +46,21 @@ a {
   text-decoration: none;
 }
 
+/* Inline citation links (hadith → sunnah.com, Qur'an verses → quran.com).
+   Keep the surrounding text colour, signal the link with a faint underline. */
+.cite-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(79, 212, 168, 0.45);
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+.cite-link:hover {
+  color: var(--accent-bright);
+  text-decoration-color: var(--accent-bright);
+}
+
 .wrap {
   max-width: var(--max-width);
   margin: 0 auto;

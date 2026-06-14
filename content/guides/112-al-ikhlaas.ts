@@ -27,7 +27,7 @@ const guide: SurahGuide = {
       label: "Equal to a third of the Qur'an",
       text:
         "The Prophet ﷺ taught that Al-Ikhlaas is equivalent to a third of the Qur'an. Scholars explain that the Qur'an's themes fall broadly into creed, law, and narrative — and this surah distils the whole of creed (tawhid) into four verses, making it weighty far beyond its length.",
-      attribution: "— Reported in Sahih al-Bukhari",
+      attribution: "— Reported in <a class='cite-link' href='https://sunnah.com/bukhari:5015' target='_blank' rel='noopener noreferrer'>Sahih al-Bukhari</a>",
     },
   ],
   themes: [

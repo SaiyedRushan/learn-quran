@@ -27,13 +27,13 @@ const guide: SurahGuide = {
       label: "On the title “Heart of the Qur'an”",
       text:
         "Ya-Sin is widely called “the heart of the Qur'an,” a title drawn from a narration in Jami‘ al-Tirmidhi. Readers should know that hadith scholars graded this report <strong>gharib / weak</strong>. The title is beloved and common, but it does not rest on an authentic chain, so it is best understood as an honouring epithet rather than an established Prophetic statement.",
-      attribution: "— Tirmidhi 2887; graded gharib / daʿf (weak)",
+      attribution: "— <a class='cite-link' href='https://sunnah.com/tirmidhi:2887' target='_blank' rel='noopener noreferrer'>Tirmidhi 2887</a>; graded gharib / daʿf (weak)",
     },
     {
       label: "On the popular virtues — read with care",
       text:
         "Several famous practices attach to Ya-Sin: reciting it in the morning so one's needs are met, reciting it at night for forgiveness, and reciting it over the dying. The relevant narrations are classified <strong>weak (daʿf)</strong> by the major hadith critics, and the “morning / night” virtue is <em>not</em> found in Sahih Muslim despite being widely misattributed there. Reciting Ya-Sin remains a praiseworthy act of engaging the Qur'an — just without claiming a guaranteed reward on an unauthentic basis.",
-      attribution: "— “Recite over your dying”: Abu Dawud 3121, Ibn Majah 1448, graded weak by many",
+      attribution: "— “Recite over your dying”: <a class='cite-link' href='https://sunnah.com/abudawud:3121' target='_blank' rel='noopener noreferrer'>Abu Dawud 3121</a>, <a class='cite-link' href='https://sunnah.com/ibnmajah:1448' target='_blank' rel='noopener noreferrer'>Ibn Majah 1448</a>, graded weak by many",
     },
   ],
   themes: [

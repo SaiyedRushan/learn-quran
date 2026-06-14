@@ -26,7 +26,7 @@ const guide: SurahGuide = {
       label: "A glimpse of the Day",
       text:
         "The Prophet ﷺ said: \"Whoever wishes to look at the Day of Resurrection as if seeing it with his own eyes, let him recite: ‘When the sun is wrapped up,’ and ‘When the sky breaks apart,’ and ‘When the sky splits open.’\" — i.e. Surahs At-Takwir, Al-Infitar, and Al-Inshiqaq.",
-      attribution: "— Reported by al-Tirmidhi and Ahmad; graded hasan",
+      attribution: "— Reported by <a class='cite-link' href='https://sunnah.com/tirmidhi:3333' target='_blank' rel='noopener noreferrer'>al-Tirmidhi</a> and Ahmad; graded hasan",
     },
   ],
   themes: [
