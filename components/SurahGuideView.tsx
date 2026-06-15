@@ -1,8 +1,8 @@
 "use client";
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import type {SurahGuide, VerseData, GuideNote, VerseGroup, PillColor} from "@/content/types";
-import {useIsLearned, useToggleLearned, useLearnedSections, setSectionLearned} from "@/lib/progress";
+import {useIsLearned, useToggleLearned, useLearnedSections, setSectionLearned, setLearned} from "@/lib/progress";
 
 const PILL: Record<PillColor, string> = {
   teal: "tp-teal",
@@ -32,6 +32,7 @@ function rangeLabel(from: number, to: number): string {
 export default function SurahGuideView({guide, verses}: {guide: SurahGuide; verses: VerseData}) {
   const [tab, setTab] = useState<"sections" | "vocab" | "recitation">("sections");
   const [open, setOpen] = useState<Set<number>>(new Set([0])); // first section open
+  const [overviewOpen, setOverviewOpen] = useState(true);
   const learned = useIsLearned(guide.meta.slug);
   const toggle = useToggleLearned(guide.meta.slug);
   const learnedSections = new Set(useLearnedSections(guide.meta.slug));
@@ -40,6 +41,13 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
   const sectionsTotal = guide.sections.length;
   const sectionsDone = guide.sections.filter((_, i) => learnedSections.has(i)).length;
   const secPct = sectionsTotal ? Math.round((sectionsDone / sectionsTotal) * 100) : 0;
+
+  // Once every section is learned, mark the whole surah as learned.
+  useEffect(() => {
+    if (sectionsTotal > 0 && sectionsDone === sectionsTotal && !learned) {
+      setLearned(guide.meta.slug, true);
+    }
+  }, [sectionsDone, sectionsTotal, learned, guide.meta.slug]);
   const verseWord = `${m.verseCount} verse${m.verseCount === 1 ? "" : "s"}`;
   const metaLine = (
     m.collection === "virtues"
@@ -60,6 +68,20 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
       const next = new Set(prev);
       next.has(i) ? next.delete(i) : next.add(i);
       return next;
+    });
+  }
+
+  function handleSectionCheck(i: number, currentlyDone: boolean) {
+    const turningOn = !currentlyDone;
+    setSectionLearned(guide.meta.slug, i, turningOn);
+    if (!turningOn) return;
+    // When checking a section off, collapse it and open the next one.
+    const next = i + 1;
+    setOpen((prev) => {
+      const set = new Set(prev);
+      set.delete(i);
+      if (next < sectionsTotal) set.add(next);
+      return set;
     });
   }
 
@@ -113,28 +135,39 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
 
       {/* Overview */}
       <div className='overview'>
-        <div className='ov-title'>Overview</div>
-        <div className='ov-text'>
-          {guide.overview.split("\n\n").map((p, i) => (
-            <Html key={i} html={p} className={i === 0 ? undefined : ""} />
-          ))}
-        </div>
-        {guide.banners.map((b, i) => (
-          <div className='hadith-banner' key={i} style={i > 0 ? {marginTop: 8} : undefined}>
-            <div className='hb-label'>{b.label}</div>
-            <Html className='hb-text' html={b.text} />
-            {b.attribution && (
-              <div className='hb-attr' dangerouslySetInnerHTML={{__html: b.attribution}} />
-            )}
-          </div>
-        ))}
-        {guide.themes.length > 0 && (
-          <div className='theme-row'>
-            {guide.themes.map((t, i) => (
-              <span className={`theme-pill ${PILL[t.color]}`} key={i}>
-                {t.text}
-              </span>
+        <button
+          className='ov-toggle'
+          onClick={() => setOverviewOpen((v) => !v)}
+          aria-expanded={overviewOpen}
+        >
+          <span className='ov-title'>Overview</span>
+          <span className={`chev ${overviewOpen ? "open" : ""}`}>▶</span>
+        </button>
+        {overviewOpen && (
+          <div className='ov-content'>
+            <div className='ov-text'>
+              {guide.overview.split("\n\n").map((p, i) => (
+                <Html key={i} html={p} className={i === 0 ? undefined : ""} />
+              ))}
+            </div>
+            {guide.banners.map((b, i) => (
+              <div className='hadith-banner' key={i} style={i > 0 ? {marginTop: 8} : undefined}>
+                <div className='hb-label'>{b.label}</div>
+                <Html className='hb-text' html={b.text} />
+                {b.attribution && (
+                  <div className='hb-attr' dangerouslySetInnerHTML={{__html: b.attribution}} />
+                )}
+              </div>
             ))}
+            {guide.themes.length > 0 && (
+              <div className='theme-row'>
+                {guide.themes.map((t, i) => (
+                  <span className={`theme-pill ${PILL[t.color]}`} key={i}>
+                    {t.text}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -198,7 +231,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
                 <button
                   className={`sec-check ${secDone ? "done" : ""}`}
                   aria-label={secDone ? "Mark section as not learned" : "Mark section as learned"}
-                  onClick={() => setSectionLearned(guide.meta.slug, i, !secDone)}
+                  onClick={() => handleSectionCheck(i, secDone)}
                 >
                   ✓
                 </button>

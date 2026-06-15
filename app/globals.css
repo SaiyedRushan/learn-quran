@@ -592,11 +592,25 @@ a {
   padding: 1.25rem;
   margin-bottom: 1.25rem;
 }
+.ov-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
 .ov-title {
   font-size: 15px;
   font-weight: 600;
   color: var(--color-text-primary);
-  margin-bottom: 10px;
+}
+.ov-content {
+  margin-top: 10px;
 }
 .ov-text {
   font-size: 14px;
