@@ -3,6 +3,7 @@
 import {useEffect, useState} from "react";
 import type {SurahGuide, VerseData, GuideNote, VerseGroup, PillColor} from "@/content/types";
 import {useIsLearned, useToggleLearned, useLearnedSections, setSectionLearned, setLearned} from "@/lib/progress";
+import MemorizeMode from "@/components/MemorizeMode";
 
 const PILL: Record<PillColor, string> = {
   teal: "tp-teal",
@@ -33,6 +34,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
   const [tab, setTab] = useState<"sections" | "vocab" | "recitation">("sections");
   const [open, setOpen] = useState<Set<number>>(new Set([0])); // first section open
   const [overviewOpen, setOverviewOpen] = useState(true);
+  const [memorizeIndex, setMemorizeIndex] = useState<number | null>(null);
   const learned = useIsLearned(guide.meta.slug);
   const toggle = useToggleLearned(guide.meta.slug);
   const learnedSections = new Set(useLearnedSections(guide.meta.slug));
@@ -261,6 +263,9 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
                         </div>
                       );
                     })}
+                  <button className='memorize-btn' onClick={() => setMemorizeIndex(i)}>
+                    🧠 Memorize this section
+                  </button>
                 </div>
               )}
             </div>
@@ -334,6 +339,15 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
       <button className={`mark-learned ${learned ? "done" : ""}`} onClick={toggle}>
         {learned ? "✓ Marked as learned" : "Mark this surah as learned"}
       </button>
+
+      {memorizeIndex !== null && (
+        <MemorizeMode
+          guide={guide}
+          verses={verses}
+          sectionIndex={memorizeIndex}
+          onClose={() => setMemorizeIndex(null)}
+        />
+      )}
     </>
   );
 }
