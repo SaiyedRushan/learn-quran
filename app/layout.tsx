@@ -51,6 +51,9 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
               <Link href='/duas/' className='header-link'>
                 Duas
               </Link>
+              <Link href='/about/' className='header-link'>
+                About
+              </Link>
               <SettingsControl />
             </div>
           </div>
@@ -63,6 +66,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           </a>
           . The teaching commentary (overviews, memory hooks, vocabulary notes, and recitation guidance) is an educational aid — guides marked “draft” are pending review by a
           qualified scholar. Please verify any point of religious ruling with a trusted teacher.
+          <div style={{marginTop: 10}}>
+            Questions, corrections, or ideas?{" "}
+            <Link href='/about/#contact'>Get in touch</Link>.
+          </div>
         </footer>
         <Analytics />
       </body>
