@@ -14,11 +14,20 @@ export const metadata: Metadata = {
   },
   description:
     "Structured, section-by-section guides for memorizing and understanding the Quran, starting with Juz Amma (Juz 30). Verified Arabic text, translation, vocabulary, memory hooks, and recitation guidance.",
-  metadataBase: new URL("https://learn-quran.example"),
+  metadataBase: new URL("https://learn-quran.app"),
+  alternates: {canonical: "/"},
   openGraph: {
     title: "Learn Quran — Juz 30 Memorization Guides",
     description: "Structured, section-by-section guides for memorizing and understanding the Quran.",
+    url: "https://learn-quran.app",
+    siteName: "Learn Quran",
+    locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Learn Quran — Juz 30 Memorization Guides",
+    description: "Structured, section-by-section guides for memorizing and understanding the Quran.",
   },
 };
 
