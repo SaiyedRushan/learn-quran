@@ -48,9 +48,6 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
               </span>
               <span>
                 <span className='brand-text'>Learn Quran</span>
-                <span className='brand-sub' style={{display: "block"}}>
-                  Juz 30 · Juz Amma
-                </span>
               </span>
             </Link>
             <div className='header-actions'>

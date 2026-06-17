@@ -55,10 +55,17 @@ export default function AboutPage() {
         ← All surahs
       </Link>
 
-      <div className='top'>
-        <div className='surah-name'>About Learn Quran</div>
-        <div className='meta'>A free guide to memorising and understanding the Quran — one section at a time</div>
-      </div>
+      <section className='hero'>
+        <div className='hero-eyebrow'>Memorize with understanding</div>
+        <h1 className='hero-title'>Learn the Quran, Juz by Juz</h1>
+        <div className='hero-ar' dir='rtl'>
+          جُزْءُ عَمَّ
+        </div>
+        <p className='hero-text'>
+          Section-by-section guides for every surah in Juz Amma — verified Arabic and translation, key vocabulary, memory hooks, and recitation breakdowns. Built to make
+          memorization and reflection genuinely easier. Tap any surah to begin, and mark it learned as you go.
+        </p>
+      </section>
 
       {/* What is this */}
       <div className='overview'>

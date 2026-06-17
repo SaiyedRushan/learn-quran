@@ -25,19 +25,6 @@ export default function Home() {
 
   return (
     <>
-      <section className="hero">
-        <div className="hero-eyebrow">Memorize with understanding</div>
-        <h1 className="hero-title">Learn the Quran, Juz by Juz</h1>
-        <div className="hero-ar" dir="rtl">
-          جُزْءُ عَمَّ
-        </div>
-        <p className="hero-text">
-          Section-by-section guides for every surah in Juz Amma — verified Arabic
-          and translation, key vocabulary, memory hooks, and recitation
-          breakdowns. Built to make memorization and reflection genuinely
-          easier. Tap any surah to begin, and mark it learned as you go.
-        </p>
-      </section>
       <SurahIndexView surahs={surahs} />
 
       <div className="list-heading">Learn the Prayer</div>
