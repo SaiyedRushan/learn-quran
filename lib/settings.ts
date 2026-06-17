@@ -15,9 +15,12 @@ export const SCALE_STEP = 0.05;
 export interface Settings {
   arabicScale: number;
   englishScale: number;
+  // Zen mode: strip the teaching layer (overview, notes, tabs, vocab, etc.)
+  // and show only the Arabic text with its English translation.
+  zenMode: boolean;
 }
 
-export const DEFAULTS: Settings = {arabicScale: 1, englishScale: 1};
+export const DEFAULTS: Settings = {arabicScale: 1, englishScale: 1, zenMode: false};
 
 let cache: Settings | null = null;
 const listeners = new Set<() => void>();
@@ -77,8 +80,9 @@ export function useSettings(): Settings {
   return useSyncExternalStore(subscribe, read, () => DEFAULTS);
 }
 
-export function setSetting(key: keyof Settings, value: number): void {
-  write({...read(), [key]: clamp(value)});
+export function setSetting<K extends keyof Settings>(key: K, value: Settings[K]): void {
+  const next = typeof value === "number" ? clamp(value) : value;
+  write({...read(), [key]: next});
 }
 
 export function resetSettings(): void {

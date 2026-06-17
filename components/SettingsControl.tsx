@@ -22,7 +22,10 @@ export default function SettingsControl() {
   }, [open]);
 
   const pct = (n: number) => `${Math.round(n * 100)}%`;
-  const isDefault = settings.arabicScale === DEFAULTS.arabicScale && settings.englishScale === DEFAULTS.englishScale;
+  const isDefault =
+    settings.arabicScale === DEFAULTS.arabicScale &&
+    settings.englishScale === DEFAULTS.englishScale &&
+    settings.zenMode === DEFAULTS.zenMode;
 
   return (
     <>
@@ -77,6 +80,23 @@ export default function SettingsControl() {
                   aria-label='English text size'
                   onChange={(e) => setSetting("englishScale", Number(e.target.value))}
                 />
+              </div>
+
+              <div className='setting-toggle'>
+                <div className='toggle-copy'>
+                  <span className='setting-label'>Zen mode</span>
+                  <span className='toggle-desc'>Keep the sections and memorization, but hide the overview, memory hooks, vocabulary and recitation notes — just the Arabic and English.</span>
+                </div>
+                <button
+                  type='button'
+                  role='switch'
+                  aria-checked={settings.zenMode}
+                  aria-label='Zen mode'
+                  className={`switch ${settings.zenMode ? "on" : ""}`}
+                  onClick={() => setSetting("zenMode", !settings.zenMode)}
+                >
+                  <span className='switch-knob' />
+                </button>
               </div>
 
               <div className='preview' aria-hidden='true'>

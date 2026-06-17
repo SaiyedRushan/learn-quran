@@ -3,6 +3,7 @@
 import {useEffect, useState} from "react";
 import type {SurahGuide, VerseData, GuideNote, VerseGroup, PillColor} from "@/content/types";
 import {useIsLearned, useToggleLearned, useLearnedSections, setSectionLearned, setLearned} from "@/lib/progress";
+import {useSettings} from "@/lib/settings";
 import MemorizeMode from "@/components/MemorizeMode";
 
 const PILL: Record<PillColor, string> = {
@@ -38,6 +39,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
   const learned = useIsLearned(guide.meta.slug);
   const toggle = useToggleLearned(guide.meta.slug);
   const learnedSections = new Set(useLearnedSections(guide.meta.slug));
+  const {zenMode} = useSettings();
 
   const m = guide.meta;
   const sectionsTotal = guide.sections.length;
@@ -108,7 +110,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
 
   return (
     <>
-      {guide.reviewStatus === "draft" && (
+      {!zenMode && guide.reviewStatus === "draft" && (
         <div className='review-banner'>
           <span className='rb-icon'>⚠️</span>
           <div className='rb-text'>
@@ -125,17 +127,20 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
         </div>
         <div className='meta'>{metaLine}</div>
         <div className='ar-title'>{m.arabicName}</div>
-        <div className='stats'>
-          {m.stats.map((s) => (
-            <div className='stat' key={s.label}>
-              <div className='sl'>{s.label}</div>
-              <div className='sv'>{s.value}</div>
-            </div>
-          ))}
-        </div>
+        {!zenMode && (
+          <div className='stats'>
+            {m.stats.map((s) => (
+              <div className='stat' key={s.label}>
+                <div className='sl'>{s.label}</div>
+                <div className='sv'>{s.value}</div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Overview */}
+      {!zenMode && (
       <div className='overview'>
         <button
           className='ov-toggle'
@@ -173,8 +178,10 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
           </div>
         )}
       </div>
+      )}
 
       {/* Before you begin — make dua */}
+      {!zenMode && (
       <div className='dua-tip'>
         <div className='dua-tip-head'>
           <span className='dua-tip-icon'>🤲</span>
@@ -192,8 +199,10 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
           )
         </div>
       </div>
+      )}
 
       {/* Tabs */}
+      {!zenMode && (
       <div className='tabs'>
         <button className={`tab ${tab === "sections" ? "active" : ""}`} onClick={() => setTab("sections")}>
           Sections
@@ -205,9 +214,10 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
           Recitation Guide
         </button>
       </div>
+      )}
 
       {/* Sections */}
-      <div className={`panel ${tab === "sections" ? "active" : ""}`}>
+      <div className={`panel ${zenMode || tab === "sections" ? "active" : ""}`}>
         {sectionsTotal > 1 && (
           <div className='sec-progress'>
             <span className='sp-label'>
@@ -240,29 +250,31 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
               </div>
               {isOpen && (
                 <div className='sec-body'>
-                  {sec.notes
-                    .filter((n) => n.kind === "core")
-                    .map((n, ni) => {
-                      const c = NOTE_CLASS[n.kind];
-                      return (
-                        <div className={c.box} key={`core-${ni}`}>
-                          <div className={c.label}>{n.label}</div>
-                          <Html className={c.text} html={n.text} />
-                        </div>
-                      );
-                    })}
+                  {!zenMode &&
+                    sec.notes
+                      .filter((n) => n.kind === "core")
+                      .map((n, ni) => {
+                        const c = NOTE_CLASS[n.kind];
+                        return (
+                          <div className={c.box} key={`core-${ni}`}>
+                            <div className={c.label}>{n.label}</div>
+                            <Html className={c.text} html={n.text} />
+                          </div>
+                        );
+                      })}
                   <div className='verses'>{sec.groups.map((g, gi) => renderGroup(g, gi))}</div>
-                  {sec.notes
-                    .filter((n) => n.kind !== "core")
-                    .map((n, ni) => {
-                      const c = NOTE_CLASS[n.kind];
-                      return (
-                        <div className={c.box} key={`note-${ni}`}>
-                          <div className={c.label}>{n.label}</div>
-                          <Html className={c.text} html={n.text} />
-                        </div>
-                      );
-                    })}
+                  {!zenMode &&
+                    sec.notes
+                      .filter((n) => n.kind !== "core")
+                      .map((n, ni) => {
+                        const c = NOTE_CLASS[n.kind];
+                        return (
+                          <div className={c.box} key={`note-${ni}`}>
+                            <div className={c.label}>{n.label}</div>
+                            <Html className={c.text} html={n.text} />
+                          </div>
+                        );
+                      })}
                   <button className='memorize-btn' onClick={() => setMemorizeIndex(i)}>
                     🧠 Memorize this section
                   </button>
@@ -274,6 +286,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
       </div>
 
       {/* Vocab */}
+      {!zenMode && (
       <div className={`panel ${tab === "vocab" ? "active" : ""}`}>
         <div className='vocab-list'>
           {guide.vocab.map((grp, gi) => (
@@ -293,8 +306,10 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
           ))}
         </div>
       </div>
+      )}
 
       {/* Recitation */}
+      {!zenMode && (
       <div className={`panel ${tab === "recitation" ? "active" : ""}`}>
         {guide.recitation.intro && (
           <div className='rec-card' style={{background: "#0d2e24", borderColor: "#1D9E75"}}>
@@ -334,6 +349,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
           </>
         )}
       </div>
+      )}
 
       {/* Mark as learned */}
       <button className={`mark-learned ${learned ? "done" : ""}`} onClick={toggle}>
