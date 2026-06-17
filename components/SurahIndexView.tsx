@@ -89,7 +89,6 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
             </div>
           )}
         </div>
-        {s.status === "draft" && <span className="sc-status draft">Draft</span>}
         <div className="sc-ar">{s.arabicName}</div>
         <button
           className={`sc-check ${isDone ? "done" : ""}`}
