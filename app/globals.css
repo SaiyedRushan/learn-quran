@@ -1427,9 +1427,6 @@ a {
 .hero-ar {
   font-size: calc(30px * var(--scale-ar));
 }
-.sc-ar {
-  font-size: calc(22px * var(--scale-ar));
-}
 .ov-text {
   font-size: calc(14px * var(--scale-en));
 }
