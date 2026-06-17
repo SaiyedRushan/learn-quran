@@ -58,10 +58,8 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
     const secPct = s.sectionCount ? (secLearned / s.sectionCount) * 100 : 0;
     const meta =
       s.collection === "virtues"
-        ? `${s.passageRef || `${s.verseCount} verse${s.verseCount === 1 ? "" : "s"}`} · ${s.revelationType}`
-        : `${s.verseCount} verses · ${s.revelationType}${
-            s.revelationOrdinal ? ` · ${s.revelationOrdinal} revealed` : ""
-          }`;
+        ? s.passageRef || `${s.verseCount} verse${s.verseCount === 1 ? "" : "s"}`
+        : `${s.verseCount} verses`;
     return (
       <Link href={`/surah/${s.slug}/`} className="surah-card" key={s.slug}>
         <div className="sc-num">{s.number}</div>
