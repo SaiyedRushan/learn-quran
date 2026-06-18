@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import type {SurahGuide, VerseData, GuideNote, VerseGroup, PillColor} from "@/content/types";
 import {useIsLearned, useToggleLearned, useLearnedSections, setSectionLearned, setLearned} from "@/lib/progress";
 import {useSettings} from "@/lib/settings";
-import MemorizeMode from "@/components/MemorizeMode";
+import MemorizeMode, {type MemorizeScope} from "@/components/MemorizeMode";
 
 const PILL: Record<PillColor, string> = {
   teal: "tp-teal",
@@ -35,7 +35,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
   const [tab, setTab] = useState<"sections" | "vocab" | "recitation">("sections");
   const [open, setOpen] = useState<Set<number>>(new Set([0])); // first section open
   const [overviewOpen, setOverviewOpen] = useState(true);
-  const [memorizeIndex, setMemorizeIndex] = useState<number | null>(null);
+  const [memorizeScope, setMemorizeScope] = useState<MemorizeScope | null>(null);
   const learned = useIsLearned(guide.meta.slug);
   const toggle = useToggleLearned(guide.meta.slug);
   const learnedSections = new Set(useLearnedSections(guide.meta.slug));
@@ -45,6 +45,9 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
   const sectionsTotal = guide.sections.length;
   const sectionsDone = guide.sections.filter((_, i) => learnedSections.has(i)).length;
   const secPct = sectionsTotal ? Math.round((sectionsDone / sectionsTotal) * 100) : 0;
+  // Passages (e.g. Ayat al-Kursi) carry only a subset of their surah's verses.
+  const isFullSurah = verses.ayahs.length === verses.numberOfAyahs;
+  const wholeLabel = isFullSurah ? "the whole surah" : "the full passage";
 
   // Once every section is learned, mark the whole surah as learned.
   useEffect(() => {
@@ -228,6 +231,9 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
             </div>
           </div>
         )}
+        <button className='test-surah-btn' onClick={() => setMemorizeScope({kind: "surah"})}>
+          🎯 Test myself on {wholeLabel}
+        </button>
         {guide.sections.map((sec, i) => {
           const isOpen = open.has(i);
           const secDone = learnedSections.has(i);
@@ -275,7 +281,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
                           </div>
                         );
                       })}
-                  <button className='memorize-btn' onClick={() => setMemorizeIndex(i)}>
+                  <button className='memorize-btn' onClick={() => setMemorizeScope({kind: "section", index: i})}>
                     🧠 Memorize this section
                   </button>
                 </div>
@@ -356,12 +362,12 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
         {learned ? "✓ Marked as learned" : "Mark this surah as learned"}
       </button>
 
-      {memorizeIndex !== null && (
+      {memorizeScope && (
         <MemorizeMode
           guide={guide}
           verses={verses}
-          sectionIndex={memorizeIndex}
-          onClose={() => setMemorizeIndex(null)}
+          scope={memorizeScope}
+          onClose={() => setMemorizeScope(null)}
         />
       )}
     </>

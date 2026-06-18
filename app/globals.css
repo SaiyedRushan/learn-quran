@@ -1641,6 +1641,32 @@ a {
   border-color: var(--accent);
 }
 
+/* Whole-surah self-test — the primary "test yourself" CTA at the top of the
+   sections list. Deliberately bolder than the per-section memorize button. */
+.test-surah-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 16px;
+  padding: 12px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid var(--accent);
+  background: #0d2e24;
+  color: var(--accent-bright);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.test-surah-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
 .mm-overlay {
   position: fixed;
   inset: 0;

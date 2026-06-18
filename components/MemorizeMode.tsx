@@ -2,7 +2,7 @@
 
 import {useEffect, useMemo, useState} from "react";
 import type {SurahGuide, VerseData, Ayah, PillColor} from "@/content/types";
-import {setSectionLearned, useLearnedSections} from "@/lib/progress";
+import {setSectionLearned, useLearnedSections, setLearned, useIsLearned} from "@/lib/progress";
 
 const PILL: Record<PillColor, string> = {
   teal: "tp-teal",
@@ -50,23 +50,41 @@ function toGraphemes(s: string): string[] {
   return Array.from(s);
 }
 
+/** What the memorize/test overlay covers: a single section, or the whole guide
+ * (every verse it includes — for passages, that's a subset of the surah). */
+export type MemorizeScope = {kind: "section"; index: number} | {kind: "surah"};
+
 export default function MemorizeMode({
   guide,
   verses,
-  sectionIndex,
+  scope,
   onClose,
 }: {
   guide: SurahGuide;
   verses: VerseData;
-  sectionIndex: number;
+  scope: MemorizeScope;
   onClose: () => void;
 }) {
-  const section = guide.sections[sectionIndex];
   const slug = guide.meta.slug;
-  const learnedSections = new Set(useLearnedSections(slug));
-  const alreadyLearned = learnedSections.has(sectionIndex);
+  const isSurah = scope.kind === "surah";
+  const section = scope.kind === "section" ? guide.sections[scope.index] : null;
 
-  const [stage, setStage] = useState(0);
+  // A "whole surah" test covers exactly the verses the guide includes. For full
+  // surahs that's everything; for passages (e.g. Ayat al-Kursi) it's the
+  // verified subset, so we never invent a 1..numberOfAyahs range.
+  const isFullSurah = verses.ayahs.length === verses.numberOfAyahs;
+  const scopeTitle = isSurah ? guide.meta.name : section!.title;
+  const scopeBadge = isSurah ? (isFullSurah ? "Whole surah" : "Full passage") : section!.badge;
+  const scopeColor: PillColor = isSurah ? "purple" : section!.color;
+
+  const surahLearned = useIsLearned(slug);
+  const learnedSections = new Set(useLearnedSections(slug));
+  const alreadyLearned = isSurah ? surahLearned : learnedSections.has(scope.index);
+
+  // The whole-surah test opens as a test: start on "Recall Arabic" (meaning
+  // shown as a prompt, recite from memory, peek when stuck). The full stepper
+  // stays available for easier/harder crutch levels.
+  const [stage, setStage] = useState(() => (isSurah ? 2 : 0));
   const [clozeLevel, setClozeLevel] = useState(0);
   // Generic set of revealed keys for the current stage. Reset on stage change.
   const [revealed, setRevealed] = useState<Set<string>>(new Set());
@@ -74,8 +92,11 @@ export default function MemorizeMode({
   const [peek, setPeek] = useState<Record<number, number>>({});
 
   const ayahs: Ayah[] = useMemo(
-    () => verses.ayahs.filter((a) => a.number >= section.from && a.number <= section.to),
-    [verses, section.from, section.to],
+    () =>
+      isSurah || !section
+        ? verses.ayahs
+        : verses.ayahs.filter((a) => a.number >= section.from && a.number <= section.to),
+    [verses, isSurah, section],
   );
 
   // Flatten words with a stable global index for deterministic cloze blanking,
@@ -263,13 +284,18 @@ export default function MemorizeMode({
   }
 
   return (
-    <div className='mm-overlay' role='dialog' aria-modal='true' aria-label={`Memorize ${section.title}`}>
+    <div
+      className='mm-overlay'
+      role='dialog'
+      aria-modal='true'
+      aria-label={`${isSurah ? "Test" : "Memorize"} ${scopeTitle}`}
+    >
       <div className='mm-shell'>
         {/* Header */}
         <div className='mm-header'>
           <div className='mm-head-titles'>
-            <span className={`sec-badge ${PILL[section.color]}`}>{section.badge}</span>
-            <span className='mm-head-title'>{section.title}</span>
+            <span className={`sec-badge ${PILL[scopeColor]}`}>{scopeBadge}</span>
+            <span className='mm-head-title'>{scopeTitle}</span>
           </div>
           <button type='button' className='mm-close' onClick={onClose} aria-label='Close memorize mode'>
             ✕
@@ -335,11 +361,14 @@ export default function MemorizeMode({
               type='button'
               className='mm-nav primary'
               onClick={() => {
-                if (!alreadyLearned) setSectionLearned(slug, sectionIndex, true);
+                if (!alreadyLearned) {
+                  if (isSurah) setLearned(slug, true);
+                  else setSectionLearned(slug, scope.index, true);
+                }
                 onClose();
               }}
             >
-              {alreadyLearned ? "Finish" : "✓ Mark learned"}
+              {alreadyLearned ? "Finish" : isSurah ? "✓ Mark surah learned" : "✓ Mark learned"}
             </button>
           ) : (
             <button type='button' className='mm-nav primary' onClick={() => setStage((s) => s + 1)}>
