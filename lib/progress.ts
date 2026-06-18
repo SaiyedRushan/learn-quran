@@ -61,7 +61,11 @@ function createStore(key: string) {
     else if (!on && present) write(cur.filter((x) => x !== v));
   }
 
-  return { read, subscribe, has, set };
+  function update(fn: (cur: string[]) => string[]): void {
+    write(fn(read()));
+  }
+
+  return { read, subscribe, has, set, update };
 }
 
 const EMPTY: string[] = [];
@@ -105,6 +109,53 @@ export function useLearnedSections(slug: string): number[] {
 
 export function setSectionLearned(slug: string, index: number, value: boolean): void {
   sectionStore.set(secKey(slug, index), value);
+}
+
+/** Mark every section of a guide learned (or not) in a single write — used when
+ * the whole surah is toggled from the list so its sections stay in sync. */
+export function setAllSectionsLearned(slug: string, count: number, value: boolean): void {
+  const prefix = `${slug}:`;
+  const keys = Array.from({length: count}, (_, i) => secKey(slug, i));
+  sectionStore.update((cur) => {
+    const others = cur.filter((k) => !k.startsWith(prefix));
+    return value ? [...others, ...keys] : others;
+  });
+}
+
+// ── Weak spots: words you forgot, keyed by "slug:ayah:wordIndex" ─────────
+// wordIndex is the word's position within its ayah (Arabic split on
+// whitespace) — stable whether you're testing a section or the whole surah.
+const weakStore = createStore("lq:weak:v1");
+const weakKey = (slug: string, ayah: number, word: number) => `${slug}:${ayah}:${word}`;
+
+export interface WeakSpot {
+  ayah: number;
+  word: number;
+}
+
+function useAllWeakKeys(): string[] {
+  return useSyncExternalStore(weakStore.subscribe, weakStore.read, () => EMPTY);
+}
+
+/** Flagged word positions for one guide (reactive). */
+export function useWeakSpots(slug: string): WeakSpot[] {
+  const all = useAllWeakKeys();
+  const prefix = `${slug}:`;
+  return all
+    .filter((k) => k.startsWith(prefix))
+    .map((k) => {
+      const parts = k.split(":");
+      return {ayah: Number(parts[1]), word: Number(parts[2])};
+    });
+}
+
+export function setWeakSpot(slug: string, ayah: number, word: number, value: boolean): void {
+  weakStore.set(weakKey(slug, ayah, word), value);
+}
+
+/** Drop every weak-spot flag for one guide. */
+export function clearGuideWeakSpots(slug: string): void {
+  weakStore.update((cur) => cur.filter((k) => !k.startsWith(`${slug}:`)));
 }
 
 // ── Learned prayer duas (by dua name) ───────────────────────────────────

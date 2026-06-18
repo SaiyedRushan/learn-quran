@@ -1667,6 +1667,59 @@ a {
   color: #fff;
 }
 
+/* Weak-spot tracking — words/verses flagged while testing, surfaced here for
+   targeted revision. Amber to read as "needs attention". */
+.weak-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 9px 12px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid #5a4416;
+  background: #2a1f08;
+}
+.weak-bar-count {
+  flex: 1;
+  min-width: 0;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #e0a84a;
+}
+.weak-bar-drill,
+.weak-bar-clear {
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 0.5px solid #5a4416;
+  background: transparent;
+  color: #e0a84a;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.weak-bar-drill {
+  background: #e0a84a;
+  border-color: #e0a84a;
+  color: #1c1c1e;
+  font-weight: 600;
+}
+.weak-bar-drill:hover {
+  filter: brightness(1.08);
+}
+.weak-bar-clear:hover {
+  border-color: #e0a84a;
+  color: #f0c878;
+}
+.vrow.has-weak {
+  box-shadow: inset 2px 0 0 #e0a84a;
+}
+.vnum-flag {
+  margin-left: 6px;
+  color: #e0a84a;
+}
+
 .mm-overlay {
   position: fixed;
   inset: 0;
@@ -1840,10 +1893,73 @@ a {
   border-radius: var(--border-radius-lg);
   padding: 16px 18px;
 }
+.mm-verse.has-weak {
+  border-color: #5a4416;
+  box-shadow: inset 3px 0 0 #e0a84a;
+}
+.mm-vhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
 .mm-vnum {
   font-size: 11px;
   color: var(--color-text-tertiary);
-  margin-bottom: 8px;
+}
+.mm-vflag {
+  flex-shrink: 0;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 0.5px solid var(--color-border-secondary);
+  background: transparent;
+  color: var(--color-text-tertiary);
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mm-vflag:hover {
+  border-color: #e0a84a;
+  color: #e0a84a;
+}
+.mm-vflag.active {
+  border-color: #e0a84a;
+  background: #2a1f08;
+  color: #e0a84a;
+}
+/* Tappable Arabic word — toggles its weak-spot flag. Reset button chrome so it
+   flows inside the RTL text like a plain word. */
+.mm-word {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background 0.12s, color 0.12s;
+}
+.mm-word:hover {
+  background: rgba(224, 168, 74, 0.14);
+}
+.mm-word.flagged {
+  color: #f0c878;
+  text-decoration: underline wavy #e0a84a;
+  text-underline-offset: 5px;
+}
+.mm-drill-note {
+  margin-bottom: 12px;
+  padding: 9px 12px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid #5a4416;
+  background: #2a1f08;
+  color: #e0a84a;
+  font-size: 12.5px;
+  line-height: 1.5;
 }
 .mm-ar {
   font-size: calc(26px * var(--scale-ar));

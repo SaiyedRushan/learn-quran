@@ -2,7 +2,15 @@
 
 import {useEffect, useState} from "react";
 import type {SurahGuide, VerseData, GuideNote, VerseGroup, PillColor} from "@/content/types";
-import {useIsLearned, useToggleLearned, useLearnedSections, setSectionLearned, setLearned} from "@/lib/progress";
+import {
+  useIsLearned,
+  useToggleLearned,
+  useLearnedSections,
+  setSectionLearned,
+  setLearned,
+  useWeakSpots,
+  clearGuideWeakSpots,
+} from "@/lib/progress";
 import {useSettings} from "@/lib/settings";
 import MemorizeMode, {type MemorizeScope} from "@/components/MemorizeMode";
 
@@ -48,6 +56,11 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
   // Passages (e.g. Ayat al-Kursi) carry only a subset of their surah's verses.
   const isFullSurah = verses.ayahs.length === verses.numberOfAyahs;
   const wholeLabel = isFullSurah ? "the whole surah" : "the full passage";
+
+  // Weak spots flagged while testing — counts and the set of affected ayahs.
+  const weakSpots = useWeakSpots(guide.meta.slug);
+  const weakCount = weakSpots.length;
+  const weakAyahs = new Set(weakSpots.map((s) => s.ayah));
 
   // Once every section is learned, mark the whole surah as learned.
   useEffect(() => {
@@ -95,9 +108,13 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
   function renderGroup(g: VerseGroup, key: number) {
     const ayahs = verses.ayahs.filter((a) => a.number >= g.from && a.number <= g.to);
     const translation = ayahs.map((a) => a.translation).join(" ");
+    const hasWeak = ayahs.some((a) => weakAyahs.has(a.number));
     return (
-      <div className='vrow' key={key}>
-        <div className='vnum'>{rangeLabel(g.from, g.to)}</div>
+      <div className={`vrow${hasWeak ? " has-weak" : ""}`} key={key}>
+        <div className='vnum'>
+          {rangeLabel(g.from, g.to)}
+          {hasWeak && <span className='vnum-flag' title='You flagged a weak spot here'>⚑</span>}
+        </div>
         <div className='var'>
           {ayahs.map((a, idx) => (
             <span key={a.number}>
@@ -234,6 +251,19 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
         <button className='test-surah-btn' onClick={() => setMemorizeScope({kind: "surah"})}>
           🎯 Test myself on {wholeLabel}
         </button>
+        {weakCount > 0 && (
+          <div className='weak-bar'>
+            <span className='weak-bar-count'>
+              ⚑ {weakCount} weak {weakCount === 1 ? "spot" : "spots"} flagged
+            </span>
+            <button className='weak-bar-drill' onClick={() => setMemorizeScope({kind: "weak"})}>
+              Drill these
+            </button>
+            <button className='weak-bar-clear' onClick={() => clearGuideWeakSpots(guide.meta.slug)}>
+              Clear all
+            </button>
+          </div>
+        )}
         {guide.sections.map((sec, i) => {
           const isOpen = open.has(i);
           const secDone = learnedSections.has(i);

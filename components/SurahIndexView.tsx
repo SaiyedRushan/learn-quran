@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useLearned, setLearned, useAllLearnedSectionKeys } from "@/lib/progress";
+import { useLearned, setLearned, setAllSectionsLearned, useAllLearnedSectionKeys } from "@/lib/progress";
 import { searchSurahs } from "@/lib/search";
 import type { Collection } from "@/content/types";
 
@@ -96,7 +96,10 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            setLearned(s.slug, !isDone);
+            const turningOn = !isDone;
+            setLearned(s.slug, turningOn);
+            // Keep the section progress in sync with the whole-surah toggle.
+            setAllSectionsLearned(s.slug, s.sectionCount, turningOn);
           }}
         >
           ✓
