@@ -90,7 +90,7 @@ const guide: SurahGuide = {
           kind: "teal",
           label: "Sunnah note — the response to verse 8",
           text:
-            "It is reported that upon reciting <em>alaysallahu bi-ahkamil-hakimin</em> — \"Is not Allah the most just of judges?\" — the believer may affirm, \"Of course, and I am among those who bear witness to that.\" The closing question is meant to be answered in the heart, not left hanging.",
+            "It is reported that upon reciting <em>alaysallahu bi-ahkamil-hakimin</em> — أَلَيْسَ ٱللَّهُ بِأَحْكَمِ ٱلْحَٰكِمِينَ, \"Is not Allah the most just of judges?\" — the believer may affirm: <em>bala, wa ana 'ala dhalika minash-shahidin</em> — بَلَىٰ وَأَنَا عَلَىٰ ذَٰلِكَ مِنَ الشَّاهِدِينَ, \"Of course, and I am among those who bear witness to that.\" The closing question is meant to be answered in the heart, not left hanging.",
         },
       ],
     },
