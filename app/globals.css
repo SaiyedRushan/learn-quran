@@ -451,6 +451,69 @@ a {
 .sc-check:hover {
   border-color: var(--accent);
 }
+
+/* Per-surah confidence — a tap-to-cycle dot whose fill grows with the level
+   (none → learning → reviewing → solid). Solid is what counts as "done". */
+.sc-conf-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  width: 52px;
+}
+.sc-conf {
+  --conf-frac: 0;
+  --conf-color: var(--color-border-secondary);
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1.5px solid var(--color-border-secondary);
+  background: conic-gradient(var(--conf-color) calc(var(--conf-frac) * 360deg), transparent 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  line-height: 1;
+  color: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.sc-conf.conf-1 {
+  --conf-color: #e0a84a;
+  border-color: #e0a84a;
+}
+.sc-conf.conf-2 {
+  --conf-color: #5b9bd5;
+  border-color: #5b9bd5;
+}
+.sc-conf.conf-3 {
+  --conf-color: var(--accent);
+  border-color: var(--accent);
+}
+.sc-conf:hover {
+  border-color: var(--accent-bright);
+}
+.sc-conf-label {
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-align: center;
+  color: var(--color-text-tertiary);
+}
+.sc-conf-label.conf-1 {
+  color: #e0a84a;
+}
+.sc-conf-label.conf-2 {
+  color: #5b9bd5;
+}
+.sc-conf-label.conf-3 {
+  color: var(--accent-bright);
+}
 .sc-status {
   font-size: 10px;
   font-weight: 600;
@@ -1083,31 +1146,57 @@ a {
 }
 
 /* ── Mark-as-learned button on surah page ── */
-.mark-learned {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
+/* Confidence picker — explicit level selector at the foot of the guide,
+   mirroring the list card's cycling dot. Active level lights up in its colour. */
+.conf-picker {
   margin-top: 18px;
-  padding: 12px;
-  border-radius: var(--border-radius-lg);
+}
+.conf-picker-label {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+  text-align: center;
+  margin-bottom: 8px;
+}
+.conf-picker-row {
+  display: flex;
+  gap: 6px;
+}
+.conf-opt {
+  flex: 1;
+  padding: 11px 6px;
+  border-radius: var(--border-radius-md);
   border: 0.5px solid var(--color-border-secondary);
   background: var(--color-background-primary);
-  color: var(--color-text-primary);
-  font-size: 14px;
+  color: var(--color-text-secondary);
+  font-size: 12.5px;
   font-weight: 500;
-  cursor: pointer;
   font-family: inherit;
+  cursor: pointer;
   transition: all 0.15s;
 }
-.mark-learned:hover {
-  border-color: var(--accent);
+.conf-opt:hover {
+  border-color: var(--color-text-tertiary);
+  color: var(--color-text-primary);
 }
-.mark-learned.done {
-  background: #0d2e24;
-  border-color: #14503c;
-  color: var(--accent-bright);
+.conf-opt.active.conf-0 {
+  border-color: var(--color-text-tertiary);
+  background: var(--color-background-secondary);
+  color: var(--color-text-primary);
+}
+.conf-opt.active.conf-1 {
+  border-color: #e0a84a;
+  background: #e0a84a;
+  color: #1c1c1e;
+}
+.conf-opt.active.conf-2 {
+  border-color: #5b9bd5;
+  background: #5b9bd5;
+  color: #1c1c1e;
+}
+.conf-opt.active.conf-3 {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
 }
 
 /* ── Surah pager (prev/next) ── */

@@ -1,18 +1,28 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import type {SurahGuide, VerseData, GuideNote, VerseGroup, PillColor} from "@/content/types";
 import {
-  useIsLearned,
-  useToggleLearned,
+  useConfidence,
+  setConfidence,
+  CONFIDENCE,
+  type ConfidenceLevel,
   useLearnedSections,
   setSectionLearned,
-  setLearned,
+  setAllSectionsLearned,
   useWeakSpots,
   clearGuideWeakSpots,
 } from "@/lib/progress";
 import {useSettings} from "@/lib/settings";
 import MemorizeMode, {type MemorizeScope} from "@/components/MemorizeMode";
+
+// Confidence levels offered by the picker at the foot of the guide.
+const CONF_LEVELS: {value: ConfidenceLevel; label: string}[] = [
+  {value: 0, label: "Not started"},
+  {value: 1, label: "Learning"},
+  {value: 2, label: "Reviewing"},
+  {value: 3, label: "Solid"},
+];
 
 const PILL: Record<PillColor, string> = {
   teal: "tp-teal",
@@ -44,8 +54,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
   const [open, setOpen] = useState<Set<number>>(new Set([0])); // first section open
   const [overviewOpen, setOverviewOpen] = useState(true);
   const [memorizeScope, setMemorizeScope] = useState<MemorizeScope | null>(null);
-  const learned = useIsLearned(guide.meta.slug);
-  const toggle = useToggleLearned(guide.meta.slug);
+  const confidence = useConfidence(guide.meta.slug);
   const learnedSections = new Set(useLearnedSections(guide.meta.slug));
   const {zenMode} = useSettings();
 
@@ -62,12 +71,16 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
   const weakCount = weakSpots.length;
   const weakAyahs = new Set(weakSpots.map((s) => s.ayah));
 
-  // Once every section is learned, mark the whole surah as learned.
-  useEffect(() => {
-    if (sectionsTotal > 0 && sectionsDone === sectionsTotal && !learned) {
-      setLearned(guide.meta.slug, true);
+  // Confidence is now set explicitly (here and on the list), so completing the
+  // sections no longer auto-promotes the surah — the two signals are kept
+  // independent. Choosing "Solid" still fills the sections (see selectLevel).
+  function selectLevel(next: ConfidenceLevel) {
+    setConfidence(guide.meta.slug, next);
+    if (next === CONFIDENCE.SOLID && confidence !== CONFIDENCE.SOLID) {
+      setAllSectionsLearned(guide.meta.slug, sectionsTotal, true);
     }
-  }, [sectionsDone, sectionsTotal, learned, guide.meta.slug]);
+  }
+
   const verseWord = `${m.verseCount} verse${m.verseCount === 1 ? "" : "s"}`;
   const metaLine = (
     m.collection === "virtues"
@@ -387,10 +400,22 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
       </div>
       )}
 
-      {/* Mark as learned */}
-      <button className={`mark-learned ${learned ? "done" : ""}`} onClick={toggle}>
-        {learned ? "✓ Marked as learned" : "Mark this surah as learned"}
-      </button>
+      {/* Confidence */}
+      <div className='conf-picker'>
+        <div className='conf-picker-label'>How well do you know this surah?</div>
+        <div className='conf-picker-row'>
+          {CONF_LEVELS.map((lvl) => (
+            <button
+              key={lvl.value}
+              className={`conf-opt conf-${lvl.value} ${confidence === lvl.value ? "active" : ""}`}
+              aria-pressed={confidence === lvl.value}
+              onClick={() => selectLevel(lvl.value)}
+            >
+              {lvl.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {memorizeScope && (
         <MemorizeMode

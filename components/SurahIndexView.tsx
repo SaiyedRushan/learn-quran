@@ -1,10 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import Link from "next/link";
-import { useLearned, setLearned, setAllSectionsLearned, useAllLearnedSectionKeys } from "@/lib/progress";
+import {
+  useAllConfidence,
+  setConfidence,
+  CONFIDENCE,
+  type ConfidenceLevel,
+  setAllSectionsLearned,
+  useAllLearnedSectionKeys,
+} from "@/lib/progress";
 import { searchSurahs } from "@/lib/search";
 import type { Collection } from "@/content/types";
+
+// Cycling confidence levels shown on each list card (index 0–3).
+const CONF_META = [
+  { label: "Not started" },
+  { label: "Learning" },
+  { label: "Reviewing" },
+  { label: "Solid" },
+] as const;
 
 export interface SurahListItem {
   number: number;
@@ -29,7 +44,8 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
   const searching = query.trim().length > 0;
   const filtered = searchSurahs(query, surahs);
 
-  const learnedSet = new Set(useLearned());
+  const conf = useAllConfidence();
+  const levelOf = (slug: string) => (conf[slug] ?? 0) as ConfidenceLevel;
 
   // count learned sections per guide from the raw keys ("slug:index")
   const learnedSecBySlug = new Map<string, number>();
@@ -45,14 +61,14 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
   const juz30 = surahs.filter((s) => s.collection === "juz30");
   const virtues = surahs.filter((s) => s.collection === "virtues");
 
-  // progress summary tracks the Juz 30 memorization goal
-  const done = juz30.filter((s) => learnedSet.has(s.slug)).length;
+  // progress summary tracks the Juz 30 memorization goal (Solid = done)
+  const done = juz30.filter((s) => levelOf(s.slug) >= CONFIDENCE.SOLID).length;
   const pct = juz30.length ? Math.round((done / juz30.length) * 100) : 0;
   const totalSections = juz30.reduce((a, s) => a + s.sectionCount, 0);
   const learnedSectionsTotal = juz30.reduce((a, s) => a + learnedHere(s), 0);
 
   function renderCard(s: SurahListItem) {
-    const isDone = learnedSet.has(s.slug);
+    const level = levelOf(s.slug);
     const secLearned = learnedHere(s);
     const secComplete = s.sectionCount > 0 && secLearned === s.sectionCount;
     const secPct = s.sectionCount ? (secLearned / s.sectionCount) * 100 : 0;
@@ -90,20 +106,28 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
           )}
         </div>
         <div className="sc-ar">{s.arabicName}</div>
-        <button
-          className={`sc-check ${isDone ? "done" : ""}`}
-          aria-label={isDone ? "Mark as not learned" : "Mark as learned"}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const turningOn = !isDone;
-            setLearned(s.slug, turningOn);
-            // Keep the section progress in sync with the whole-surah toggle.
-            setAllSectionsLearned(s.slug, s.sectionCount, turningOn);
-          }}
-        >
-          ✓
-        </button>
+        <div className="sc-conf-wrap">
+          <button
+            className={`sc-conf conf-${level}`}
+            style={{ "--conf-frac": level / 3 } as CSSProperties}
+            aria-label={`Confidence: ${CONF_META[level].label}. Tap to change.`}
+            title={`Confidence: ${CONF_META[level].label} — tap to change`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const next = ((level + 1) % 4) as ConfidenceLevel;
+              setConfidence(s.slug, next);
+              // Choosing "Solid" fills in the sections; lower levels leave the
+              // section study untouched so it's never wiped by a downgrade.
+              if (next === CONFIDENCE.SOLID && level !== CONFIDENCE.SOLID) {
+                setAllSectionsLearned(s.slug, s.sectionCount, true);
+              }
+            }}
+          >
+            {level === CONFIDENCE.SOLID && <span className="sc-conf-check">✓</span>}
+          </button>
+          {level > 0 && <span className={`sc-conf-label conf-${level}`}>{CONF_META[level].label}</span>}
+        </div>
       </Link>
     );
   }

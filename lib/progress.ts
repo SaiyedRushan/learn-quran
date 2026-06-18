@@ -70,23 +70,116 @@ function createStore(key: string) {
 
 const EMPTY: string[] = [];
 
-// ── Learned guides (by slug) ────────────────────────────────────────────
-const guideStore = createStore("lq:learned:v2");
+// ── Confidence per guide (by slug) ──────────────────────────────────────
+// Replaces the old binary "learned" flag with a graded self-assessment:
+//   0 none · 1 learning · 2 reviewing · 3 solid
+// A surah counts as "learned/done" exactly when it reaches SOLID, so the
+// existing learned API below is just a thin view over this store.
+export const CONFIDENCE = {NONE: 0, LEARNING: 1, REVIEWING: 2, SOLID: 3} as const;
+export type ConfidenceLevel = 0 | 1 | 2 | 3;
 
+const CONF_KEY = "lq:confidence:v1";
+const LEGACY_LEARNED_KEY = "lq:learned:v2"; // pre-confidence binary store
+
+function createConfidenceStore() {
+  let cache: Record<string, number> | null = null;
+  const listeners = new Set<() => void>();
+
+  function read(): Record<string, number> {
+    if (cache) return cache;
+    if (typeof window === "undefined") return (cache = {});
+    try {
+      const raw = window.localStorage.getItem(CONF_KEY);
+      if (raw) return (cache = JSON.parse(raw) as Record<string, number>);
+      // One-time migration: previously-learned surahs start at SOLID.
+      const legacy = window.localStorage.getItem(LEGACY_LEARNED_KEY);
+      const obj: Record<string, number> = {};
+      if (legacy) {
+        (JSON.parse(legacy) as string[]).forEach((slug) => (obj[slug] = CONFIDENCE.SOLID));
+        window.localStorage.setItem(CONF_KEY, JSON.stringify(obj));
+      }
+      return (cache = obj);
+    } catch {
+      return (cache = {});
+    }
+  }
+
+  function write(next: Record<string, number>): void {
+    cache = next;
+    try {
+      window.localStorage.setItem(CONF_KEY, JSON.stringify(next));
+    } catch {
+      /* storage unavailable — keep in-memory only */
+    }
+    listeners.forEach((l) => l());
+  }
+
+  function subscribe(cb: () => void): () => void {
+    listeners.add(cb);
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === CONF_KEY) {
+        cache = null;
+        cb();
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    return () => {
+      listeners.delete(cb);
+      window.removeEventListener("storage", onStorage);
+    };
+  }
+
+  function get(slug: string): number {
+    return read()[slug] ?? 0;
+  }
+
+  function set(slug: string, level: number): void {
+    const cur = read();
+    if ((cur[slug] ?? 0) === level) return;
+    const next = {...cur};
+    if (level <= 0) delete next[slug];
+    else next[slug] = level;
+    write(next);
+  }
+
+  return {read, subscribe, get, set};
+}
+
+const confStore = createConfidenceStore();
+const EMPTY_CONF: Record<string, number> = {};
+
+/** Every guide's confidence level, keyed by slug (reactive). */
+export function useAllConfidence(): Record<string, number> {
+  return useSyncExternalStore(confStore.subscribe, confStore.read, () => EMPTY_CONF);
+}
+
+export function useConfidence(slug: string): ConfidenceLevel {
+  return (useAllConfidence()[slug] ?? 0) as ConfidenceLevel;
+}
+
+export function setConfidence(slug: string, level: ConfidenceLevel): void {
+  confStore.set(slug, level);
+}
+
+// ── Learned guides — now a view over confidence (learned ⇔ SOLID) ────────
 export function useLearned(): string[] {
-  return useSyncExternalStore(guideStore.subscribe, guideStore.read, () => EMPTY);
+  const all = useAllConfidence();
+  return Object.keys(all).filter((slug) => all[slug] >= CONFIDENCE.SOLID);
 }
 
 export function useIsLearned(slug: string): boolean {
-  return useLearned().includes(slug);
+  return useConfidence(slug) >= CONFIDENCE.SOLID;
 }
 
 export function setLearned(slug: string, value: boolean): void {
-  guideStore.set(slug, value);
+  confStore.set(slug, value ? CONFIDENCE.SOLID : CONFIDENCE.NONE);
 }
 
 export function useToggleLearned(slug: string): () => void {
-  return useCallback(() => guideStore.set(slug, !guideStore.has(slug)), [slug]);
+  return useCallback(
+    () => confStore.set(slug, confStore.get(slug) >= CONFIDENCE.SOLID ? CONFIDENCE.NONE : CONFIDENCE.SOLID),
+    [slug],
+  );
 }
 
 // ── Learned sections (by "slug:index") ──────────────────────────────────
