@@ -78,10 +78,13 @@ const EMPTY: string[] = [];
 export const CONFIDENCE = {NONE: 0, LEARNING: 1, REVIEWING: 2, SOLID: 3} as const;
 export type ConfidenceLevel = 0 | 1 | 2 | 3;
 
+/** Display labels for each confidence level, indexed by level. */
+export const CONFIDENCE_LABELS = ["Not started", "Learning", "Reviewing", "Solid"] as const;
+
 const CONF_KEY = "lq:confidence:v1";
 const LEGACY_LEARNED_KEY = "lq:learned:v2"; // pre-confidence binary store
 
-function createConfidenceStore() {
+function createConfidenceStore(key: string, legacyKey?: string) {
   let cache: Record<string, number> | null = null;
   const listeners = new Set<() => void>();
 
@@ -89,14 +92,14 @@ function createConfidenceStore() {
     if (cache) return cache;
     if (typeof window === "undefined") return (cache = {});
     try {
-      const raw = window.localStorage.getItem(CONF_KEY);
+      const raw = window.localStorage.getItem(key);
       if (raw) return (cache = JSON.parse(raw) as Record<string, number>);
-      // One-time migration: previously-learned surahs start at SOLID.
-      const legacy = window.localStorage.getItem(LEGACY_LEARNED_KEY);
+      // One-time migration: previously-learned items start at SOLID.
+      const legacy = legacyKey ? window.localStorage.getItem(legacyKey) : null;
       const obj: Record<string, number> = {};
       if (legacy) {
-        (JSON.parse(legacy) as string[]).forEach((slug) => (obj[slug] = CONFIDENCE.SOLID));
-        window.localStorage.setItem(CONF_KEY, JSON.stringify(obj));
+        (JSON.parse(legacy) as string[]).forEach((id) => (obj[id] = CONFIDENCE.SOLID));
+        window.localStorage.setItem(key, JSON.stringify(obj));
       }
       return (cache = obj);
     } catch {
@@ -107,7 +110,7 @@ function createConfidenceStore() {
   function write(next: Record<string, number>): void {
     cache = next;
     try {
-      window.localStorage.setItem(CONF_KEY, JSON.stringify(next));
+      window.localStorage.setItem(key, JSON.stringify(next));
     } catch {
       /* storage unavailable — keep in-memory only */
     }
@@ -117,7 +120,7 @@ function createConfidenceStore() {
   function subscribe(cb: () => void): () => void {
     listeners.add(cb);
     const onStorage = (e: StorageEvent) => {
-      if (e.key === CONF_KEY) {
+      if (e.key === key) {
         cache = null;
         cb();
       }
@@ -145,7 +148,7 @@ function createConfidenceStore() {
   return {read, subscribe, get, set};
 }
 
-const confStore = createConfidenceStore();
+const confStore = createConfidenceStore(CONF_KEY, LEGACY_LEARNED_KEY);
 const EMPTY_CONF: Record<string, number> = {};
 
 /** Every guide's confidence level, keyed by slug (reactive). */
@@ -251,14 +254,22 @@ export function clearGuideWeakSpots(slug: string): void {
   weakStore.update((cur) => cur.filter((k) => !k.startsWith(`${slug}:`)));
 }
 
-// ── Learned prayer duas (by dua name) ───────────────────────────────────
-const duaStore = createStore("lq:duas:v1");
+// ── Prayer dua confidence (by dua name) ─────────────────────────────────
+// Same graded self-assessment as surahs; the old binary "learned" store
+// (lq:duas:v1) migrates so previously-checked duas start at SOLID.
+const duaConfStore = createConfidenceStore("lq:dua-confidence:v1", "lq:duas:v1");
 
-/** Every learned dua key (reactive). */
-export function useLearnedDuaKeys(): string[] {
-  return useSyncExternalStore(duaStore.subscribe, duaStore.read, () => EMPTY);
+/** Every dua's confidence level, keyed by dua name (reactive). */
+export function useAllDuaConfidence(): Record<string, number> {
+  return useSyncExternalStore(duaConfStore.subscribe, duaConfStore.read, () => EMPTY_CONF);
 }
 
-export function setDuaLearned(id: string, value: boolean): void {
-  duaStore.set(id, value);
+export function setDuaConfidence(id: string, level: ConfidenceLevel): void {
+  duaConfStore.set(id, level);
+}
+
+/** Duas that count as learned (confidence ⩾ SOLID), reactive. */
+export function useLearnedDuaKeys(): string[] {
+  const all = useAllDuaConfidence();
+  return Object.keys(all).filter((id) => all[id] >= CONFIDENCE.SOLID);
 }

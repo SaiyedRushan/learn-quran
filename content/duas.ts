@@ -2,9 +2,60 @@ import type { DuasContent } from "@/content/types";
 
 const duas: DuasContent = {
   intro:
-    "These are the core duas and adhkar recited within the daily prayer (salah) — from the opening takbir through to the salam. Learn each one by its sound (transliteration) and its meaning so the words live in the heart, not just on the tongue. Wordings and points of fiqh differ between the schools, so always verify the exact text and practice with a qualified teacher; this page is a draft pending scholarly review.",
+    "These are the core duas and adhkar of the daily prayer (salah) — from the call to prayer (adhan) and the opening takbir through to the salam. Learn each one by its sound (transliteration) and its meaning so the words live in the heart, not just on the tongue. Wordings and points of fiqh differ between the schools, so always verify the exact text and practice with a qualified teacher; this page is a draft pending scholarly review.",
   reviewStatus: "draft",
   sections: [
+    {
+      title: "Hearing the adhan",
+      intro:
+        "The Sunnah when the call to prayer sounds: repeat each phrase after the muadhdhin, send salah upon the Prophet ﷺ when it ends, then ask Allah to grant him al-wasilah.",
+      duas: [
+        {
+          name: "Answering the muadhdhin",
+          when: "While the adhan is being called — repeat each phrase after the muadhdhin",
+          lines: [
+            {
+              arabic: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ.",
+              transliteration: "La hawla wa la quwwata illa billah.",
+              translation:
+                "There is no power and no strength except with Allah.",
+            },
+          ],
+          note: "Repeat what the muadhdhin says, phrase by phrase — except when he says <em>Hayya ʿala-s-salah</em> (\"Come to prayer\") and <em>Hayya ʿala-l-falah</em> (\"Come to success\"): there, respond with the line above instead. When the adhan ends, send salah upon the Prophet ﷺ (e.g. the Durood Ibrahim below), then recite the dua of al-wasilah that follows.",
+          source: "<a class='cite-link' href='https://sunnah.com/bukhari:611' target='_blank' rel='noopener noreferrer'>Bukhari</a> & <a class='cite-link' href='https://sunnah.com/muslim:385' target='_blank' rel='noopener noreferrer'>Muslim</a>",
+        },
+        {
+          name: "Dua after the adhan (al-Wasilah)",
+          when: "When the adhan ends, after sending salah upon the Prophet ﷺ",
+          lines: [
+            {
+              arabic:
+                "اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ، وَالصَّلَاةِ الْقَائِمَةِ،",
+              transliteration:
+                "Allahumma rabba hadhihi-d-daʿwati-t-tammah, wa-s-salati-l-qaʾimah,",
+              translation:
+                "O Allah, Lord of this perfect call and of the prayer about to be established,",
+            },
+            {
+              arabic: "آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ،",
+              transliteration: "ati Muhammadani-l-wasilata wa-l-fadilah,",
+              translation:
+                "grant Muhammad al-wasilah (the highest station in Paradise) and the distinction,",
+            },
+            {
+              arabic:
+                "وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ.",
+              transliteration:
+                "wa-bʿathhu maqaman mahmudani-lladhi waʿadtah.",
+              translation:
+                "and raise him to the praised station that You have promised him.",
+            },
+          ],
+          note: "The Prophet ﷺ said that whoever says this after hearing the adhan, \"my intercession becomes due for him on the Day of Resurrection.\" Some transmissions add <em>innaka la tukhlifu-l-miʿad</em> (\"indeed You do not break Your promise\") at the end. Remember too that dua made between the adhan and the iqamah is not rejected (<a class='cite-link' href='https://sunnah.com/abudawud:521' target='_blank' rel='noopener noreferrer'>Abu Dawud</a>).",
+          source: "<a class='cite-link' href='https://sunnah.com/bukhari:614' target='_blank' rel='noopener noreferrer'>Bukhari</a> (Jabir ibn ʿAbdillah)",
+        },
+      ],
+    },
     {
       title: "Opening the prayer",
       duas: [

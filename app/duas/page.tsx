@@ -6,7 +6,7 @@ import DuasView from "@/components/DuasView";
 export const metadata: Metadata = {
   title: "Duas of the Prayer",
   description:
-    "The essential duas recited in the Islamic prayer — opening supplication, rukūʿ and sujūd, the Tashahhud, the salah on the Prophet ﷺ, duas before the salām, and Duʿāʾ al-Qunūt — with Arabic, transliteration, and translation.",
+    "The essential duas of the Islamic prayer — answering the adhan and the dua after it, the opening supplication, rukūʿ and sujūd, the Tashahhud, the salah on the Prophet ﷺ, duas before the salām, and Duʿāʾ al-Qunūt — with Arabic, transliteration, and translation.",
 };
 
 export default function DuasPage() {
@@ -19,7 +19,7 @@ export default function DuasPage() {
       <div className="top">
         <div className="surah-name">Duas of the Prayer</div>
         <div className="meta">
-          The supplications recited in the salah — with transliteration and meaning
+          The supplications of the adhan and the salah — with transliteration and meaning
         </div>
         <div className="ar-title" dir="rtl">
           أَذْكَارُ الصَّلَاة

@@ -6,20 +6,13 @@ import {
   useAllConfidence,
   setConfidence,
   CONFIDENCE,
+  CONFIDENCE_LABELS,
   type ConfidenceLevel,
   setAllSectionsLearned,
   useAllLearnedSectionKeys,
 } from "@/lib/progress";
 import { searchSurahs } from "@/lib/search";
 import type { Collection } from "@/content/types";
-
-// Cycling confidence levels shown on each list card (index 0–3).
-const CONF_META = [
-  { label: "Not started" },
-  { label: "Learning" },
-  { label: "Reviewing" },
-  { label: "Solid" },
-] as const;
 
 export interface SurahListItem {
   number: number;
@@ -110,8 +103,8 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
           <button
             className={`sc-conf conf-${level}`}
             style={{ "--conf-frac": level / 3 } as CSSProperties}
-            aria-label={`Confidence: ${CONF_META[level].label}. Tap to change.`}
-            title={`Confidence: ${CONF_META[level].label} — tap to change`}
+            aria-label={`Confidence: ${CONFIDENCE_LABELS[level]}. Tap to change.`}
+            title={`Confidence: ${CONFIDENCE_LABELS[level]} — tap to change`}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -126,7 +119,7 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
           >
             {level === CONFIDENCE.SOLID && <span className="sc-conf-check">✓</span>}
           </button>
-          {level > 0 && <span className={`sc-conf-label conf-${level}`}>{CONF_META[level].label}</span>}
+          {level > 0 && <span className={`sc-conf-label conf-${level}`}>{CONFIDENCE_LABELS[level]}</span>}
         </div>
       </Link>
     );

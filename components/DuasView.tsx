@@ -1,24 +1,38 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import type { DuasContent } from "@/content/types";
-import { useLearnedDuaKeys, setDuaLearned } from "@/lib/progress";
+import {
+  useAllDuaConfidence,
+  setDuaConfidence,
+  CONFIDENCE,
+  CONFIDENCE_LABELS,
+  type ConfidenceLevel,
+} from "@/lib/progress";
 
 function Html({ html, className }: { html: string; className?: string }) {
   return <span className={className} dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
 export default function DuasView({ duas }: { duas: DuasContent }) {
-  const learned = new Set(useLearnedDuaKeys());
+  const conf = useAllDuaConfidence();
+  const levelOf = (name: string) => (conf[name] ?? 0) as ConfidenceLevel;
+
   const allDuas = duas.sections.flatMap((s) => s.duas);
   const total = allDuas.length;
-  const done = allDuas.filter((d) => learned.has(d.name)).length;
-  const pct = total ? Math.round((done / total) * 100) : 0;
+  const solid = allDuas.filter((d) => levelOf(d.name) >= CONFIDENCE.SOLID).length;
+  const inProgress = allDuas.filter((d) => {
+    const l = levelOf(d.name);
+    return l === CONFIDENCE.LEARNING || l === CONFIDENCE.REVIEWING;
+  }).length;
+  const pct = total ? Math.round((solid / total) * 100) : 0;
 
   return (
     <>
       <div className="sec-progress">
         <span className="sp-label">
-          <strong>{done}</strong>/{total} duas learned
+          <strong>{solid}</strong>/{total} duas solid
+          {inProgress > 0 && <> · {inProgress} in progress</>}
         </span>
         <div className="progress-track">
           <div className="progress-fill" style={{ width: `${pct}%` }} />
@@ -31,7 +45,7 @@ export default function DuasView({ duas }: { duas: DuasContent }) {
           {section.intro && <p className="group-note">{section.intro}</p>}
           <div className="dua-list">
             {section.duas.map((dua, di) => {
-              const isDone = learned.has(dua.name);
+              const level = levelOf(dua.name);
               return (
                 <div className="dua-card" key={di}>
                   <div className="dua-head">
@@ -40,13 +54,26 @@ export default function DuasView({ duas }: { duas: DuasContent }) {
                       <div className="dua-when">{dua.when}</div>
                     </div>
                     {dua.repeat && <span className="dua-repeat">{dua.repeat}</span>}
-                    <button
-                      className={`sec-check ${isDone ? "done" : ""}`}
-                      aria-label={isDone ? "Mark dua as not learned" : "Mark dua as learned"}
-                      onClick={() => setDuaLearned(dua.name, !isDone)}
-                    >
-                      ✓
-                    </button>
+                    <div className="sc-conf-wrap">
+                      <button
+                        className={`sc-conf conf-${level}`}
+                        style={{ "--conf-frac": level / 3 } as CSSProperties}
+                        aria-label={`Confidence: ${CONFIDENCE_LABELS[level]}. Tap to change.`}
+                        title={`Confidence: ${CONFIDENCE_LABELS[level]} — tap to change`}
+                        onClick={() =>
+                          setDuaConfidence(dua.name, ((level + 1) % 4) as ConfidenceLevel)
+                        }
+                      >
+                        {level === CONFIDENCE.SOLID && (
+                          <span className="sc-conf-check">✓</span>
+                        )}
+                      </button>
+                      {level > 0 && (
+                        <span className={`sc-conf-label conf-${level}`}>
+                          {CONFIDENCE_LABELS[level]}
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <div className="dua-lines">
                     {dua.lines.map((line, li) => (

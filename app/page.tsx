@@ -1,5 +1,6 @@
 import { surahIndex, getGuide } from "@/lib/content";
 import SurahIndexView, { type SurahListItem } from "@/components/SurahIndexView";
+import TodayDashboard, { type DashSurah, type DashDua } from "@/components/TodayDashboard";
 import PrayerCta from "@/components/PrayerCta";
 import duas from "@/content/duas";
 
@@ -23,12 +24,35 @@ export default function Home() {
     };
   });
 
+  // The dashboard needs section titles/ranges to say *what* to learn next.
+  const dashSurahs: DashSurah[] = surahIndex.map((s) => {
+    const guide = getGuide(s.slug);
+    return {
+      slug: s.slug,
+      name: s.name,
+      verseCount: s.verseCount,
+      collection: s.collection,
+      sections:
+        guide?.sections.map((sec) => ({
+          title: sec.title,
+          from: sec.from,
+          to: sec.to,
+        })) ?? [],
+    };
+  });
+
+  const dashDuas: DashDua[] = duas.sections.flatMap((s) =>
+    s.duas.map((d) => ({ name: d.name, section: s.title })),
+  );
+
   return (
     <>
+      <TodayDashboard surahs={dashSurahs} duas={dashDuas} />
+
       <SurahIndexView surahs={surahs} />
 
       <div className="list-heading">Learn the Prayer</div>
-      <PrayerCta duaIds={duas.sections.flatMap((s) => s.duas.map((d) => d.name))} />
+      <PrayerCta duaIds={dashDuas.map((d) => d.name)} />
     </>
   );
 }

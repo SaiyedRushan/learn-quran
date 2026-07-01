@@ -14,8 +14,8 @@ export default function PrayerCta({ duaIds }: { duaIds: string[] }) {
       <span className="prayer-cta-main">
         <span className="prayer-cta-title">Duas of the Prayer</span>
         <span className="prayer-cta-sub">
-          Tashahhud, the salah on the Prophet ﷺ, Duʿāʾ al-Qunūt and more —
-          Arabic, transliteration &amp; meaning
+          The dua after the adhan, Tashahhud, the salah on the Prophet ﷺ,
+          Duʿāʾ al-Qunūt and more — Arabic, transliteration &amp; meaning
         </span>
       </span>
       {done > 0 ? (

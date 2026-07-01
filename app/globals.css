@@ -184,6 +184,114 @@ a {
   max-width: 56ch;
 }
 
+/* ── Today's plan (home dashboard) ── */
+.today-dash {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 14px 16px;
+  margin: 16px 0 0;
+}
+.td-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.td-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+.td-time {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-bright);
+  background: #0d2e24;
+  border: 0.5px solid #14503c;
+  border-radius: 99px;
+  padding: 3px 10px;
+  font-variant-numeric: tabular-nums;
+}
+.td-summary {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+  margin-top: 4px;
+}
+.td-group {
+  margin-top: 12px;
+}
+.td-group-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  margin-bottom: 4px;
+}
+.td-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  margin: 0 -10px;
+  border-radius: var(--border-radius-md);
+  transition: background 0.15s;
+}
+.td-item:hover {
+  background: var(--color-background-secondary);
+}
+.td-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.td-dot.learn {
+  background: #e0a84a;
+}
+.td-dot.review {
+  background: #5b9bd5;
+}
+.td-dot.start {
+  background: var(--accent);
+}
+.td-item-main {
+  flex: 1;
+  min-width: 0;
+}
+.td-item-name {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.td-item-sub {
+  display: block;
+  font-size: 11.5px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-top: 1px;
+}
+.td-item-time {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+.td-empty {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-top: 8px;
+}
+.td-more {
+  font-size: 11.5px;
+  color: var(--color-text-tertiary);
+  margin-top: 4px;
+  padding: 0 0 2px 18px;
+}
+
 /* ── Overall progress bar ── */
 .progress-summary {
   background: var(--color-background-primary);
