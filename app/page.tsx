@@ -16,7 +16,6 @@ export default function Home() {
       verseCount: s.verseCount,
       revelationType: s.revelationType,
       revelationOrdinal: s.revelationOrdinal,
-      status: guide?.reviewStatus ?? "draft",
       sectionCount: guide?.sections.length ?? 0,
       collection: s.collection,
       note: s.note,

@@ -61,31 +61,12 @@ content/
 3. The app **composes** the two: a section says "verses 7–9", and the component
    renders the verified ayahs for that range alongside the authored notes.
 
-### Review status & the "draft" banner
-
-Every guide carries `reviewStatus: "draft" | "reviewed"`.
-
-- `"draft"` → a prominent **"pending scholarly review"** banner is shown, and a
-  **Draft** chip appears on the home list.
-- `"reviewed"` → no banner (use only after a qualified reviewer has verified the
-  commentary, especially any hadith attributions).
-
-All 37 guides except the flagship (`83-al-mutaffifin`) currently ship as
-`"draft"`. The teaching commentary was AI-assisted; **the Arabic and translation
-are verified, but the commentary should be checked by a qualified scholar before
-flipping a guide to `"reviewed"`.**
-
----
-
 ## Editing or reviewing a guide
 
 Open `content/guides/<num>-<slug>.ts`. It is a typed object — your editor will
-flag any mistakes against `content/types.ts`. To approve a guide after review,
-change one line:
-
-```ts
-reviewStatus: "reviewed",
-```
+flag any mistakes against `content/types.ts`. The teaching commentary is an
+educational aid; the Arabic and translation are verified, but the commentary
+should be checked by a qualified scholar.
 
 After any edit, run the integrity check (it verifies sections cover every verse
 with no gaps/overlaps, and that vocab Arabic appears in the real surah text):

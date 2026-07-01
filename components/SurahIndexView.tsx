@@ -23,7 +23,6 @@ export interface SurahListItem {
   verseCount: number;
   revelationType: "Makkan" | "Madinan";
   revelationOrdinal?: string | null;
-  status: "draft" | "reviewed";
   sectionCount: number;
   collection: Collection;
   note?: string;

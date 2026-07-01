@@ -26,21 +26,6 @@ export default function DuasPage() {
         </div>
       </div>
 
-      {duas.reviewStatus === "draft" && (
-        <div className="review-banner">
-          <span className="rb-icon">⚠️</span>
-          <div className="rb-text">
-            <strong>Draft — pending scholarly review.</strong> These supplications
-            are compiled from well-known sources, but unlike the Quran text on this
-            site they are not drawn from a verified API. Please confirm the exact
-            wordings — and the madhhab-specific points (especially Duʿāʾ al-Qunūt) —
-            with a qualified teacher and the practice of your school.
-          </div>
-        </div>
-      )}
-
-      <p className="duas-intro">{duas.intro}</p>
-
       <DuasView duas={duas} />
     </>
   );

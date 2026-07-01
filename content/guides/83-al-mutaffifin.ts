@@ -2,7 +2,6 @@ import type { SurahGuide } from "@/content/types";
 
 // Flagship reference guide — the gold-standard structure all other guides follow.
 const guide: SurahGuide = {
-  reviewStatus: "reviewed",
   meta: {
     number: 83,
     slug: "al-mutaffifin",

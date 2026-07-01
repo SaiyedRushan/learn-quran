@@ -2,8 +2,7 @@ import type { DuasContent } from "@/content/types";
 
 const duas: DuasContent = {
   intro:
-    "These are the core duas and adhkar of the daily prayer (salah) — from the call to prayer (adhan) and the opening takbir through to the salam. Learn each one by its sound (transliteration) and its meaning so the words live in the heart, not just on the tongue. Wordings and points of fiqh differ between the schools, so always verify the exact text and practice with a qualified teacher; this page is a draft pending scholarly review.",
-  reviewStatus: "draft",
+    "These are the core duas and adhkar of the daily prayer (salah) — from the call to prayer (adhan) and the opening takbir through to the salam. Learn each one by its sound (transliteration) and its meaning so the words live in the heart, not just on the tongue. Wordings and points of fiqh differ between the schools, so always verify the exact text and practice with a qualified teacher.",
   sections: [
     {
       title: "Hearing the adhan",

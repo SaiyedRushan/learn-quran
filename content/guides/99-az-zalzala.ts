@@ -1,7 +1,6 @@
 import type { SurahGuide } from "@/content/types";
 
 const guide: SurahGuide = {
-  reviewStatus: "draft",
   meta: {
     number: 99,
     slug: "az-zalzala",

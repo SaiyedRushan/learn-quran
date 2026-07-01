@@ -118,8 +118,7 @@ export default function AboutPage() {
             </p>
             <p>
               The teaching commentary — overviews, memory hooks, vocabulary notes, and recitation guidance — is an educational
-              aid. Guides marked <strong>“draft”</strong> are AI-assisted and still pending review by a qualified scholar.
-              Please confirm any point of religious ruling with a trusted teacher.
+              aid. Please confirm any point of religious ruling with a trusted teacher.
             </p>
             <p>
               The app is completely free and ad-free. There's no login and no account — your learning progress lives only in

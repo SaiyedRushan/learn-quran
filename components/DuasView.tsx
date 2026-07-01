@@ -9,6 +9,7 @@ import {
   CONFIDENCE_LABELS,
   type ConfidenceLevel,
 } from "@/lib/progress";
+import { useSettings } from "@/lib/settings";
 
 function Html({ html, className }: { html: string; className?: string }) {
   return <span className={className} dangerouslySetInnerHTML={{ __html: html }} />;
@@ -16,6 +17,7 @@ function Html({ html, className }: { html: string; className?: string }) {
 
 export default function DuasView({ duas }: { duas: DuasContent }) {
   const conf = useAllDuaConfidence();
+  const { zenMode } = useSettings();
   const levelOf = (name: string) => (conf[name] ?? 0) as ConfidenceLevel;
 
   const allDuas = duas.sections.flatMap((s) => s.duas);
@@ -29,6 +31,8 @@ export default function DuasView({ duas }: { duas: DuasContent }) {
 
   return (
     <>
+      {!zenMode && <p className="duas-intro">{duas.intro}</p>}
+
       <div className="sec-progress">
         <span className="sp-label">
           <strong>{solid}</strong>/{total} duas solid
@@ -42,7 +46,7 @@ export default function DuasView({ duas }: { duas: DuasContent }) {
       {duas.sections.map((section, si) => (
         <section key={si}>
           <div className="list-heading">{section.title}</div>
-          {section.intro && <p className="group-note">{section.intro}</p>}
+          {!zenMode && section.intro && <p className="group-note">{section.intro}</p>}
           <div className="dua-list">
             {section.duas.map((dua, di) => {
               const level = levelOf(dua.name);
@@ -81,20 +85,24 @@ export default function DuasView({ duas }: { duas: DuasContent }) {
                         <div className="dua-ar" dir="rtl">
                           {line.arabic}
                         </div>
-                        <div className="dua-translit">{line.transliteration}</div>
+                        {!zenMode && (
+                          <div className="dua-translit">{line.transliteration}</div>
+                        )}
                         <div className="dua-trans">{line.translation}</div>
                       </div>
                     ))}
                   </div>
-                  {dua.note && (
+                  {!zenMode && dua.note && (
                     <div className="dua-note">
                       <Html html={dua.note} />
                     </div>
                   )}
-                  <div
-                    className="dua-source"
-                    dangerouslySetInnerHTML={{ __html: dua.source }}
-                  />
+                  {!zenMode && (
+                    <div
+                      className="dua-source"
+                      dangerouslySetInnerHTML={{ __html: dua.source }}
+                    />
+                  )}
                 </div>
               );
             })}

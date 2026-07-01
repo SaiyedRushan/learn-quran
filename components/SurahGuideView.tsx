@@ -143,16 +143,6 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
 
   return (
     <>
-      {!zenMode && guide.reviewStatus === "draft" && (
-        <div className='review-banner'>
-          <span className='rb-icon'>⚠️</span>
-          <div className='rb-text'>
-            <strong>Draft — pending scholarly review.</strong> The Arabic and translation below are from verified sources, but the commentary (overview, memory hooks, vocabulary
-            notes, recitation guidance) is an AI-assisted draft and has not yet been checked by a qualified scholar. Verify any point of ruling with a trusted teacher.
-          </div>
-        </div>
-      )}
-
       {/* Top banner */}
       <div className='top'>
         <div className='surah-name'>

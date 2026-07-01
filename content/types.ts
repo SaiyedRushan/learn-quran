@@ -140,11 +140,6 @@ export interface SurahGuide {
   sections: GuideSection[];
   vocab: VocabGroup[];
   recitation: RecitationGuide;
-  /**
-   * "draft"   = AI-drafted, pending review (shows the review banner)
-   * "reviewed" = verified by a qualified reviewer (no banner)
-   */
-  reviewStatus: "draft" | "reviewed";
 }
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -177,5 +172,4 @@ export interface DuaSection {
 export interface DuasContent {
   intro: string;
   sections: DuaSection[];
-  reviewStatus: "draft" | "reviewed";
 }
