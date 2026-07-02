@@ -15,6 +15,7 @@ import {
   useAllLearnedSectionKeys,
   CONFIDENCE,
 } from "@/lib/progress";
+import { duaAnchor, sectionAnchor } from "@/lib/anchors";
 
 export interface DashSection {
   title: string;
@@ -160,8 +161,16 @@ export default function TodayDashboard({
       {(learnItems.length > 0 || duaLearning.length > 0) && (
         <div className="td-group">
           <div className="td-group-label">Keep learning</div>
-          {learnItems.map(({ s, remaining, today, minutes }) => (
-            <Link href={`/surah/${s.slug}/`} className="td-item" key={s.slug}>
+          {learnItems.map(({ s, remaining, today, minutes }) => {
+            // Jump straight to the next section to study (falls back to the top
+            // once every section has been studied).
+            const nextIndex = today[0]?.index;
+            const href =
+              nextIndex != null
+                ? `/surah/${s.slug}/#${sectionAnchor(nextIndex)}`
+                : `/surah/${s.slug}/`;
+            return (
+            <Link href={href} className="td-item" key={s.slug}>
               <span className="td-dot learn" />
               <span className="td-item-main">
                 <span className="td-item-name">{s.name}</span>
@@ -179,9 +188,10 @@ export default function TodayDashboard({
               </span>
               {minutes > 0 && <span className="td-item-time">~{minutes} min</span>}
             </Link>
-          ))}
+            );
+          })}
           {duaLearning.map((d) => (
-            <Link href="/duas/" className="td-item" key={d.name}>
+            <Link href={`/duas/#${duaAnchor(d.name)}`} className="td-item" key={d.name}>
               <span className="td-dot learn" />
               <span className="td-item-main">
                 <span className="td-item-name">{d.name}</span>
@@ -209,7 +219,7 @@ export default function TodayDashboard({
             </Link>
           ))}
           {duaReviewing.map((d) => (
-            <Link href="/duas/" className="td-item" key={d.name}>
+            <Link href={`/duas/#${duaAnchor(d.name)}`} className="td-item" key={d.name}>
               <span className="td-dot review" />
               <span className="td-item-main">
                 <span className="td-item-name">{d.name}</span>

@@ -890,6 +890,7 @@ a {
   border-radius: var(--border-radius-lg);
   margin-bottom: 10px;
   overflow: hidden;
+  scroll-margin-top: 76px;
 }
 .sec-hdr {
   display: flex;
@@ -1733,6 +1734,27 @@ a {
   border: 0.5px solid var(--color-border-tertiary);
   border-radius: var(--border-radius-lg);
   padding: 14px 16px;
+  scroll-margin-top: 76px;
+}
+
+/* Brief ring on a card a Today's-plan link scrolled to, so it's easy to spot. */
+.scroll-flash {
+  animation: scrollFlash 1.6s ease-out;
+}
+@keyframes scrollFlash {
+  0%,
+  40% {
+    box-shadow: 0 0 0 2px var(--accent-bright);
+    border-color: var(--accent-bright);
+  }
+  100% {
+    box-shadow: 0 0 0 2px transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-flash {
+    animation: none;
+  }
 }
 .dua-head {
   display: flex;

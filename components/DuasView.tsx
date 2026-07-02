@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import { useEffect, type CSSProperties } from "react";
 import type { DuasContent } from "@/content/types";
 import {
   useAllDuaConfidence,
@@ -10,6 +10,7 @@ import {
   type ConfidenceLevel,
 } from "@/lib/progress";
 import { useSettings } from "@/lib/settings";
+import { duaAnchor, currentHash, flashScrollTo } from "@/lib/anchors";
 
 function Html({ html, className }: { html: string; className?: string }) {
   return <span className={className} dangerouslySetInnerHTML={{ __html: html }} />;
@@ -19,6 +20,15 @@ export default function DuasView({ duas }: { duas: DuasContent }) {
   const conf = useAllDuaConfidence();
   const { zenMode } = useSettings();
   const levelOf = (name: string) => (conf[name] ?? 0) as ConfidenceLevel;
+
+  // A dua link from Today's plan arrives as /duas/#dua-… — scroll to that card
+  // once the list has rendered (a rAF lets the DOM settle before we measure).
+  useEffect(() => {
+    const hash = currentHash();
+    if (!hash.startsWith("dua-")) return;
+    const raf = requestAnimationFrame(() => flashScrollTo(hash));
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   const allDuas = duas.sections.flatMap((s) => s.duas);
   const total = allDuas.length;
@@ -51,7 +61,7 @@ export default function DuasView({ duas }: { duas: DuasContent }) {
             {section.duas.map((dua, di) => {
               const level = levelOf(dua.name);
               return (
-                <div className="dua-card" key={di}>
+                <div className="dua-card" id={duaAnchor(dua.name)} key={di}>
                   <div className="dua-head">
                     <div className="dua-head-main">
                       <div className="dua-name">{dua.name}</div>

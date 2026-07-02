@@ -1,6 +1,6 @@
 "use client";
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import type {SurahGuide, VerseData, GuideNote, VerseGroup, PillColor} from "@/content/types";
 import {
   useConfidence,
@@ -14,6 +14,7 @@ import {
   clearGuideWeakSpots,
 } from "@/lib/progress";
 import {useSettings} from "@/lib/settings";
+import {sectionAnchor, currentHash, flashScrollTo} from "@/lib/anchors";
 import MemorizeMode, {type MemorizeScope} from "@/components/MemorizeMode";
 
 // Confidence levels offered by the picker at the foot of the guide.
@@ -57,6 +58,21 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
   const confidence = useConfidence(guide.meta.slug);
   const learnedSections = new Set(useLearnedSections(guide.meta.slug));
   const {zenMode} = useSettings();
+
+  // A "next section" link from Today's plan arrives as /surah/slug/#sec-N —
+  // open that section (so its verses are visible) and scroll to it on mount.
+  useEffect(() => {
+    const hash = currentHash();
+    const match = /^sec-(\d+)$/.exec(hash);
+    if (!match) return;
+    const i = Number(match[1]);
+    if (i < 0 || i >= guide.sections.length) return;
+    setOpen((prev) => new Set(prev).add(i));
+    // Wait a frame so the just-opened section has laid out before we scroll.
+    const raf = requestAnimationFrame(() => flashScrollTo(hash));
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const m = guide.meta;
   const sectionsTotal = guide.sections.length;
@@ -271,7 +287,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
           const isOpen = open.has(i);
           const secDone = learnedSections.has(i);
           return (
-            <div className='sec-card' key={i}>
+            <div className='sec-card' id={sectionAnchor(i)} key={i}>
               <div className='sec-hdr'>
                 <button className='sec-hdr-main' onClick={() => toggleSection(i)} aria-expanded={isOpen}>
                   <span className={`sec-badge ${PILL[sec.color]}`}>{sec.badge}</span>
