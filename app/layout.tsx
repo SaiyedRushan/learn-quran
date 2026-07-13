@@ -9,15 +9,15 @@ const NO_FLASH = `(function(){try{var s=JSON.parse(localStorage.getItem('lq:sett
 
 export const metadata: Metadata = {
   title: {
-    default: "Learn Quran — Juz 30 Memorization Guides",
+    default: "Learn Quran — Juz 29 & 30 Memorization Guides",
     template: "%s · Learn Quran",
   },
   description:
-    "Structured, section-by-section guides for memorizing and understanding the Quran, starting with Juz Amma (Juz 30). Verified Arabic text, translation, vocabulary, memory hooks, and recitation guidance.",
+    "Structured, section-by-section guides for memorizing and understanding the Quran — Juz 29 (Tabārak) and Juz 30 (Juz Amma). Verified Arabic text, translation, vocabulary, memory hooks, and recitation guidance.",
   metadataBase: new URL("https://learn-quran.app"),
   alternates: {canonical: "/"},
   openGraph: {
-    title: "Learn Quran — Juz 30 Memorization Guides",
+    title: "Learn Quran — Juz 29 & 30 Memorization Guides",
     description: "Structured, section-by-section guides for memorizing and understanding the Quran.",
     url: "https://learn-quran.app",
     siteName: "Learn Quran",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Learn Quran — Juz 30 Memorization Guides",
+    title: "Learn Quran — Juz 29 & 30 Memorization Guides",
     description: "Structured, section-by-section guides for memorizing and understanding the Quran.",
   },
 };

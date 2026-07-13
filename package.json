@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "fetch:verses": "node scripts/fetch-verses.mjs"
+    "fetch:verses": "node scripts/fetch-verses.mjs",
+    "fetch:verses:juz29": "node scripts/fetch-verses-juz29.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

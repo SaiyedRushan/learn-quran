@@ -27,7 +27,7 @@ export interface DashSurah {
   slug: string;
   name: string;
   verseCount: number;
-  collection: "juz30" | "virtues";
+  collection: "juz30" | "juz29" | "virtues";
   sections: DashSection[];
 }
 
@@ -107,10 +107,11 @@ export default function TodayDashboard({
   const hasWork =
     learnItems.length > 0 || reviewing.length > 0 || duaLearning.length > 0 || duaReviewing.length > 0;
 
-  // Empty state: suggest the first untouched Juz 30 surah to start with.
+  // Empty state: suggest the first untouched juz surah to start with (mushaf
+  // order puts Juz 29 ahead of Juz 30).
   const suggestion = surahs.find(
     (s) =>
-      s.collection === "juz30" &&
+      s.collection !== "virtues" &&
       levelOf(s.slug) === CONFIDENCE.NONE &&
       doneSections(s.slug).size === 0,
   );

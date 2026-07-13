@@ -37,7 +37,7 @@ export interface SurahStat {
 }
 
 /** Which collection a guide belongs to on the home page. */
-export type Collection = "juz30" | "virtues";
+export type Collection = "juz30" | "juz29" | "virtues";
 
 /** Surah metadata for the banner + index card. */
 export interface SurahMeta {
@@ -53,7 +53,8 @@ export interface SurahMeta {
   verseCount: number;
   rukus?: number;
   stats: SurahStat[]; // Verses / Words / Letters / Revelation order, etc.
-  /** Defaults to "juz30". "virtues" = the Recommended Recitations collection. */
+  /** Defaults to "juz30". "juz29" = the Juz 29 (Tabārak) collection.
+   *  "virtues" = the Recommended Recitations collection. */
   collection?: Collection;
   /** For partial passages, the verse reference shown in the meta line, e.g. "Al-Baqarah 285–286". */
   passageRef?: string;

@@ -254,6 +254,21 @@ export function clearGuideWeakSpots(slug: string): void {
   weakStore.update((cur) => cur.filter((k) => !k.startsWith(`${slug}:`)));
 }
 
+// ── Collapsed home-page collections (by collection key) ─────────────────
+// Which surah groups the user has collapsed on the index. Default (absent) is
+// expanded; a key present in the set means that group is collapsed. Persisted
+// so the choice survives reloads.
+const collapseStore = createStore("lq:collapsed:v1");
+
+/** The set of collapsed collection keys (reactive). */
+export function useCollapsedCollections(): string[] {
+  return useSyncExternalStore(collapseStore.subscribe, collapseStore.read, () => EMPTY);
+}
+
+export function setCollectionCollapsed(key: string, collapsed: boolean): void {
+  collapseStore.set(key, collapsed);
+}
+
 // ── Prayer dua confidence (by dua name) ─────────────────────────────────
 // Same graded self-assessment as surahs; the old binary "learned" store
 // (lq:duas:v1) migrates so previously-checked duas start at SOLID.

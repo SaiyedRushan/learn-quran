@@ -62,7 +62,7 @@ export default function AboutPage() {
           جُزْءُ عَمَّ
         </div>
         <p className='hero-text'>
-          Section-by-section guides for every surah in Juz Amma — verified Arabic and translation, key vocabulary, memory hooks, and recitation breakdowns. Built to make
+          Section-by-section guides for every surah in Juz 29 (Tabārak) and Juz Amma — verified Arabic and translation, key vocabulary, memory hooks, and recitation breakdowns. Built to make
           memorization and reflection genuinely easier. Tap any surah to begin, and mark it learned as you go.
         </p>
       </section>
@@ -74,8 +74,8 @@ export default function AboutPage() {
           <div className='ov-text'>
             <p>
               <strong>Learn Quran</strong> is a free web app for memorising and understanding the Quran, built around small,
-              digestible sections rather than walls of text. It starts with <strong>Juz 30 (Juz ʿAmma)</strong> — the short
-              surahs most of us recite every day — and is designed to grow from there.
+              digestible sections rather than walls of text. It covers <strong>Juz 29 (Tabārak)</strong> and <strong>Juz 30
+              (Juz ʿAmma)</strong> — the short surahs most of us recite every day — and is designed to grow from there.
             </p>
             <p>
               Instead of just showing you Arabic to repeat, each surah is broken into themed sections with a plain-English

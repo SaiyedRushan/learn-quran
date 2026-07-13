@@ -11,7 +11,7 @@ const guide: SurahGuide = {
     revelationType: "Makkan",
     revelationDetail: "Makkan",
     verseCount: 30,
-    collection: "virtues",
+    collection: "juz29",
     stats: [
       { label: "Verses", value: "30" },
       { label: "Revealed", value: "77th" },

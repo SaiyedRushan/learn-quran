@@ -39,15 +39,28 @@ import s112 from "./112-al-ikhlaas";
 import s113 from "./113-al-falaq";
 import s114 from "./114-an-naas";
 
+// Juz 29 (Tabārak) — surahs 67–77
+import s67 from "./67-al-mulk";
+import s68 from "./68-al-qalam";
+import s69 from "./69-al-haaqqa";
+import s70 from "./70-al-maaarij";
+import s71 from "./71-nooh";
+import s72 from "./72-al-jinn";
+import s73 from "./73-al-muzzammil";
+import s74 from "./74-al-muddaththir";
+import s75 from "./75-al-qiyaama";
+import s76 from "./76-al-insaan";
+import s77 from "./77-al-mursalaat";
+
 // Recommended Recitations collection
-import gMulk from "./67-al-mulk";
 import gKahf from "./18-al-kahf-protection";
 import gKursi from "./2-ayat-al-kursi";
 import gBaqarah from "./2-al-baqarah-last-2";
 
 export const guides: SurahGuide[] = [
+  s67, s68, s69, s70, s71, s72, s73, s74, s75, s76, s77,
   s78, s79, s80, s81, s82, s83, s84, s85, s86, s87, s88, s89, s90, s91, s92,
   s93, s94, s95, s96, s97, s98, s99, s100, s101, s102, s103, s104, s105, s106,
   s107, s108, s109, s110, s111, s112, s113, s114,
-  gMulk, gKahf, gKursi, gBaqarah,
+  gKahf, gKursi, gBaqarah,
 ];

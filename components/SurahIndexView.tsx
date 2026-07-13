@@ -10,6 +10,8 @@ import {
   type ConfidenceLevel,
   setAllSectionsLearned,
   useAllLearnedSectionKeys,
+  useCollapsedCollections,
+  setCollectionCollapsed,
 } from "@/lib/progress";
 import { searchSurahs } from "@/lib/search";
 import type { Collection } from "@/content/types";
@@ -39,6 +41,9 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
   const conf = useAllConfidence();
   const levelOf = (slug: string) => (conf[slug] ?? 0) as ConfidenceLevel;
 
+  const collapsed = useCollapsedCollections();
+  const isCollapsed = (key: string) => collapsed.includes(key);
+
   // count learned sections per guide from the raw keys ("slug:index")
   const learnedSecBySlug = new Map<string, number>();
   for (const key of useAllLearnedSectionKeys()) {
@@ -50,14 +55,16 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
   const learnedHere = (s: SurahListItem) =>
     Math.min(learnedSecBySlug.get(s.slug) ?? 0, s.sectionCount);
 
+  const juz29 = surahs.filter((s) => s.collection === "juz29");
   const juz30 = surahs.filter((s) => s.collection === "juz30");
   const virtues = surahs.filter((s) => s.collection === "virtues");
 
-  // progress summary tracks the Juz 30 memorization goal (Solid = done)
-  const done = juz30.filter((s) => levelOf(s.slug) >= CONFIDENCE.SOLID).length;
-  const pct = juz30.length ? Math.round((done / juz30.length) * 100) : 0;
-  const totalSections = juz30.reduce((a, s) => a + s.sectionCount, 0);
-  const learnedSectionsTotal = juz30.reduce((a, s) => a + learnedHere(s), 0);
+  // progress summary tracks the memorization goal across both juz (Solid = done)
+  const memorization = [...juz29, ...juz30];
+  const done = memorization.filter((s) => levelOf(s.slug) >= CONFIDENCE.SOLID).length;
+  const pct = memorization.length ? Math.round((done / memorization.length) * 100) : 0;
+  const totalSections = memorization.reduce((a, s) => a + s.sectionCount, 0);
+  const learnedSectionsTotal = memorization.reduce((a, s) => a + learnedHere(s), 0);
 
   function renderCard(s: SurahListItem) {
     const level = levelOf(s.slug);
@@ -124,13 +131,54 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
     );
   }
 
+  function renderGroup(
+    key: string,
+    heading: string,
+    items: SurahListItem[],
+    note?: React.ReactNode,
+  ) {
+    const open = !isCollapsed(key);
+    return (
+      <>
+        <button
+          type="button"
+          className="list-heading list-heading-toggle"
+          aria-expanded={open}
+          onClick={() => setCollectionCollapsed(key, open)}
+        >
+          <svg
+            className={`lh-chevron ${open ? "open" : ""}`}
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="9 6 15 12 9 18" />
+          </svg>
+          <span className="lh-label">{heading}</span>
+        </button>
+        {open && (
+          <>
+            {note}
+            <div className="surah-list">{items.map(renderCard)}</div>
+          </>
+        )}
+      </>
+    );
+  }
+
   return (
     <>
       <div className="progress-summary">
         <div className="ps-top">
           <span className="ps-label">Your progress</span>
           <span className="ps-count">
-            <strong>{done}</strong> of {juz30.length} surahs
+            <strong>{done}</strong> of {memorization.length} surahs
           </span>
         </div>
         <div className="progress-track">
@@ -192,19 +240,20 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
         </>
       ) : (
         <>
-          <div className="list-heading">Juz 30 · Juz Amma — {juz30.length} surahs</div>
-          <div className="surah-list">{juz30.map(renderCard)}</div>
+          {renderGroup("juz29", `Juz 29 · Tabārak — ${juz29.length} surahs`, juz29)}
 
-          {virtues.length > 0 && (
-            <>
-              <div className="list-heading">Recommended Recitations</div>
+          {renderGroup("juz30", `Juz 30 · Juz Amma — ${juz30.length} surahs`, juz30)}
+
+          {virtues.length > 0 &&
+            renderGroup(
+              "virtues",
+              "Recommended Recitations",
+              virtues,
               <p className="group-note">
                 Surahs and verses the Sunnah encourages reciting regularly — for
                 protection, provision, and reward.
-              </p>
-              <div className="surah-list">{virtues.map(renderCard)}</div>
-            </>
-          )}
+              </p>,
+            )}
         </>
       )}
     </>
