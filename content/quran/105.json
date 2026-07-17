@@ -9,26 +9,31 @@
     {
       "number": 1,
       "arabic": "أَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ بِأَصْحَٰبِ ٱلْفِيلِ",
+      "transliteration": "Alam tara kayfa faʿala rabbuka biʾaṣḥābi-l-fīl",
       "translation": "Have you not considered, [O Muhammad], how your Lord dealt with the companions of the elephant?"
     },
     {
       "number": 2,
       "arabic": "أَلَمْ يَجْعَلْ كَيْدَهُمْ فِى تَضْلِيلٍۢ",
+      "transliteration": "Alam yajʿal kaydahum fī taḍlīl",
       "translation": "Did He not make their plan into misguidance?"
     },
     {
       "number": 3,
       "arabic": "وَأَرْسَلَ عَلَيْهِمْ طَيْرًا أَبَابِيلَ",
+      "transliteration": "Waʾarsala ʿalayhim ṭayran abābīl",
       "translation": "And He sent against them birds in flocks,"
     },
     {
       "number": 4,
       "arabic": "تَرْمِيهِم بِحِجَارَةٍۢ مِّن سِجِّيلٍۢ",
+      "transliteration": "Tarmīhim biḥijāratin min sijjīl",
       "translation": "Striking them with stones of hard clay,"
     },
     {
       "number": 5,
       "arabic": "فَجَعَلَهُمْ كَعَصْفٍۢ مَّأْكُولٍۭ",
+      "transliteration": "Fajaʿalahum kaʿaṣfin maʾkūl",
       "translation": "And He made them like eaten straw."
     }
   ]

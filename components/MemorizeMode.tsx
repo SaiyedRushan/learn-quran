@@ -19,9 +19,9 @@ const PILL: Record<PillColor, string> = {
   slate: "tp-slate",
 };
 
-// The fading-crutches ladder. Each stage removes one support. Adapted to the
-// available verified data (Arabic + English translation only — there is no
-// per-ayah transliteration in the dataset).
+// The fading-crutches ladder. Each stage removes one support. Memorization
+// works from Arabic + meaning only; transliteration is deliberately left out of
+// this flow so it never becomes a crutch, even though the dataset now carries it.
 const STAGES = [
   {key: "read", label: "Read", hint: "Read the Arabic and its meaning together a few times until the flow feels familiar."},
   {key: "arabic", label: "Arabic only", hint: "Read the Arabic aloud. Tap a verse to check its meaning when you need it."},

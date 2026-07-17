@@ -57,7 +57,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
   const [memorizeScope, setMemorizeScope] = useState<MemorizeScope | null>(null);
   const confidence = useConfidence(guide.meta.slug);
   const learnedSections = new Set(useLearnedSections(guide.meta.slug));
-  const {zenMode} = useSettings();
+  const {zenMode, showTransliteration} = useSettings();
 
   // A "next section" link from Today's plan arrives as /surah/slug/#sec-N —
   // open that section (so its verses are visible) and scroll to it on mount.
@@ -136,6 +136,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
 
   function renderGroup(g: VerseGroup, key: number) {
     const ayahs = verses.ayahs.filter((a) => a.number >= g.from && a.number <= g.to);
+    const transliteration = ayahs.map((a) => a.transliteration).join(" ");
     const translation = ayahs.map((a) => a.translation).join(" ");
     const hasWeak = ayahs.some((a) => weakAyahs.has(a.number));
     return (
@@ -152,6 +153,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
             </span>
           ))}
         </div>
+        {!zenMode && showTransliteration && <div className='vtranslit'>{transliteration}</div>}
         <div className='vtrans'>{translation}</div>
       </div>
     );

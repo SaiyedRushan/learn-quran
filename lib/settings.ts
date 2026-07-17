@@ -18,9 +18,11 @@ export interface Settings {
   // Zen mode: strip the teaching layer (overview, notes, tabs, vocab, etc.)
   // and show only the Arabic text with its English translation.
   zenMode: boolean;
+  // Show the romanized (ALA-LC) transliteration line beneath each verse.
+  showTransliteration: boolean;
 }
 
-export const DEFAULTS: Settings = {arabicScale: 1, englishScale: 1, zenMode: false};
+export const DEFAULTS: Settings = {arabicScale: 1, englishScale: 1, zenMode: false, showTransliteration: true};
 
 let cache: Settings | null = null;
 const listeners = new Set<() => void>();
