@@ -39,6 +39,8 @@ body {
   line-height: 1.5;
   -webkit-text-size-adjust: 100%;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 a {
@@ -62,9 +64,12 @@ a {
 }
 
 .wrap {
+  width: 100%;
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 16px;
+  /* Grow to fill the viewport so the footer sits at the bottom on short pages. */
+  flex: 1 0 auto;
 }
 
 /* ── Site header ── */
@@ -136,6 +141,57 @@ a {
   color: var(--color-text-primary);
 }
 
+/* ── Primary nav: inline links on wide screens, a menu button on mobile ── */
+.nav-desktop {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.nav-mobile {
+  display: none;
+  position: relative;
+}
+@media (max-width: 600px) {
+  .nav-desktop {
+    display: none;
+  }
+  .nav-mobile {
+    display: block;
+  }
+}
+.nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+}
+.nav-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 40;
+  min-width: 168px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  animation: lq-fade 0.12s ease;
+}
+.nav-menu-link {
+  display: block;
+  padding: 10px 12px;
+  border-radius: var(--border-radius-md);
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+.nav-menu-link:hover {
+  background: var(--color-background-secondary);
+  color: var(--color-text-primary);
+}
+
 /* ── Back link ── */
 .back-link {
   display: inline-flex;
@@ -148,6 +204,21 @@ a {
 }
 .back-link:hover {
   color: var(--accent-bright);
+}
+
+/* ── Home intro (landing H1 + summary) ──
+   Kept in the DOM for search engines and screen readers, but visually hidden
+   so it doesn't take up space above the dashboard. */
+.home-intro {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* ── Home hero ── */
@@ -1941,6 +2012,115 @@ a {
   font-size: 11px;
   color: var(--color-text-tertiary);
   margin-top: 10px;
+}
+
+/* ── Blog index ── */
+.blog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.blog-card {
+  display: block;
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 16px 18px;
+  transition: border-color 0.15s, transform 0.05s;
+}
+.blog-card:hover {
+  border-color: var(--color-border-secondary);
+}
+.blog-card:active {
+  transform: scale(0.995);
+}
+.bc-meta {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+.bc-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.35;
+  margin-top: 5px;
+}
+.bc-summary {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-top: 6px;
+}
+
+/* ── Blog post ── */
+.blog-post {
+  max-width: 62ch;
+}
+.bp-meta {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+.bp-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-top: 8px;
+}
+.bp-arabic {
+  font-family: var(--font-serif);
+  font-size: calc(26px * var(--scale-ar));
+  color: var(--accent);
+  direction: rtl;
+  line-height: 1.9;
+  margin-top: 12px;
+}
+.bp-body {
+  margin-top: 20px;
+}
+.bp-heading {
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-text-primary);
+  margin: 28px 0 0;
+}
+.bp-paragraph {
+  font-size: calc(15px * var(--scale-en));
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+  margin-top: 14px;
+}
+.bp-paragraph strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+.bp-list {
+  margin: 14px 0 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bp-list li {
+  font-size: calc(15px * var(--scale-en));
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+.bp-list li strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+.bp-callout {
+  margin: 20px 0 0;
+}
+
+@media (max-width: 420px) {
+  .bp-title {
+    font-size: 24px;
+  }
 }
 
 /* ── Memorize mode ───────────────────────────────────────────────────────── */

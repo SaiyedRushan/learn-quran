@@ -3,10 +3,20 @@ import Link from "next/link";
 import duas from "@/content/duas";
 import DuasView from "@/components/DuasView";
 
+const DESCRIPTION =
+  "The essential duas of the Islamic prayer — answering the adhan and the dua after it, the opening supplication, rukūʿ and sujūd, the Tashahhud, the salah on the Prophet ﷺ, duas before the salām, and Duʿāʾ al-Qunūt — with Arabic, transliteration, and translation.";
+
 export const metadata: Metadata = {
   title: "Duas of the Prayer",
-  description:
-    "The essential duas of the Islamic prayer — answering the adhan and the dua after it, the opening supplication, rukūʿ and sujūd, the Tashahhud, the salah on the Prophet ﷺ, duas before the salām, and Duʿāʾ al-Qunūt — with Arabic, transliteration, and translation.",
+  description: DESCRIPTION,
+  alternates: {canonical: "/duas/"},
+  openGraph: {
+    title: "Duas of the Prayer · Learn Quran",
+    description: DESCRIPTION,
+    url: "/duas/",
+    type: "article",
+  },
+  twitter: {card: "summary_large_image", title: "Duas of the Prayer · Learn Quran", description: DESCRIPTION},
 };
 
 export default function DuasPage() {
