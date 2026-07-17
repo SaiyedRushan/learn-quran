@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import Link from "next/link";
 import SettingsControl from "@/components/SettingsControl";
+import Walkthrough from "@/components/Walkthrough";
 import {Analytics} from "@vercel/analytics/next";
 import "./globals.css";
 
@@ -65,6 +66,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           </div>
         </header>
         <main className='wrap'>{children}</main>
+        <Walkthrough />
         <footer className='site-footer'>
           Arabic text (Uthmani) and the Sahih International translation are sourced from the{" "}
           <a href='https://alquran.cloud/api' target='_blank' rel='noreferrer'>

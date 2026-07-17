@@ -2384,3 +2384,380 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Product tour (Walkthrough) ─────────────────────────────────────────── */
+.tour-modal {
+  max-width: 440px;
+}
+.tour-body {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+  margin: 14px 0 16px;
+}
+/* Illustrative panel — evokes each feature using the app's own tokens. */
+.tour-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 132px;
+  padding: 18px;
+  margin-top: 14px;
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+}
+.tour-stack {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Step 1 — welcome */
+.tour-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.tour-glyph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  font-family: var(--font-serif);
+  font-size: 34px;
+  color: #fff;
+  background: var(--accent);
+  box-shadow: 0 6px 24px rgba(29, 158, 117, 0.35);
+}
+.tour-hero-tag {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-bright);
+  letter-spacing: 0.02em;
+}
+
+/* Steps 2 & 6 — surah / dua rows */
+.tour-rows {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tour-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px;
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+}
+.tour-row-num {
+  flex: none;
+  min-width: 26px;
+  height: 22px;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+  background: var(--color-background-secondary);
+  border-radius: 6px;
+}
+.tour-dua-mark {
+  flex: none;
+  font-size: 16px;
+}
+.tour-row-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.tour-row-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.tour-row-ep {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}
+.tour-badge {
+  flex: none;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 0.5px solid var(--color-border-secondary);
+  color: var(--color-text-secondary);
+}
+.tour-badge.solid {
+  color: var(--accent-bright);
+  border-color: var(--accent);
+  background: rgba(29, 158, 117, 0.12);
+}
+.tour-badge.learn {
+  color: #e0b64a;
+  border-color: #7a5f1e;
+  background: rgba(224, 182, 74, 0.1);
+}
+
+/* Step 3 — how a guide is built (themed section, verse blocks, hadith) */
+.tour-guide {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+}
+.tour-guide-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tour-guide-badge {
+  flex: none;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+.tour-guide-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.tour-blocks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tour-block {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 0.5px dashed var(--color-border-secondary);
+  background: var(--color-background-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.tour-hadith {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: var(--border-radius-md);
+  border-left: 2px solid var(--accent);
+  background: rgba(29, 158, 117, 0.08);
+}
+.tour-hadith-mark {
+  flex: none;
+  font-size: 14px;
+}
+.tour-hadith-text {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+/* Step 4 — memorize mode's five phases */
+.tour-phases {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tour-phase {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+  transition: border-color 0.35s ease, background 0.35s ease;
+}
+.tour-phase.active {
+  border-color: var(--accent);
+  background: rgba(29, 158, 117, 0.1);
+}
+.tour-phase.active .tour-phase-label {
+  color: var(--accent-bright);
+}
+.tour-phase-num {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  background: var(--color-background-secondary);
+  border-radius: 50%;
+  transition: color 0.35s ease, background 0.35s ease, transform 0.35s ease;
+}
+.tour-phase.active .tour-phase-num {
+  color: #fff;
+  background: var(--accent);
+  transform: scale(1.12);
+}
+.tour-phase.done .tour-phase-num {
+  color: #fff;
+  background: rgba(29, 158, 117, 0.55);
+}
+.tour-phase-copy {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  min-width: 0;
+}
+.tour-phase-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.tour-phase-hint {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}
+
+/* Step 5 — confidence chips + a Today's-plan row */
+.tour-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+.tour-chip {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 0.5px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+}
+.tour-chip.on {
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.tour-plan {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px;
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+}
+.tour-plan-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-bright);
+}
+.tour-plan-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.tour-plan-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.tour-plan-sub {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}
+.tour-plan-time {
+  flex: none;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-bright);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Step 6 — settings mini-preview */
+.tour-settings {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+}
+.tour-aa {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+.tour-aa-sm {
+  font-size: 9px;
+}
+.tour-zen {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+.tour-switch {
+  width: 34px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--accent);
+  position: relative;
+}
+.tour-switch-knob {
+  position: absolute;
+  top: 3px;
+  left: 17px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* Progress dots */
+.tour-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.tour-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-border-secondary);
+  transition: background 0.15s, transform 0.15s;
+}
+.tour-dot.on {
+  background: var(--accent-bright);
+  transform: scale(1.25);
+}

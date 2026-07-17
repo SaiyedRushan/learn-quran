@@ -1,5 +1,6 @@
 import type {Metadata} from "next";
 import Link from "next/link";
+import TakeTheTourButton from "@/components/TakeTheTourButton";
 
 export const metadata: Metadata = {
   title: "About & Contact",
@@ -100,6 +101,9 @@ export default function AboutPage() {
                 <div className='fc-text'>{f.text}</div>
               </div>
             ))}
+          </div>
+          <div className='contact-row' style={{marginTop: 16}}>
+            <TakeTheTourButton />
           </div>
         </div>
       </div>
