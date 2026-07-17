@@ -1,16 +1,15 @@
 [
   {
     "number": 18,
-    "slug": "al-kahf-protection",
-    "name": "Al-Kahf — First & Last 10",
-    "epithet": "Protection from the Dajjal",
+    "slug": "al-kahf",
+    "name": "Al-Kahf",
+    "epithet": "The Cave",
     "arabicName": "سُورَةُ الكَهۡفِ",
     "juz": 15,
     "revelationType": "Makkan",
-    "verseCount": 20,
+    "verseCount": 110,
     "collection": "virtues",
-    "note": "Especially on Fridays",
-    "passageRef": "Al-Kahf 1–10 & 101–110"
+    "note": "Recited on Fridays"
   },
   {
     "number": 2,

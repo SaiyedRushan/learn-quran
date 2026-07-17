@@ -53,7 +53,7 @@ import s76 from "./76-al-insaan";
 import s77 from "./77-al-mursalaat";
 
 // Recommended Recitations collection
-import gKahf from "./18-al-kahf-protection";
+import gKahf from "./18-al-kahf";
 import gKursi from "./2-ayat-al-kursi";
 import gBaqarah from "./2-al-baqarah-last-2";
 
