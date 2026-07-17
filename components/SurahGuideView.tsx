@@ -136,7 +136,6 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
 
   function renderGroup(g: VerseGroup, key: number) {
     const ayahs = verses.ayahs.filter((a) => a.number >= g.from && a.number <= g.to);
-    const transliteration = ayahs.map((a) => a.transliteration).join(" ");
     const translation = ayahs.map((a) => a.translation).join(" ");
     const hasWeak = ayahs.some((a) => weakAyahs.has(a.number));
     return (
@@ -153,7 +152,16 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
             </span>
           ))}
         </div>
-        {!zenMode && showTransliteration && <div className='vtranslit'>{transliteration}</div>}
+        {!zenMode && showTransliteration && (
+          <div className='vtranslit'>
+            {ayahs.map((a, idx) => (
+              <span key={a.number}>
+                {idx > 0 && <span className='var-sep'>•</span>}
+                {a.transliteration}
+              </span>
+            ))}
+          </div>
+        )}
         <div className='vtrans'>{translation}</div>
       </div>
     );
