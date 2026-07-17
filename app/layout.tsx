@@ -98,7 +98,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           . The teaching commentary (overviews, memory hooks, vocabulary notes, and recitation guidance) is an educational aid. Please verify any point of religious ruling with a trusted teacher.
           <div style={{marginTop: 10}}>
             Questions, corrections, or ideas?{" "}
-            <Link href='/about/#contact'>Get in touch</Link>.
+            <Link href='/contact/'>Get in touch</Link>.
           </div>
         </footer>
         <Analytics />

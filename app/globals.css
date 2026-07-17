@@ -2648,6 +2648,95 @@ a {
   }
 }
 
+/* ── Contact form ───────────────────────────────────────────────────────── */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.field-hint {
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+.field-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  resize: vertical;
+}
+.field-input::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+}
+.field-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.field-error {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #f87171;
+}
+/* Honeypot — hidden from humans, catches bots. */
+.contact-honey {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.contact-success {
+  text-align: center;
+  padding: 12px 8px;
+}
+.cs-icon {
+  font-size: 34px;
+  margin-bottom: 8px;
+}
+.cs-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 6px;
+}
+.cs-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  margin: 0 0 16px;
+}
+.contact-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+@media (max-width: 480px) {
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ── Product tour (Walkthrough) ─────────────────────────────────────────── */
 .tour-modal {
   max-width: 440px;

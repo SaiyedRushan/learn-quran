@@ -155,9 +155,9 @@ export default function AboutPage() {
             </p>
           </div>
           <div className='contact-row'>
-            <a className='contact-btn primary' href={`mailto:${CONTACT.email}?subject=Learn%20Quran%20feedback`}>
-              ✉️ Email me
-            </a>
+            <Link className='contact-btn primary' href='/contact/'>
+              ✉️ Contact me
+            </Link>
             {CONTACT.twitter && (
               <a className='contact-btn' href={CONTACT.twitter} target='_blank' rel='noreferrer'>
                 𝕏 Twitter / X
