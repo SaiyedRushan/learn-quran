@@ -236,6 +236,17 @@ export default function TodayDashboard({
           )}
         </div>
       )}
+
+      <div className="td-dua">
+        <span className="td-dua-icon" aria-hidden="true">🤲</span>
+        <span className="td-dua-text">
+          Begin by asking Allah to make it easy and lasting —{" "}
+          <span className="td-dua-ar">رَبِّ زِدْنِي عِلْمًا</span>{" "}
+          <span className="td-dua-en">
+            (<em>Rabbi zidni ‘ilma</em> — “My Lord, increase me in knowledge.”)
+          </span>
+        </span>
+      </div>
     </section>
   );
 }

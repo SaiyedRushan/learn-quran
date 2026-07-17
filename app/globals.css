@@ -291,6 +291,32 @@ a {
   margin-top: 4px;
   padding: 0 0 2px 18px;
 }
+.td-dua {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 0.5px solid var(--color-border-tertiary);
+}
+.td-dua-icon {
+  flex-shrink: 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.td-dua-text {
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--color-text-tertiary);
+}
+.td-dua-ar {
+  font-family: var(--font-serif);
+  color: var(--accent);
+  white-space: nowrap;
+}
+.td-dua-en {
+  color: var(--color-text-tertiary);
+}
 
 /* ── Intention block ── */
 .intention {
@@ -836,51 +862,6 @@ a {
 }
 
 /* ── "Before you begin" dua tip ── */
-.dua-tip {
-  background: #0d2e24;
-  border: 0.5px solid #14503c;
-  border-radius: var(--border-radius-lg);
-  padding: 14px 16px;
-  margin-bottom: 1rem;
-}
-.dua-tip-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-.dua-tip-icon {
-  font-size: 16px;
-  line-height: 1;
-}
-.dua-tip-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--accent-bright);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-.dua-tip-text {
-  font-size: 13px;
-  color: #a0cfc0;
-  line-height: 1.65;
-}
-.dua-tip-ar {
-  font-family: var(--font-serif);
-  direction: rtl;
-  text-align: right;
-  color: var(--accent-bright);
-  font-size: calc(22px * var(--scale-ar));
-  line-height: 2;
-  margin-top: 10px;
-}
-.dua-tip-en {
-  font-size: calc(12px * var(--scale-en));
-  color: var(--accent);
-  line-height: 1.5;
-  margin-top: 4px;
-}
-
 /* ── Overview ── */
 .overview {
   background: var(--color-background-primary);
