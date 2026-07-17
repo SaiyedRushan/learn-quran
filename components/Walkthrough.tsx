@@ -76,6 +76,22 @@ const STEPS: Step[] = [
     ),
   },
   {
+    title: "Begin with your intention",
+    body: "At the top of the home page you can write your own intention — your niyyah, the reasons you're learning. It greets you every time you return, so on the days motivation runs low you're reminded why you started. Tap it anytime to write or revise.",
+    panel: (
+      <div className="tour-intention">
+        <div className="tour-intention-head">
+          <span className="tour-intention-label">My intention</span>
+          <span className="tour-intention-edit">Edit</span>
+        </div>
+        <p className="tour-intention-text">
+          To carry Allah&rsquo;s words in my heart, and let them steady me in
+          prayer.
+        </p>
+      </div>
+    ),
+  },
+  {
     title: "Browse the library",
     body: "The home page lists every surah, grouped into collapsible collections. Each shows its confidence badge, so you can see at a glance what you've started and what's solid.",
     panel: (

@@ -185,6 +185,64 @@ export function useToggleLearned(slug: string): () => void {
   );
 }
 
+// ── Intention: the reader's own "why", shown at the top of the home page ──
+// A single free-text note the reader writes to remind themselves why they're
+// learning — persisted like everything else, no backend.
+function createTextStore(key: string) {
+  let cache: string | null = null;
+  const listeners = new Set<() => void>();
+
+  function read(): string {
+    if (cache !== null) return cache;
+    if (typeof window === "undefined") return (cache = "");
+    try {
+      cache = window.localStorage.getItem(key) ?? "";
+    } catch {
+      cache = "";
+    }
+    return cache;
+  }
+
+  function write(next: string): void {
+    cache = next;
+    try {
+      if (next) window.localStorage.setItem(key, next);
+      else window.localStorage.removeItem(key);
+    } catch {
+      /* storage unavailable — keep in-memory only */
+    }
+    listeners.forEach((l) => l());
+  }
+
+  function subscribe(cb: () => void): () => void {
+    listeners.add(cb);
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === key) {
+        cache = null;
+        cb();
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    return () => {
+      listeners.delete(cb);
+      window.removeEventListener("storage", onStorage);
+    };
+  }
+
+  return { read, write, subscribe };
+}
+
+const intentionStore = createTextStore("lq:intention:v1");
+
+/** The reader's intention note (reactive). Empty string when unset. */
+export function useIntention(): string {
+  return useSyncExternalStore(intentionStore.subscribe, intentionStore.read, () => "");
+}
+
+export function setIntention(text: string): void {
+  intentionStore.write(text.trim());
+}
+
 // ── Learned sections (by "slug:index") ──────────────────────────────────
 const sectionStore = createStore("lq:sections:v2");
 const secKey = (slug: string, index: number) => `${slug}:${index}`;

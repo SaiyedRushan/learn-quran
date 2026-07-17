@@ -292,6 +292,100 @@ a {
   padding: 0 0 2px 18px;
 }
 
+/* ── Intention block ── */
+.intention {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-left: 2px solid var(--accent);
+  border-radius: var(--border-radius-lg);
+  padding: 14px 16px;
+  margin: 16px 0 0;
+}
+.intention-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.intention-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+.intention-edit {
+  flex-shrink: 0;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--accent-bright);
+  background: none;
+  border: none;
+  padding: 2px 4px;
+  cursor: pointer;
+}
+.intention-text {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--color-text-primary);
+  margin: 8px 0 0;
+  white-space: pre-wrap;
+}
+.intention-empty {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  background: none;
+  border: none;
+  padding: 8px 0 0;
+  margin: 0;
+  cursor: pointer;
+}
+.intention-empty:hover {
+  color: var(--color-text-primary);
+}
+.intention-input {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px 12px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  resize: vertical;
+}
+.intention-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.intention-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.intention-btn {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  padding: 6px 14px;
+  cursor: pointer;
+}
+.intention-btn.primary {
+  color: #06120e;
+  background: var(--accent-bright);
+  border-color: var(--accent-bright);
+}
+
 /* ── Overall progress bar ── */
 .progress-summary {
   background: var(--color-background-primary);
@@ -2442,7 +2536,42 @@ a {
   letter-spacing: 0.02em;
 }
 
-/* Steps 2 & 6 — surah / dua rows */
+/* Intention step — mirrors the home-page intention block */
+.tour-intention {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-left: 2px solid var(--accent);
+  border-radius: var(--border-radius-md);
+}
+.tour-intention-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.tour-intention-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+.tour-intention-edit {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-bright);
+}
+.tour-intention-text {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  margin: 8px 0 0;
+}
+
+/* surah / dua rows */
 .tour-rows {
   width: 100%;
   display: flex;

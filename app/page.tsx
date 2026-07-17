@@ -1,5 +1,6 @@
 import { surahIndex, getGuide } from "@/lib/content";
 import SurahIndexView, { type SurahListItem } from "@/components/SurahIndexView";
+import IntentionBlock from "@/components/IntentionBlock";
 import TodayDashboard, { type DashSurah, type DashDua } from "@/components/TodayDashboard";
 import PrayerCta from "@/components/PrayerCta";
 import duas from "@/content/duas";
@@ -46,6 +47,8 @@ export default function Home() {
 
   return (
     <>
+      <IntentionBlock />
+
       <TodayDashboard surahs={dashSurahs} duas={dashDuas} />
 
       <SurahIndexView surahs={surahs} />
