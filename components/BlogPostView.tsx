@@ -4,18 +4,40 @@ import type {BlogBlock} from "@/content/blog";
 // Inline emphasis written as **bold** or *italic* in the post source.
 const INLINE = /(\*\*[^*]+\*\*|\*[^*]+\*)/g;
 
+// Runs of Arabic script (letters, their vowel marks, and the spaces between
+// them) are wrapped in a span so they render larger and clearer than the Latin
+// body text — the diacritics and stopping symbols are hard to read otherwise.
+const ARABIC_RUN =
+  /([؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿][؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿\s]*)/g;
+const ARABIC_CHAR = /[؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿]/;
+
+function withArabic(text: string): React.ReactNode[] {
+  return text
+    .split(ARABIC_RUN)
+    .filter(Boolean)
+    .map((part, i) =>
+      ARABIC_CHAR.test(part.charAt(0)) ? (
+        <span className='ar-inline' key={i}>
+          {part}
+        </span>
+      ) : (
+        <Fragment key={i}>{part}</Fragment>
+      )
+    );
+}
+
 function renderInline(text: string): React.ReactNode[] {
   return text
     .split(INLINE)
     .filter(Boolean)
     .map((part, i) => {
       if (part.startsWith("**") && part.endsWith("**")) {
-        return <strong key={i}>{part.slice(2, -2)}</strong>;
+        return <strong key={i}>{withArabic(part.slice(2, -2))}</strong>;
       }
       if (part.startsWith("*") && part.endsWith("*")) {
-        return <em key={i}>{part.slice(1, -1)}</em>;
+        return <em key={i}>{withArabic(part.slice(1, -1))}</em>;
       }
-      return <Fragment key={i}>{part}</Fragment>;
+      return <Fragment key={i}>{withArabic(part)}</Fragment>;
     });
 }
 
