@@ -7,6 +7,7 @@
 import { writeFile, mkdir } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { transliterateAyah } from "./lib/ala-lc.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const QURAN_DIR = join(__dirname, "..", "content", "quran");
@@ -30,18 +31,27 @@ function stripBismillah(text) {
 }
 
 async function fetchSurah(num, keep) {
-  const url = `https://api.alquran.cloud/v1/surah/${num}/editions/quran-uthmani,en.sahih`;
+  const url = `https://api.alquran.cloud/v1/surah/${num}/editions/quran-uthmani,en.sahih,quran-simple`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status} for surah ${num}`);
   const json = await res.json();
   if (json.code !== 200) throw new Error(`API code ${json.code} for surah ${num}`);
-  const [ar, en] = json.data;
+  const [ar, en, simple] = json.data;
 
   const ayahs = ar.ayahs
     .map((a, i) => {
       let arabic = a.text.trim();
-      if (a.numberInSurah === 1) arabic = stripBismillah(arabic);
-      return { number: a.numberInSurah, arabic, translation: en.ayahs[i].text.trim() };
+      let simpleText = simple.ayahs[i].text.trim();
+      if (a.numberInSurah === 1) {
+        arabic = stripBismillah(arabic);
+        simpleText = stripBismillah(simpleText);
+      }
+      return {
+        number: a.numberInSurah,
+        arabic,
+        transliteration: transliterateAyah(simpleText),
+        translation: en.ayahs[i].text.trim(),
+      };
     })
     .filter((a) => (keep ? keep(a.number) : true));
 

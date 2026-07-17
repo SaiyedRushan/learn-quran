@@ -9,41 +9,49 @@
     {
       "number": 1,
       "arabic": "إِذَا زُلْزِلَتِ ٱلْأَرْضُ زِلْزَالَهَا",
+      "transliteration": "Idhā zulzilati-l-ʾarḍu zilzālahā",
       "translation": "When the earth is shaken with its [final] earthquake"
     },
     {
       "number": 2,
       "arabic": "وَأَخْرَجَتِ ٱلْأَرْضُ أَثْقَالَهَا",
+      "transliteration": "Waʾakhrajati-l-ʾarḍu athqālahā",
       "translation": "And the earth discharges its burdens"
     },
     {
       "number": 3,
       "arabic": "وَقَالَ ٱلْإِنسَٰنُ مَا لَهَا",
+      "transliteration": "Waqāla-l-ʾinsānu mā lahā",
       "translation": "And man says, \"What is [wrong] with it?\" -"
     },
     {
       "number": 4,
       "arabic": "يَوْمَئِذٍۢ تُحَدِّثُ أَخْبَارَهَا",
+      "transliteration": "Yawmaʾidhin tuḥaddithu akhbārahā",
       "translation": "That Day, it will report its news"
     },
     {
       "number": 5,
       "arabic": "بِأَنَّ رَبَّكَ أَوْحَىٰ لَهَا",
+      "transliteration": "Biʾanna rabbaka awḥā lahā",
       "translation": "Because your Lord has commanded it."
     },
     {
       "number": 6,
       "arabic": "يَوْمَئِذٍۢ يَصْدُرُ ٱلنَّاسُ أَشْتَاتًۭا لِّيُرَوْا۟ أَعْمَٰلَهُمْ",
+      "transliteration": "Yawmaʾidhin yaṣduru-n-nāsu ashtātan liyuraw aʿmālahum",
       "translation": "That Day, the people will depart separated [into categories] to be shown [the result of] their deeds."
     },
     {
       "number": 7,
       "arabic": "فَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ خَيْرًۭا يَرَهُۥ",
+      "transliteration": "Faman yaʿmal mithqāla dharratin khayran yarah",
       "translation": "So whoever does an atom's weight of good will see it,"
     },
     {
       "number": 8,
       "arabic": "وَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍۢ شَرًّۭا يَرَهُۥ",
+      "transliteration": "Waman yaʿmal mithqāla dharratin sharran yarah",
       "translation": "And whoever does an atom's weight of evil will see it."
     }
   ]

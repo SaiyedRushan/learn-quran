@@ -9,16 +9,19 @@
     {
       "number": 1,
       "arabic": "إِنَّآ أَعْطَيْنَٰكَ ٱلْكَوْثَرَ",
+      "transliteration": "Innā aʿṭaynāka-l-kawthar",
       "translation": "Indeed, We have granted you, [O Muhammad], al-Kawthar."
     },
     {
       "number": 2,
       "arabic": "فَصَلِّ لِرَبِّكَ وَٱنْحَرْ",
+      "transliteration": "Faṣalli lirabbika wanḥar",
       "translation": "So pray to your Lord and sacrifice [to Him alone]."
     },
     {
       "number": 3,
       "arabic": "إِنَّ شَانِئَكَ هُوَ ٱلْأَبْتَرُ",
+      "transliteration": "Inna shāniʾaka huwa-l-ʾabtar",
       "translation": "Indeed, your enemy is the one cut off."
     }
   ]

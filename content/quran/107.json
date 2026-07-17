@@ -9,36 +9,43 @@
     {
       "number": 1,
       "arabic": "أَرَءَيْتَ ٱلَّذِى يُكَذِّبُ بِٱلدِّينِ",
+      "transliteration": "Araʾayta-lladhī yukadhdhibu bid-dīn",
       "translation": "Have you seen the one who denies the Recompense?"
     },
     {
       "number": 2,
       "arabic": "فَذَٰلِكَ ٱلَّذِى يَدُعُّ ٱلْيَتِيمَ",
+      "transliteration": "Fadhālika-lladhī yaduʿʿu-l-yatīm",
       "translation": "For that is the one who drives away the orphan"
     },
     {
       "number": 3,
       "arabic": "وَلَا يَحُضُّ عَلَىٰ طَعَامِ ٱلْمِسْكِينِ",
+      "transliteration": "Walā yaḥuḍḍu ʿalā ṭaʿāmi-l-miskīn",
       "translation": "And does not encourage the feeding of the poor."
     },
     {
       "number": 4,
       "arabic": "فَوَيْلٌۭ لِّلْمُصَلِّينَ",
+      "transliteration": "Fawaylun lil-muṣallīn",
       "translation": "So woe to those who pray"
     },
     {
       "number": 5,
       "arabic": "ٱلَّذِينَ هُمْ عَن صَلَاتِهِمْ سَاهُونَ",
+      "transliteration": "Alladhīna hum ʿan ṣalātihim sāhūn",
       "translation": "[But] who are heedless of their prayer -"
     },
     {
       "number": 6,
       "arabic": "ٱلَّذِينَ هُمْ يُرَآءُونَ",
+      "transliteration": "Alladhīna hum yurāʾūn",
       "translation": "Those who make show [of their deeds]"
     },
     {
       "number": 7,
       "arabic": "وَيَمْنَعُونَ ٱلْمَاعُونَ",
+      "transliteration": "Wayamnaʿūna-l-māʿūn",
       "translation": "And withhold [simple] assistance."
     }
   ]

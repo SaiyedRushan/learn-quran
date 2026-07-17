@@ -25,7 +25,8 @@ export default function SettingsControl() {
   const isDefault =
     settings.arabicScale === DEFAULTS.arabicScale &&
     settings.englishScale === DEFAULTS.englishScale &&
-    settings.zenMode === DEFAULTS.zenMode;
+    settings.zenMode === DEFAULTS.zenMode &&
+    settings.showTransliteration === DEFAULTS.showTransliteration;
 
   return (
     <>
@@ -80,6 +81,23 @@ export default function SettingsControl() {
                   aria-label='English text size'
                   onChange={(e) => setSetting("englishScale", Number(e.target.value))}
                 />
+              </div>
+
+              <div className='setting-toggle'>
+                <div className='toggle-copy'>
+                  <span className='setting-label'>Transliteration</span>
+                  <span className='toggle-desc'>Show the romanized (ALA-LC) pronunciation line beneath each verse. Turn off to read Arabic and English only.</span>
+                </div>
+                <button
+                  type='button'
+                  role='switch'
+                  aria-checked={settings.showTransliteration}
+                  aria-label='Transliteration'
+                  className={`switch ${settings.showTransliteration ? "on" : ""}`}
+                  onClick={() => setSetting("showTransliteration", !settings.showTransliteration)}
+                >
+                  <span className='switch-knob' />
+                </button>
               </div>
 
               <div className='setting-toggle'>

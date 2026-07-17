@@ -16,6 +16,7 @@ export type PillColor = "teal" | "purple" | "amber" | "coral" | "slate";
 export interface Ayah {
   number: number; // ayah number within the surah (1-indexed)
   arabic: string; // verified Uthmani text (bismillah stripped from ayah 1)
+  transliteration: string; // ALA-LC romanization, derived from the verified Arabic (scripts/lib/ala-lc.mjs)
   translation: string; // verified English (Sahih International)
 }
 

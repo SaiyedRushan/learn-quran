@@ -9,101 +9,121 @@
     {
       "number": 1,
       "arabic": "ٱلْحَمْدُ لِلَّهِ ٱلَّذِىٓ أَنزَلَ عَلَىٰ عَبْدِهِ ٱلْكِتَٰبَ وَلَمْ يَجْعَل لَّهُۥ عِوَجَا ۜ",
+      "transliteration": "Al-ḥamdu lillāhi-lladhī anzala ʿalā ʿabdihi-l-kitāba walam yajʿal lahu ʿiwajan",
       "translation": "[All] praise is [due] to Allah, who has sent down upon His Servant the Book and has not made therein any deviance."
     },
     {
       "number": 2,
       "arabic": "قَيِّمًۭا لِّيُنذِرَ بَأْسًۭا شَدِيدًۭا مِّن لَّدُنْهُ وَيُبَشِّرَ ٱلْمُؤْمِنِينَ ٱلَّذِينَ يَعْمَلُونَ ٱلصَّٰلِحَٰتِ أَنَّ لَهُمْ أَجْرًا حَسَنًۭا",
+      "transliteration": "Qayyiman liyundhira baʾsan shadīdan min ladunhu wayubashshira-l-muʾminīna-lladhīna yaʿmalūna-ṣ-ṣāliḥāti anna lahum ajran ḥasanā",
       "translation": "[He has made it] straight, to warn of severe punishment from Him and to give good tidings to the believers who do righteous deeds that they will have a good reward"
     },
     {
       "number": 3,
       "arabic": "مَّٰكِثِينَ فِيهِ أَبَدًۭا",
+      "transliteration": "Mākithīna fīhi abadā",
       "translation": "In which they will remain forever"
     },
     {
       "number": 4,
       "arabic": "وَيُنذِرَ ٱلَّذِينَ قَالُوا۟ ٱتَّخَذَ ٱللَّهُ وَلَدًۭا",
+      "transliteration": "Wayundhira-lladhīna qālū-ttakhadha-llāhu waladā",
       "translation": "And to warn those who say, \"Allah has taken a son.\""
     },
     {
       "number": 5,
       "arabic": "مَّا لَهُم بِهِۦ مِنْ عِلْمٍۢ وَلَا لِءَابَآئِهِمْ ۚ كَبُرَتْ كَلِمَةًۭ تَخْرُجُ مِنْ أَفْوَٰهِهِمْ ۚ إِن يَقُولُونَ إِلَّا كَذِبًۭا",
+      "transliteration": "Mā lahum bihi min ʿilmin walā liʾābāʾihim kaburat kalimatan takhruju min afwāhihim in yaqūlūna illā kadhibā",
       "translation": "They have no knowledge of it, nor had their fathers. Grave is the word that comes out of their mouths; they speak not except a lie."
     },
     {
       "number": 6,
       "arabic": "فَلَعَلَّكَ بَٰخِعٌۭ نَّفْسَكَ عَلَىٰٓ ءَاثَٰرِهِمْ إِن لَّمْ يُؤْمِنُوا۟ بِهَٰذَا ٱلْحَدِيثِ أَسَفًا",
+      "transliteration": "Falaʿallaka bākhiʿun nafsaka ʿalā āthārihim in lam yuʾminū bihādhā-l-ḥadīthi asafā",
       "translation": "Then perhaps you would kill yourself through grief over them, [O Muhammad], if they do not believe in this message, [and] out of sorrow."
     },
     {
       "number": 7,
       "arabic": "إِنَّا جَعَلْنَا مَا عَلَى ٱلْأَرْضِ زِينَةًۭ لَّهَا لِنَبْلُوَهُمْ أَيُّهُمْ أَحْسَنُ عَمَلًۭا",
+      "transliteration": "Innā jaʿalnā mā ʿalā-l-ʾarḍi zīnatan lahā linabluwahum ayyuhum aḥsanu ʿamalā",
       "translation": "Indeed, We have made that which is on the earth adornment for it that We may test them [as to] which of them is best in deed."
     },
     {
       "number": 8,
       "arabic": "وَإِنَّا لَجَٰعِلُونَ مَا عَلَيْهَا صَعِيدًۭا جُرُزًا",
+      "transliteration": "Waʾinnā lajāʿilūna mā ʿalayhā ṣaʿīdan juruzā",
       "translation": "And indeed, We will make that which is upon it [into] a barren ground."
     },
     {
       "number": 9,
       "arabic": "أَمْ حَسِبْتَ أَنَّ أَصْحَٰبَ ٱلْكَهْفِ وَٱلرَّقِيمِ كَانُوا۟ مِنْ ءَايَٰتِنَا عَجَبًا",
+      "transliteration": "Am ḥasibta anna aṣḥāba-l-kahfi war-raqīmi kānū min āyātinā ʿajabā",
       "translation": "Or have you thought that the companions of the cave and the inscription were, among Our signs, a wonder?"
     },
     {
       "number": 10,
       "arabic": "إِذْ أَوَى ٱلْفِتْيَةُ إِلَى ٱلْكَهْفِ فَقَالُوا۟ رَبَّنَآ ءَاتِنَا مِن لَّدُنكَ رَحْمَةًۭ وَهَيِّئْ لَنَا مِنْ أَمْرِنَا رَشَدًۭا",
+      "transliteration": "Idh awā-l-fityatu ilā-l-kahfi faqālū rabbanā ātinā min ladunka raḥmatan wahayyiʾ lanā min amrinā rashadā",
       "translation": "[Mention] when the youths retreated to the cave and said, \"Our Lord, grant us from Yourself mercy and prepare for us from our affair right guidance.\""
     },
     {
       "number": 101,
       "arabic": "ٱلَّذِينَ كَانَتْ أَعْيُنُهُمْ فِى غِطَآءٍ عَن ذِكْرِى وَكَانُوا۟ لَا يَسْتَطِيعُونَ سَمْعًا",
+      "transliteration": "Alladhīna kānat aʿyunuhum fī ghiṭāʾin ʿan dhikrī wakānū lā yastaṭīʿūna samʿā",
       "translation": "Those whose eyes had been within a cover [removed] from My remembrance, and they were not able to hear."
     },
     {
       "number": 102,
       "arabic": "أَفَحَسِبَ ٱلَّذِينَ كَفَرُوٓا۟ أَن يَتَّخِذُوا۟ عِبَادِى مِن دُونِىٓ أَوْلِيَآءَ ۚ إِنَّآ أَعْتَدْنَا جَهَنَّمَ لِلْكَٰفِرِينَ نُزُلًۭا",
+      "transliteration": "Afaḥasiba-lladhīna kafarū an yattakhidhū ʿibādī min dūnī awliyāʾa innā aʿtadnā jahannama lil-kāfirīna nuzulā",
       "translation": "Then do those who disbelieve think that they can take My servants instead of Me as allies? Indeed, We have prepared Hell for the disbelievers as a lodging."
     },
     {
       "number": 103,
       "arabic": "قُلْ هَلْ نُنَبِّئُكُم بِٱلْأَخْسَرِينَ أَعْمَٰلًا",
+      "transliteration": "Qul hal nunabbiʾukum bil-ʾakhsarīna aʿmālā",
       "translation": "Say, [O Muhammad], \"Shall we [believers] inform you of the greatest losers as to [their] deeds?"
     },
     {
       "number": 104,
       "arabic": "ٱلَّذِينَ ضَلَّ سَعْيُهُمْ فِى ٱلْحَيَوٰةِ ٱلدُّنْيَا وَهُمْ يَحْسَبُونَ أَنَّهُمْ يُحْسِنُونَ صُنْعًا",
+      "transliteration": "Alladhīna ḍalla saʿyuhum fī-l-ḥayāti-d-dunyā wahum yaḥsabūna annahum yuḥsinūna ṣunʿā",
       "translation": "[They are] those whose effort is lost in worldly life, while they think that they are doing well in work.\""
     },
     {
       "number": 105,
       "arabic": "أُو۟لَٰٓئِكَ ٱلَّذِينَ كَفَرُوا۟ بِـَٔايَٰتِ رَبِّهِمْ وَلِقَآئِهِۦ فَحَبِطَتْ أَعْمَٰلُهُمْ فَلَا نُقِيمُ لَهُمْ يَوْمَ ٱلْقِيَٰمَةِ وَزْنًۭا",
+      "transliteration": "Ūlāʾika-lladhīna kafarū biʾāyāti rabbihim waliqāʾihi faḥabiṭat aʿmāluhum falā nuqīmu lahum yawma-l-qiyāmati waznā",
       "translation": "Those are the ones who disbelieve in the verses of their Lord and in [their] meeting Him, so their deeds have become worthless; and We will not assign to them on the Day of Resurrection any importance."
     },
     {
       "number": 106,
       "arabic": "ذَٰلِكَ جَزَآؤُهُمْ جَهَنَّمُ بِمَا كَفَرُوا۟ وَٱتَّخَذُوٓا۟ ءَايَٰتِى وَرُسُلِى هُزُوًا",
+      "transliteration": "Dhālika jazāʾuhum jahannamu bimā kafarū wāttakhadhū āyātī warusulī huzuwā",
       "translation": "That is their recompense - Hell - for what they denied and [because] they took My signs and My messengers in ridicule."
     },
     {
       "number": 107,
       "arabic": "إِنَّ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ كَانَتْ لَهُمْ جَنَّٰتُ ٱلْفِرْدَوْسِ نُزُلًا",
+      "transliteration": "Inna-lladhīna āmanū waʿamilū-ṣ-ṣāliḥāti kānat lahum jannātu-l-firdawsi nuzulā",
       "translation": "Indeed, those who have believed and done righteous deeds - they will have the Gardens of Paradise as a lodging,"
     },
     {
       "number": 108,
       "arabic": "خَٰلِدِينَ فِيهَا لَا يَبْغُونَ عَنْهَا حِوَلًۭا",
+      "transliteration": "Khālidīna fīhā lā yabghūna ʿanhā ḥiwalā",
       "translation": "Wherein they abide eternally. They will not desire from it any transfer."
     },
     {
       "number": 109,
       "arabic": "قُل لَّوْ كَانَ ٱلْبَحْرُ مِدَادًۭا لِّكَلِمَٰتِ رَبِّى لَنَفِدَ ٱلْبَحْرُ قَبْلَ أَن تَنفَدَ كَلِمَٰتُ رَبِّى وَلَوْ جِئْنَا بِمِثْلِهِۦ مَدَدًۭا",
+      "transliteration": "Qul law kāna-l-baḥru midādan likalimāti rabbī lanafida-l-baḥru qabla an tanfada kalimātu rabbī walaw jiʾnā bimithlihi madadā",
       "translation": "Say, \"If the sea were ink for [writing] the words of my Lord, the sea would be exhausted before the words of my Lord were exhausted, even if We brought the like of it as a supplement.\""
     },
     {
       "number": 110,
       "arabic": "قُلْ إِنَّمَآ أَنَا۠ بَشَرٌۭ مِّثْلُكُمْ يُوحَىٰٓ إِلَىَّ أَنَّمَآ إِلَٰهُكُمْ إِلَٰهٌۭ وَٰحِدٌۭ ۖ فَمَن كَانَ يَرْجُوا۟ لِقَآءَ رَبِّهِۦ فَلْيَعْمَلْ عَمَلًۭا صَٰلِحًۭا وَلَا يُشْرِكْ بِعِبَادَةِ رَبِّهِۦٓ أَحَدًۢا",
+      "transliteration": "Qul innamā anā basharun mithlukum yūḥā ilayya annamā ilāhukum ilāhun wāḥidun faman kāna yarjū liqāʾa rabbihi falyaʿmal ʿamalan ṣāliḥan walā yushrik biʿibādati rabbihi aḥadā",
       "translation": "Say, \"I am only a man like you, to whom has been revealed that your god is one God. So whoever would hope for the meeting with his Lord - let him do righteous work and not associate in the worship of his Lord anyone.\""
     }
   ]

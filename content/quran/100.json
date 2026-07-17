@@ -9,56 +9,67 @@
     {
       "number": 1,
       "arabic": "وَٱلْعَٰدِيَٰتِ ضَبْحًۭا",
+      "transliteration": "Wal-ʿādiyāti ḍabḥā",
       "translation": "By the racers, panting,"
     },
     {
       "number": 2,
       "arabic": "فَٱلْمُورِيَٰتِ قَدْحًۭا",
+      "transliteration": "Fal-mūriyāti qadḥā",
       "translation": "And the producers of sparks [when] striking"
     },
     {
       "number": 3,
       "arabic": "فَٱلْمُغِيرَٰتِ صُبْحًۭا",
+      "transliteration": "Fal-mughīrāti ṣubḥā",
       "translation": "And the chargers at dawn,"
     },
     {
       "number": 4,
       "arabic": "فَأَثَرْنَ بِهِۦ نَقْعًۭا",
+      "transliteration": "Faʾatharna bihi naqʿā",
       "translation": "Stirring up thereby [clouds of] dust,"
     },
     {
       "number": 5,
       "arabic": "فَوَسَطْنَ بِهِۦ جَمْعًا",
+      "transliteration": "Fawasaṭna bihi jamʿā",
       "translation": "Arriving thereby in the center collectively,"
     },
     {
       "number": 6,
       "arabic": "إِنَّ ٱلْإِنسَٰنَ لِرَبِّهِۦ لَكَنُودٌۭ",
+      "transliteration": "Inna-l-ʾinsāna lirabbihi lakanūd",
       "translation": "Indeed mankind, to his Lord, is ungrateful."
     },
     {
       "number": 7,
       "arabic": "وَإِنَّهُۥ عَلَىٰ ذَٰلِكَ لَشَهِيدٌۭ",
+      "transliteration": "Waʾinnahu ʿalā dhālika lashahīd",
       "translation": "And indeed, he is to that a witness."
     },
     {
       "number": 8,
       "arabic": "وَإِنَّهُۥ لِحُبِّ ٱلْخَيْرِ لَشَدِيدٌ",
+      "transliteration": "Waʾinnahu liḥubbi-l-khayri lashadīd",
       "translation": "And indeed he is, in love of wealth, intense."
     },
     {
       "number": 9,
       "arabic": "۞ أَفَلَا يَعْلَمُ إِذَا بُعْثِرَ مَا فِى ٱلْقُبُورِ",
+      "transliteration": "afalā yaʿlamu idhā buʿthira mā fī-l-qubūr",
       "translation": "But does he not know that when the contents of the graves are scattered"
     },
     {
       "number": 10,
       "arabic": "وَحُصِّلَ مَا فِى ٱلصُّدُورِ",
+      "transliteration": "Waḥuṣṣila mā fī-ṣ-ṣudūr",
       "translation": "And that within the breasts is obtained,"
     },
     {
       "number": 11,
       "arabic": "إِنَّ رَبَّهُم بِهِمْ يَوْمَئِذٍۢ لَّخَبِيرٌۢ",
+      "transliteration": "Inna rabbahum bihim yawmaʾidhin lakhabīr",
       "translation": "Indeed, their Lord with them, that Day, is [fully] Acquainted."
     }
   ]

@@ -1056,6 +1056,13 @@ a {
   margin: 0 0.6em;
   color: var(--color-text-tertiary);
 }
+.vtranslit {
+  font-size: 13px;
+  color: #1d9e75;
+  font-style: italic;
+  line-height: 1.6;
+  margin-bottom: 4px;
+}
 .vtrans {
   font-size: 13px;
   color: var(--color-text-secondary);
@@ -1660,6 +1667,7 @@ a {
 .ov-text {
   font-size: calc(14px * var(--scale-en));
 }
+.vtranslit,
 .vtrans {
   font-size: calc(13px * var(--scale-en));
 }

@@ -9,41 +9,49 @@
     {
       "number": 1,
       "arabic": "أَلْهَىٰكُمُ ٱلتَّكَاثُرُ",
+      "transliteration": "Alhākumu-t-takāthur",
       "translation": "Competition in [worldly] increase diverts you"
     },
     {
       "number": 2,
       "arabic": "حَتَّىٰ زُرْتُمُ ٱلْمَقَابِرَ",
+      "transliteration": "Ḥattā zurtumu-l-maqābir",
       "translation": "Until you visit the graveyards."
     },
     {
       "number": 3,
       "arabic": "كَلَّا سَوْفَ تَعْلَمُونَ",
+      "transliteration": "Kallā sawfa taʿlamūn",
       "translation": "No! You are going to know."
     },
     {
       "number": 4,
       "arabic": "ثُمَّ كَلَّا سَوْفَ تَعْلَمُونَ",
+      "transliteration": "Thumma kallā sawfa taʿlamūn",
       "translation": "Then no! You are going to know."
     },
     {
       "number": 5,
       "arabic": "كَلَّا لَوْ تَعْلَمُونَ عِلْمَ ٱلْيَقِينِ",
+      "transliteration": "Kallā law taʿlamūna ʿilma-l-yaqīn",
       "translation": "No! If you only knew with knowledge of certainty..."
     },
     {
       "number": 6,
       "arabic": "لَتَرَوُنَّ ٱلْجَحِيمَ",
+      "transliteration": "Latarawunna-l-jaḥīm",
       "translation": "You will surely see the Hellfire."
     },
     {
       "number": 7,
       "arabic": "ثُمَّ لَتَرَوُنَّهَا عَيْنَ ٱلْيَقِينِ",
+      "transliteration": "Thumma latarawunnahā ʿayna-l-yaqīn",
       "translation": "Then you will surely see it with the eye of certainty."
     },
     {
       "number": 8,
       "arabic": "ثُمَّ لَتُسْـَٔلُنَّ يَوْمَئِذٍ عَنِ ٱلنَّعِيمِ",
+      "transliteration": "Thumma latusʾalunna yawmaʾidhin ʿani-n-naʿīm",
       "translation": "Then you will surely be asked that Day about pleasure."
     }
   ]
