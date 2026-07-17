@@ -1,41 +1,72 @@
 import type {Metadata} from "next";
 import Link from "next/link";
 import SettingsControl from "@/components/SettingsControl";
+import PrimaryNav from "@/components/PrimaryNav";
 import Walkthrough from "@/components/Walkthrough";
+import JsonLd from "@/components/JsonLd";
+import {SITE} from "@/lib/site";
 import {Analytics} from "@vercel/analytics/next";
 import "./globals.css";
 
 // Applies saved font-size settings before paint, avoiding a flash of default size.
 const NO_FLASH = `(function(){try{var s=JSON.parse(localStorage.getItem('lq:settings:v1')||'{}');var d=document.documentElement;if(s.arabicScale)d.style.setProperty('--scale-ar',s.arabicScale);if(s.englishScale)d.style.setProperty('--scale-en',s.englishScale);}catch(e){}})();`;
 
+const HOME_TITLE = `${SITE.name} — Juz 29 & 30 Memorization Guides`;
+
 export const metadata: Metadata = {
   title: {
-    default: "Learn Quran — Juz 29 & 30 Memorization Guides",
-    template: "%s · Learn Quran",
+    default: HOME_TITLE,
+    template: `%s · ${SITE.name}`,
   },
-  description:
-    "Structured, section-by-section guides for memorizing and understanding the Quran — Juz 29 (Tabārak) and Juz 30 (Juz Amma). Verified Arabic text, translation, vocabulary, memory hooks, and recitation guidance.",
-  metadataBase: new URL("https://learn-quran.app"),
+  description: SITE.description,
+  metadataBase: new URL(SITE.url),
   alternates: {canonical: "/"},
+  keywords: ["memorize Quran", "Juz Amma", "Juz 30", "Juz 29", "Tabarak", "Quran memorization", "hifz", "Quran translation", "learn Quran online"],
+  applicationName: SITE.name,
   openGraph: {
-    title: "Learn Quran — Juz 29 & 30 Memorization Guides",
-    description: "Structured, section-by-section guides for memorizing and understanding the Quran.",
-    url: "https://learn-quran.app",
-    siteName: "Learn Quran",
-    locale: "en_US",
+    title: HOME_TITLE,
+    description: SITE.description,
+    url: SITE.url,
+    siteName: SITE.name,
+    locale: SITE.locale,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Learn Quran — Juz 29 & 30 Memorization Guides",
-    description: "Structured, section-by-section guides for memorizing and understanding the Quran.",
+    title: HOME_TITLE,
+    description: SITE.description,
   },
+};
+
+// Site-wide identity for search engines: the site itself and the publisher.
+const SITE_JSON_LD = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${SITE.url}/#website`,
+      url: SITE.url,
+      name: SITE.name,
+      description: SITE.description,
+      inLanguage: "en",
+      publisher: {"@id": `${SITE.url}/#organization`},
+    },
+    {
+      "@type": "Organization",
+      "@id": `${SITE.url}/#organization`,
+      name: SITE.name,
+      url: SITE.url,
+      description: SITE.tagline,
+      logo: {"@type": "ImageObject", url: `${SITE.url}/icon.svg`},
+    },
+  ],
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang='en' suppressHydrationWarning>
       <body>
+        <JsonLd data={SITE_JSON_LD} />
         <script dangerouslySetInnerHTML={{__html: NO_FLASH}} />
         <header className='site-header'>
           <div className='site-header-inner'>
@@ -52,15 +83,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
               </span>
             </Link>
             <div className='header-actions'>
-              <Link href='/' className='header-link'>
-                Surahs
-              </Link>
-              <Link href='/duas/' className='header-link'>
-                Duas
-              </Link>
-              <Link href='/about/' className='header-link'>
-                About
-              </Link>
+              <PrimaryNav />
               <SettingsControl />
             </div>
           </div>

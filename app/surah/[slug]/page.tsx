@@ -9,11 +9,17 @@ import {
 } from "@/lib/content";
 import { getVerseData } from "@/lib/quran";
 import SurahGuideView from "@/components/SurahGuideView";
+import JsonLd from "@/components/JsonLd";
+import { SITE, absoluteUrl } from "@/lib/site";
 import type { IndexEntry } from "@/lib/content";
 import type { VerseData } from "@/content/types";
 
 export function generateStaticParams() {
   return surahIndex.map((s) => ({ slug: s.slug }));
+}
+
+function surahDescription(entry: IndexEntry): string {
+  return `Memorize and understand Surah ${entry.name} (${entry.epithet}) — surah ${entry.number}, Juz ${entry.juz}, ${entry.verseCount} verses. Verified Arabic, English translation, key vocabulary, memory hooks, and a recitation breakdown.`;
 }
 
 export async function generateMetadata({
@@ -24,9 +30,20 @@ export async function generateMetadata({
   const { slug } = await params;
   const entry = getIndexBySlug(slug);
   if (!entry) return { title: "Surah not found" };
+  const title = `Surah ${entry.name} (${entry.epithet}) — Memorization Guide & Meaning`;
+  const description = surahDescription(entry);
+  const canonical = `/surah/${entry.slug}/`;
   return {
-    title: `${entry.name} — ${entry.epithet}`,
-    description: `Memorization and study guide for Surah ${entry.name} (${entry.epithet}), surah ${entry.number} of the Quran.`,
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title: `${title} · ${SITE.name}`,
+      description,
+      url: absoluteUrl(canonical),
+      type: "article",
+    },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 
@@ -42,9 +59,44 @@ export default async function SurahPage({
   const verses = getVerseData(entry.number);
   const guide = getGuide(entry.slug);
   const { prev, next } = neighbours(entry.slug);
+  const canonical = absoluteUrl(`/surah/${entry.slug}/`);
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        headline: `Surah ${entry.name} (${entry.epithet}) — Memorization Guide & Meaning`,
+        description: surahDescription(entry),
+        url: canonical,
+        mainEntityOfPage: canonical,
+        inLanguage: "en",
+        isPartOf: { "@id": `${SITE.url}/#website` },
+        publisher: { "@id": `${SITE.url}/#organization` },
+        about: {
+          "@type": "CreativeWork",
+          name: `Surah ${entry.name}`,
+          alternateName: entry.arabicName,
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: SITE.url },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: `Surah ${entry.name}`,
+            item: canonical,
+          },
+        ],
+      },
+    ],
+  };
 
   return (
     <>
+      <JsonLd data={structuredData} />
       <Link href="/" className="back-link">
         ← All surahs
       </Link>

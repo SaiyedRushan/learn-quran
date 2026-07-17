@@ -47,6 +47,15 @@ export default function Home() {
 
   return (
     <>
+      <section className="home-intro">
+        <h1 className="home-intro-title">Learn the Quran, Juz by Juz</h1>
+        <p className="home-intro-text">
+          Free, section-by-section guides for memorizing and understanding the Quran — Juz 29 (Tabārak)
+          and Juz 30 (Juz ʿAmma). Verified Arabic and translation, key vocabulary, memory hooks, and
+          recitation breakdowns. Pick a surah below to begin, and mark it learned as you go.
+        </p>
+      </section>
+
       <IntentionBlock />
 
       <TodayDashboard surahs={dashSurahs} duas={dashDuas} />

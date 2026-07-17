@@ -2,10 +2,20 @@ import type {Metadata} from "next";
 import Link from "next/link";
 import TakeTheTourButton from "@/components/TakeTheTourButton";
 
+const DESCRIPTION =
+  "What Learn Quran is, the features it offers, how its content is sourced, and how to send feedback or report a correction.";
+
 export const metadata: Metadata = {
   title: "About & Contact",
-  description:
-    "What Learn Quran is, the features it offers, how its content is sourced, and how to send feedback or report a correction.",
+  description: DESCRIPTION,
+  alternates: {canonical: "/about/"},
+  openGraph: {
+    title: "About & Contact · Learn Quran",
+    description: DESCRIPTION,
+    url: "/about/",
+    type: "website",
+  },
+  twitter: {card: "summary_large_image", title: "About & Contact · Learn Quran", description: DESCRIPTION},
 };
 
 // ── Contact details ─────────────────────────────────────────────────────────
