@@ -3036,6 +3036,67 @@ a {
   color: var(--color-text-tertiary);
 }
 
+/* Fill-the-gaps demo — a verse with blanks that fill in on a loop */
+.tour-cloze {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 4px;
+}
+.tour-cloze-ar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-serif);
+  font-size: 26px;
+  line-height: 1.9;
+  color: #4fd4a8;
+}
+.tour-cloze-word {
+  transition: color 0.3s ease;
+}
+.tour-cloze-word.just-filled {
+  color: var(--accent-bright);
+  animation: tour-cloze-pop 0.35s ease;
+}
+@keyframes tour-cloze-pop {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.tour-cloze-blank {
+  display: inline-block;
+  height: 0.9em;
+  border-bottom: 2px dashed var(--accent);
+  background: rgba(29, 158, 117, 0.12);
+  border-radius: 3px 3px 0 0;
+}
+.tour-cloze-meaning {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin: 0;
+}
+.tour-cloze-cap {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tour-cloze-word.just-filled {
+    animation: none;
+  }
+}
+
 /* Step 5 — confidence chips + a Today's-plan row */
 .tour-chips {
   display: flex;

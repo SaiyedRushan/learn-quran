@@ -272,10 +272,24 @@ export default function MemorizeMode({
 
   function renderArabicCloze(row: (typeof wordRows)[number]) {
     const density = CLOZE_LEVELS[clozeLevel].density;
+    // Words blanked by density. Short (or unlucky) verses can end up with every
+    // word above the threshold — that would leave nothing to fill in, which is
+    // the whole point of this stage. So guarantee at least one blank per verse
+    // by force-blanking the verse's lowest-hash word. That word is also the
+    // first this verse blanks as density rises, so the superset invariant across
+    // levels still holds.
+    const blankedSet = new Set<number>();
+    row.words.forEach((w) => {
+      if (wordHash(w.g) < density) blankedSet.add(w.g);
+    });
+    if (blankedSet.size === 0 && row.words.length > 0) {
+      const pick = row.words.reduce((lo, w) => (wordHash(w.g) < wordHash(lo.g) ? w : lo));
+      blankedSet.add(pick.g);
+    }
     return (
       <div className='mm-ar'>
         {row.words.map((w, i) => {
-          const blanked = wordHash(w.g) < density;
+          const blanked = blankedSet.has(w.g);
           const shown = !blanked || revealed.has(`w:${w.g}`);
           if (shown) {
             return renderWord(row.ayah.number, i, w.text, i < row.words.length - 1);
@@ -287,9 +301,10 @@ export default function MemorizeMode({
                 className='mm-blank'
                 style={{minWidth: `${Math.max(2, Math.round(w.text.length * 0.85))}ch`}}
                 onClick={() => {
-                  // Revealing a blank means you needed it — flag the word.
+                  // First tap only reveals the word. Once shown it renders as a
+                  // normal tappable word, so a second tap is what flags it shaky
+                  // if the peek means you didn't really have it.
                   reveal(`w:${w.g}`);
-                  setWeakSpot(slug, row.ayah.number, i, true);
                 }}
                 aria-label='Reveal hidden word'
               />

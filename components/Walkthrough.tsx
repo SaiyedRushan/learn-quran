@@ -50,6 +50,65 @@ function PhasesPanel() {
   );
 }
 
+// A live demo of the "Fill the gaps" stage: a real verse (Al-Ikhlāṣ 1) with two
+// words blanked out. On a timer the blanks reveal one at a time — the same
+// tap-to-reveal a learner does — then it resets and loops. Honours
+// prefers-reduced-motion by showing every word filled in.
+const CLOZE_DEMO = {
+  words: ["قُلْ", "هُوَ", "ٱللَّهُ", "أَحَدٌ"],
+  blanks: [1, 3], // indices of the words hidden as blanks
+  meaning: "Say, He is Allah, [who is] One.",
+};
+
+function ClozePanel() {
+  // How many of the blanks are currently revealed (0 → all → loop).
+  const [filled, setFilled] = useState(0);
+
+  useEffect(() => {
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setFilled(CLOZE_DEMO.blanks.length);
+      return;
+    }
+    const id = setInterval(
+      () => setFilled((f) => (f + 1) % (CLOZE_DEMO.blanks.length + 1)),
+      1300,
+    );
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div className="tour-cloze">
+      <div className="tour-cloze-ar" dir="rtl" lang="ar">
+        {CLOZE_DEMO.words.map((w, i) => {
+          const blankIdx = CLOZE_DEMO.blanks.indexOf(i);
+          const isBlank = blankIdx !== -1;
+          const revealed = !isBlank || blankIdx < filled;
+          if (revealed) {
+            return (
+              <span key={i} className={`tour-cloze-word${isBlank ? " just-filled" : ""}`}>
+                {w}
+              </span>
+            );
+          }
+          return (
+            <span
+              key={i}
+              className="tour-cloze-blank"
+              style={{width: `${Math.max(2, w.length)}ch`}}
+              aria-hidden="true"
+            />
+          );
+        })}
+      </div>
+      <p className="tour-cloze-meaning">{CLOZE_DEMO.meaning}</p>
+      <span className="tour-cloze-cap">Tap a blank to reveal the word</span>
+    </div>
+  );
+}
+
 const CONFIDENCE_CHIPS = ["Not started", "Learning", "Reviewing", "Solid"];
 
 // The five phases mirror the fading-crutches ladder in MemorizeMode — each
@@ -142,6 +201,11 @@ const STEPS: Step[] = [
     title: "Memorize a section in five phases",
     body: "When you're ready, Memorize mode drills one section at a time and removes a single crutch at each phase — read it with its meaning, then Arabic only, recall it from the meaning, fill in the blanks, and finally a blank slate. Letter and word peeks are there whenever you get stuck, and it quietly flags the words you keep forgetting.",
     panel: <PhasesPanel />,
+  },
+  {
+    title: "Fill in the blanks",
+    body: "The “Fill the gaps” phase is where recall gets tested: words drop out of the verse and you recite the whole thing, filling each blank from memory. Tap any blank to reveal just that word, and dial the blanks from light to heavy as you get stronger. Every verse always keeps at least one gap, so there’s never a line that quietly tests nothing.",
+    panel: <ClozePanel />,
   },
   {
     title: "Set your confidence — build Today's plan",
