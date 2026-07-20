@@ -69,6 +69,7 @@ export default function GameSurahPicker({
           className='search-input'
           type='search'
           inputMode='search'
+          autoFocus
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder='Search by name, meaning, or Arabic…'

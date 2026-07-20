@@ -432,6 +432,7 @@ function BuildRound({
           className='gt-input gt-type'
           type='text'
           placeholder='Type to find the next word — Enter picks it (or just tap a tile)'
+          autoFocus
           value={typed}
           onChange={(e) => setTyped(e.target.value)}
           onKeyDown={(e) => {
