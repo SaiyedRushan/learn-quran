@@ -3186,53 +3186,60 @@ a {
 .tour-game-tile.used {
   opacity: 0.25;
 }
-
-/* Home-page banner linking to the games hub */
-.home-games-cta {
+.tour-game-eyebrow {
+  display: block;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-tertiary);
+  text-align: center;
+  margin-bottom: 8px;
+}
+.tour-game-eyebrow-gap {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 0.5px solid var(--color-border-tertiary);
+}
+.tour-type {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 22px;
-  padding: 14px 16px;
-  background: var(--color-background-secondary);
-  border: 0.5px solid var(--color-border-tertiary);
-  border-radius: var(--border-radius-lg);
-  text-decoration: none;
-  transition: all 0.15s;
+  justify-content: center;
+  gap: 10px;
+  min-height: 28px;
 }
-.home-games-cta:hover {
-  border-color: var(--accent);
-}
-.home-games-cta:hover .hg-arrow {
-  color: var(--accent-bright);
-  transform: translateX(2px);
-}
-.hg-icon {
-  flex: none;
-  font-size: 22px;
-}
-.hg-main {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-.hg-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--color-text-primary);
-}
-.hg-sub {
-  font-size: 12.5px;
+.tour-type-line {
+  font-size: 13.5px;
+  font-style: italic;
   color: var(--color-text-secondary);
-  line-height: 1.5;
 }
-.hg-arrow {
+.tour-type-caret {
+  display: inline-block;
+  width: 1.5px;
+  height: 1em;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  background: var(--accent-bright);
+  animation: tour-caret-blink 0.9s steps(1) infinite;
+}
+@keyframes tour-caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+.tour-score-chip {
   flex: none;
-  font-size: 16px;
-  color: var(--color-text-tertiary);
-  transition: all 0.15s;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 0.5px solid var(--accent);
+  background: #0d2e24;
+  color: var(--accent-bright);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tour-type-caret {
+    animation: none;
+  }
 }
 .quiz-link-btn {
   display: flex;

@@ -119,6 +119,42 @@ const GAME_TILES = [
   {text: "كُفُوًا", correct: false},
 ];
 
+// The guess-the-translation half of the demo: the answer "types itself" one
+// character at a time, then a score chip pops in — then it clears and loops.
+// Honours prefers-reduced-motion by showing the finished answer and score.
+const TYPE_DEMO_TEXT = "Say, He is Allah, One";
+const TYPE_DEMO_HOLD = 8; // extra ticks the finished answer + score stay up
+
+function TypeDemo() {
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setTick(TYPE_DEMO_TEXT.length);
+      return;
+    }
+    const id = setInterval(
+      () => setTick((t) => (t + 1) % (TYPE_DEMO_TEXT.length + TYPE_DEMO_HOLD)),
+      110,
+    );
+    return () => clearInterval(id);
+  }, []);
+
+  const done = tick >= TYPE_DEMO_TEXT.length;
+  return (
+    <div className="tour-type">
+      <span className="tour-type-line">
+        {TYPE_DEMO_TEXT.slice(0, Math.min(tick, TYPE_DEMO_TEXT.length))}
+        {!done && <span className="tour-type-caret" aria-hidden="true" />}
+      </span>
+      {done && <span className="tour-score-chip">✓ 94%</span>}
+    </div>
+  );
+}
+
 function GamesPanel() {
   // 0 = blank waiting · 1 = correct tile highlighted · 2 = blank filled
   const [stage, setStage] = useState(0);
@@ -138,6 +174,7 @@ function GamesPanel() {
   const filled = stage === 2;
   return (
     <div className="tour-game">
+      <span className="tour-game-eyebrow">🧩 Fill in the blanks</span>
       <div className="tour-cloze-ar" dir="rtl" lang="ar">
         <span className="tour-cloze-word">قُلْ</span>
         <span className="tour-cloze-word">هُوَ</span>
@@ -158,6 +195,8 @@ function GamesPanel() {
           </span>
         ))}
       </div>
+      <span className="tour-game-eyebrow tour-game-eyebrow-gap">🗣️ Guess the translation</span>
+      <TypeDemo />
       <span className="tour-cloze-cap">🔗 Solo — or send a friend the exact same puzzle</span>
     </div>
   );
