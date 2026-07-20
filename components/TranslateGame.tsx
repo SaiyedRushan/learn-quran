@@ -92,7 +92,8 @@ export default function TranslateGame({
         {mode === "type" ? (
           <ul className='gm-help'>
             <li>
-              <kbd>Enter</kbd> submits your answer · <kbd>Shift</kbd>+<kbd>Enter</kbd> starts a new line.
+              <kbd>Enter</kbd> submits your answer (and again moves to the next verse) ·{" "}
+              <kbd>Shift</kbd>+<kbd>Enter</kbd> starts a new line.
             </li>
             <li>💡 Peek reveals the translation word by word if you&apos;re stuck — no penalty.</li>
           </ul>
@@ -106,6 +107,9 @@ export default function TranslateGame({
               <kbd>Backspace</kbd> in the empty box takes back your last word.
             </li>
             <li>Drag a tile between placed words to insert it; drag a placed word back to the bank to remove it.</li>
+            <li>
+              Once every word is placed, <kbd>Enter</kbd> checks — and again moves to the next verse.
+            </li>
             <li>💡 Peek pulses the tile that belongs next.</li>
           </ul>
         )}
@@ -213,6 +217,19 @@ function TypeRound({ayah, onDone}: {ayah: Ayah; onDone: (score: number) => void}
     if (result || guess.trim() === "") return;
     setResult(scoreGuess(guess, ayah.translation));
   }
+
+  // After the score is shown, Enter advances to the next round. The listener
+  // re-registers per render, so the Enter that submitted (closing over a null
+  // result) never double-fires.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Enter" || e.repeat || !result) return;
+      e.preventDefault();
+      onDone(result.score);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
 
   return (
     <>
@@ -408,6 +425,24 @@ function BuildRound({
   // (proportional — word alignment between the languages is only approximate).
   const frac = refWords.length > 0 ? picked.length / refWords.length : 0;
   const doneAr = done ? arWords.length : Math.round(frac * arWords.length);
+
+  // Enter checks a fully-built line; Enter again advances. The typing box's
+  // own Enter handler is a no-op once the bank is empty, so this listener
+  // (re-registered per render, closures stay fresh) picks it up from there.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Enter" || e.repeat) return;
+      if (done) {
+        e.preventDefault();
+        onDone(score!);
+      } else if (picked.length === refWords.length) {
+        e.preventDefault();
+        check();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
 
   return (
     <>

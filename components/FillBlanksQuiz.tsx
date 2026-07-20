@@ -85,6 +85,9 @@ export default function FillBlanksQuiz({
           <li>Drag works too: pull a word from the bank straight onto any blank.</li>
           <li>Tap a filled blank to take its word back.</li>
           <li>The translation is shown under each verse as a hint.</li>
+          <li>
+            <kbd>Enter</kbd> checks the verse once every blank is filled — and again moves to the next.
+          </li>
         </ul>
         <div className='gm-row'>
           <span className='gm-row-label'>Difficulty</span>
@@ -227,6 +230,24 @@ function QuizRoundView({
     const chip = placed[slot] !== null ? optionById.get(placed[slot]!) : null;
     return s + (chip && chip.text === round.words[wordIdx] ? 1 : 0);
   }, 0);
+
+  // Enter checks a fully-filled verse; Enter again advances. preventDefault
+  // keeps a focused button from also firing its click on the same press.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Enter" || e.repeat) return;
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (checked) {
+        e.preventDefault();
+        onDone(rightCount);
+      } else if (allFilled) {
+        e.preventDefault();
+        check();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
 
   return (
     <div className='gm-panel'>
