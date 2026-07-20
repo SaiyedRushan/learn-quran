@@ -14,6 +14,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {url: absoluteUrl("/"), lastModified: now, changeFrequency: "weekly", priority: 1},
     {url: absoluteUrl("/blog/"), lastModified: now, changeFrequency: "weekly", priority: 0.8},
     {url: absoluteUrl("/duas/"), lastModified: now, changeFrequency: "monthly", priority: 0.7},
+    {url: absoluteUrl("/games/"), lastModified: now, changeFrequency: "monthly", priority: 0.7},
+    {url: absoluteUrl("/games/translate/"), lastModified: now, changeFrequency: "monthly", priority: 0.6},
+    {url: absoluteUrl("/games/quiz/"), lastModified: now, changeFrequency: "monthly", priority: 0.6},
     {url: absoluteUrl("/about/"), lastModified: now, changeFrequency: "yearly", priority: 0.4},
     {url: absoluteUrl("/contact/"), lastModified: now, changeFrequency: "yearly", priority: 0.5},
   ];
@@ -25,6 +28,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  const gameEntries: MetadataRoute.Sitemap = surahIndex.flatMap((s) => [
+    {
+      url: absoluteUrl(`/surah/${s.slug}/quiz/`),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    },
+    {
+      url: absoluteUrl(`/games/translate/${s.slug}/`),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    },
+  ]);
+
   const blogEntries: MetadataRoute.Sitemap = getAllPosts().map((p) => ({
     url: absoluteUrl(`/blog/${p.slug}/`),
     lastModified: new Date(p.date),
@@ -32,5 +50,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticEntries, ...surahEntries, ...blogEntries];
+  return [...staticEntries, ...surahEntries, ...gameEntries, ...blogEntries];
 }

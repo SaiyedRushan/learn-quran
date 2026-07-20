@@ -3158,6 +3158,505 @@ a {
   font-variant-numeric: tabular-nums;
 }
 
+/* ── Games (hub, fill-in-the-blanks quiz, translation game) ─────────────── */
+.quiz-link-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 16px;
+  padding: 12px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  color: var(--color-text-secondary);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.quiz-link-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent-bright);
+}
+
+/* Hub cards */
+.gm-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+@media (max-width: 560px) {
+  .gm-cards {
+    grid-template-columns: 1fr;
+  }
+}
+.gm-card {
+  display: block;
+  padding: 20px 18px;
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.gm-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+.gm-card-icon {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+.gm-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 6px;
+}
+.gm-card-sub {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+.gm-how {
+  padding: 16px 18px;
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+}
+.gm-how-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-bright);
+  margin-bottom: 6px;
+}
+.gm-how p {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* Surah picker */
+.gm-pick-group {
+  margin-bottom: 22px;
+}
+.gm-pick-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-tertiary);
+  margin-bottom: 8px;
+}
+.gm-pick-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.gm-pick-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.gm-pick-row:hover {
+  border-color: var(--accent);
+}
+.gm-pick-num {
+  flex: none;
+  min-width: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+.gm-pick-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gm-pick-epithet {
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+.gm-pick-count {
+  flex: none;
+  font-size: 11.5px;
+  color: var(--color-text-tertiary);
+}
+
+/* Shared game panel */
+.gm-panel {
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 20px 18px;
+  margin-bottom: 20px;
+}
+.gm-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 10px;
+}
+.gm-sub {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.gm-meta {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+.gm-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.gm-row-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-tertiary);
+  margin-right: 4px;
+  min-width: 62px;
+}
+.gm-start {
+  margin-top: 12px;
+}
+.gm-rival-note {
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid var(--accent);
+  background: #0d2e24;
+  color: var(--accent-bright);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.gm-play-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.gm-bar {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--color-border-tertiary);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.gm-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width 0.3s;
+}
+.gm-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+.gm-verdict {
+  font-size: 13px;
+  font-weight: 500;
+  margin-right: auto;
+}
+.gm-verdict.good {
+  color: var(--accent-bright);
+}
+.gm-verdict.bad {
+  color: #e0a84a;
+}
+.gm-verdict-big {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 14px 0 4px;
+}
+.gm-verdict-big.good {
+  color: var(--accent-bright);
+}
+.gm-verdict-big.mid {
+  color: #e0a84a;
+}
+.gm-verdict-big.bad {
+  color: #e07a6a;
+}
+.gm-link-btn {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Quiz verse + word bank */
+.gq-verse {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+.gq-slot {
+  display: inline-block;
+  vertical-align: baseline;
+  min-height: 1.15em;
+  margin: 0 2px;
+  padding: 0 6px;
+  border: none;
+  border-bottom: 2px dashed var(--accent);
+  border-radius: 4px 4px 0 0;
+  background: rgba(29, 158, 117, 0.12);
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.gq-slot:hover {
+  background: rgba(79, 212, 168, 0.24);
+}
+.gq-slot.selected {
+  border-bottom-style: solid;
+  background: rgba(79, 212, 168, 0.28);
+}
+.gq-slot.filled {
+  border-bottom-style: solid;
+  background: rgba(29, 158, 117, 0.2);
+}
+.gq-slot.right {
+  border-bottom: 2px solid var(--accent);
+  background: rgba(29, 158, 117, 0.25);
+  color: var(--accent-bright);
+  cursor: default;
+}
+.gq-slot.wrong {
+  border-bottom: 2px solid #e07a6a;
+  background: rgba(224, 122, 106, 0.14);
+  cursor: default;
+}
+.gq-slot.wrong s {
+  color: #e07a6a;
+  margin-inline-end: 6px;
+}
+.gq-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+.gq-tile {
+  padding: 7px 14px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  color: #4fd4a8;
+  font-family: var(--font-serif);
+  font-size: calc(20px * var(--scale-ar));
+  line-height: 1.7;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.gq-tile:hover:not(:disabled) {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+.gq-tile.used,
+.gq-tile:disabled {
+  opacity: 0.3;
+  cursor: default;
+  transform: none;
+}
+.gq-tile.en {
+  font-family: var(--font-sans);
+  font-size: calc(13.5px * var(--scale-en));
+  color: var(--color-text-primary);
+  line-height: 1.4;
+}
+.gq-tile.en.hit {
+  border-color: var(--accent);
+  color: var(--accent-bright);
+  opacity: 1;
+}
+.gq-tile.en.miss {
+  border-color: #e07a6a;
+  color: #e07a6a;
+  opacity: 1;
+}
+
+/* Translation game */
+.gt-translit {
+  font-size: calc(13px * var(--scale-en));
+  color: var(--color-text-tertiary);
+  line-height: 1.6;
+  margin-top: 8px;
+}
+.gt-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: vertical;
+}
+.gt-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.gt-build-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border: 1px dashed var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+}
+.gt-diff {
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+}
+.gt-diff-label {
+  font-size: 11.5px;
+  color: var(--color-text-tertiary);
+  margin-bottom: 8px;
+}
+.gt-diff-ref {
+  font-size: calc(14.5px * var(--scale-en));
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+.gt-diff-ref .tok.hit {
+  color: var(--accent-bright);
+}
+.gt-diff-ref .tok.miss {
+  color: var(--color-text-tertiary);
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+.gt-diff-ref .tok.miss:not(.stop) {
+  color: #e0a84a;
+}
+.gt-diff-extra {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}
+.gt-your-guess {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--color-text-tertiary);
+  line-height: 1.5;
+}
+
+/* Results */
+.gm-score-big {
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--accent-bright);
+  margin-bottom: 12px;
+}
+.gm-score-pct {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+.gm-round-scores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.gm-round-pill {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  border: 0.5px solid var(--color-border-secondary);
+}
+.gm-round-pill.good {
+  color: var(--accent-bright);
+  border-color: #14503c;
+}
+.gm-round-pill.mid {
+  color: #e0a84a;
+  border-color: #5a4416;
+}
+.gm-round-pill.bad {
+  color: #e07a6a;
+  border-color: #5a2a22;
+}
+.gm-vs {
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  border-radius: var(--border-radius-md);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.gm-vs.win {
+  border: 0.5px solid var(--accent);
+  background: #0d2e24;
+  color: var(--accent-bright);
+}
+.gm-vs.lose {
+  border: 0.5px solid #5a4416;
+  background: #2a1f08;
+  color: #e0a84a;
+}
+.gm-vs.tie {
+  border: 0.5px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  color: var(--color-text-secondary);
+}
+.gm-share {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.gm-name-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 9px 12px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: 13px;
+}
+.gm-name-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
 /* Step 6 — settings mini-preview */
 .tour-settings {
   display: flex;

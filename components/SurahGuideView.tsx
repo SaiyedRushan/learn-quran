@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {useEffect, useState} from "react";
 import type {SurahGuide, VerseData, GuideNote, VerseGroup, PillColor} from "@/content/types";
 import {
@@ -259,6 +260,9 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
         <button className='test-surah-btn' onClick={() => setMemorizeScope({kind: "surah"})}>
           🎯 Test myself on {wholeLabel}
         </button>
+        <Link href={`/surah/${guide.meta.slug}/quiz/`} className='quiz-link-btn'>
+          🧩 Play the fill-in-the-blanks quiz
+        </Link>
         {weakCount > 0 && (
           <div className='weak-bar'>
             <span className='weak-bar-count'>
