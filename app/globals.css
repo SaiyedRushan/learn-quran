@@ -3195,28 +3195,6 @@ a {
   }
 }
 
-/* Game chips on the home-page surah cards */
-.sc-games {
-  display: flex;
-  gap: 6px;
-  margin-top: 8px;
-}
-.sc-game {
-  padding: 3px 10px;
-  border-radius: 999px;
-  border: 0.5px solid var(--color-border-secondary);
-  background: var(--color-background-primary);
-  color: var(--color-text-tertiary);
-  font-size: 11px;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.sc-game:hover {
-  border-color: var(--accent);
-  color: var(--accent-bright);
-}
-
 /* Hub cards */
 .gm-cards {
   display: grid;

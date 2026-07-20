@@ -2,7 +2,6 @@
 
 import { useState, type CSSProperties } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   useAllConfidence,
   setConfidence,
@@ -35,7 +34,6 @@ export interface SurahListItem {
 const MAX_SEGMENTS = 8; // beyond this, fall back to a continuous bar
 
 export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) {
-  const router = useRouter();
   const [query, setQuery] = useState("");
   const searching = query.trim().length > 0;
   const filtered = searchSurahs(query, surahs);
@@ -105,34 +103,6 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
               </span>
             </div>
           )}
-          {/* The card itself is a Link, so these are buttons that navigate —
-              nesting <a> in <a> is invalid HTML. */}
-          <div className="sc-games">
-            <button
-              type="button"
-              className="sc-game"
-              title={`Fill-in-the-blanks quiz — ${s.name}`}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                router.push(`/surah/${s.slug}/quiz/`);
-              }}
-            >
-              🧩 Quiz
-            </button>
-            <button
-              type="button"
-              className="sc-game"
-              title={`Guess the translation — ${s.name}`}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                router.push(`/games/translate/${s.slug}/`);
-              }}
-            >
-              🗣️ Translate
-            </button>
-          </div>
         </div>
         <div className="sc-ar">{s.arabicName}</div>
         <div className="sc-conf-wrap">

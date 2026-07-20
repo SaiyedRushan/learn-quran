@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import Link from "next/link";
 import GameSurahPicker from "@/components/GameSurahPicker";
+import {gamePickerGroups} from "@/lib/content";
 import {SITE, absoluteUrl} from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -25,7 +26,7 @@ export default function TranslatePickerPage() {
         <div className='surah-name'>Guess the Translation</div>
         <div className='meta'>Pick a surah — you&apos;ll be shown its verses in Arabic</div>
       </div>
-      <GameSurahPicker hrefPattern='/games/translate/{slug}/' />
+      <GameSurahPicker hrefPattern='/games/translate/{slug}/' groups={gamePickerGroups()} />
     </>
   );
 }

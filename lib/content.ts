@@ -47,6 +47,25 @@ export function getGuide(slug: string): SurahGuide | undefined {
   return guideBySlug.get(slug);
 }
 
+/** Surah groups for the game pickers — trimmed to what the (client-side)
+ * picker needs so page props stay lean. */
+export function gamePickerGroups() {
+  const trim = (e: IndexEntry) => ({
+    number: e.number,
+    slug: e.slug,
+    name: e.name,
+    epithet: e.epithet,
+    arabicName: e.arabicName,
+    verseCount: e.verseCount,
+    passageRef: e.passageRef,
+  });
+  return [
+    {title: "Juz 30 — Juz ʿAmma", items: juz30Index.map(trim)},
+    {title: "Juz 29 — Tabārak", items: juz29Index.map(trim)},
+    {title: "Recommended recitations", items: virtuesIndex.map(trim)},
+  ];
+}
+
 /** Previous / next entry within the same collection (for the pager). */
 export function neighbours(slug: string): {
   prev?: IndexEntry;

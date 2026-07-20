@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import Link from "next/link";
 import GameSurahPicker from "@/components/GameSurahPicker";
+import {gamePickerGroups} from "@/lib/content";
 import {SITE, absoluteUrl} from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -25,7 +26,7 @@ export default function QuizPickerPage() {
         <div className='surah-name'>Fill in the Blanks</div>
         <div className='meta'>Pick a surah — every verse appears with words missing</div>
       </div>
-      <GameSurahPicker hrefPattern='/surah/{slug}/quiz/' />
+      <GameSurahPicker hrefPattern='/surah/{slug}/quiz/' groups={gamePickerGroups()} />
     </>
   );
 }
