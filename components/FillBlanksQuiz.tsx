@@ -13,6 +13,7 @@ import type {VerseData} from "@/content/types";
 import {buildQuiz, totalBlanks, QUIZ_LEVELS, type QuizRound} from "@/lib/games/quiz";
 import {newSeed} from "@/lib/games/random";
 import {decodeChallenge, challengeUrl, type RivalScore} from "@/lib/games/challenge";
+import {useTileDrag} from "@/lib/games/useTileDrag";
 import {setWeakSpot} from "@/lib/progress";
 
 type Phase = "setup" | "play" | "done";
@@ -172,6 +173,13 @@ function QuizRoundView({
   const usedIds = new Set(placed.filter((p): p is number => p !== null));
   const allFilled = placed.every((p) => p !== null);
 
+  // Touch-friendly dragging (see lib/games/useTileDrag): bank chips drop onto
+  // "slot:<i>" targets.
+  const {drag, over, startDrag, didDrag} = useTileDrag((id, target) => {
+    const m = /^slot:(\d+)$/.exec(target ?? "");
+    if (m && !checked && optionById.has(id)) placeChipAt(id, Number(m[1]));
+  });
+
   const slotOfWord = (wordIdx: number) => round.blanks.indexOf(wordIdx);
 
   function placeChip(optionId: number) {
@@ -246,20 +254,23 @@ function QuizRoundView({
               );
             const chip = placed[slot] !== null ? optionById.get(placed[slot]!) : null;
             const isRight = chip?.text === word;
-            const cls = checked ? (isRight ? " right" : " wrong") : chip ? " filled" : selectedSlot === slot ? " selected" : "";
+            const cls = checked
+              ? isRight
+                ? " right"
+                : " wrong"
+              : chip
+                ? " filled"
+                : selectedSlot === slot || over === `slot:${slot}`
+                  ? " selected"
+                  : "";
             return (
               <span key={wi}>
                 <button
                   type='button'
                   className={`gq-slot${cls}`}
                   style={!chip ? {minWidth: `${Math.max(3, Math.round(word.length * 0.85))}ch`} : undefined}
+                  data-drop={`slot:${slot}`}
                   onClick={() => ejectSlot(slot)}
-                  onDragOver={(e) => !checked && e.preventDefault()}
-                  onDrop={(e) => {
-                    e.preventDefault();
-                    const id = Number(e.dataTransfer.getData("text/plain"));
-                    if (Number.isFinite(id) && optionById.has(id)) placeChipAt(id, slot);
-                  }}
                   aria-label={chip ? "Remove this word" : "Empty blank"}
                 >
                   {checked && !isRight ? (
@@ -286,9 +297,10 @@ function QuizRoundView({
               key={o.id}
               type='button'
               className={`gq-tile${used ? " used" : ""}`}
-              draggable={!checked && !used}
-              onDragStart={(e) => e.dataTransfer.setData("text/plain", String(o.id))}
-              onClick={() => placeChip(o.id)}
+              onPointerDown={checked || used ? undefined : (e) => startDrag(e, o.id, o.text)}
+              onClick={() => {
+                if (!didDrag.current) placeChip(o.id);
+              }}
               disabled={checked || used}
             >
               {o.text}
@@ -296,6 +308,11 @@ function QuizRoundView({
           );
         })}
       </div>
+      {drag && (
+        <div className='gq-tile drag-ghost' style={{left: drag.x, top: drag.y}}>
+          {drag.text}
+        </div>
+      )}
 
       <div className='gm-actions'>
         {checked ? (

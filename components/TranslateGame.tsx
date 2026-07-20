@@ -13,6 +13,7 @@ import type {Ayah, VerseData} from "@/content/types";
 import {mulberry32, newSeed, sampleIndices} from "@/lib/games/random";
 import {scoreGuess, scoreSequence, type GuessResult} from "@/lib/games/scoring";
 import {decodeChallenge, challengeUrl, type RivalScore} from "@/lib/games/challenge";
+import {useTileDrag} from "@/lib/games/useTileDrag";
 import {useSettings} from "@/lib/settings";
 
 type Mode = "type" | "build";
@@ -305,10 +306,22 @@ function BuildRound({
   const [score, setScore] = useState<number | null>(null);
   // Tile the peek button is currently pointing at (pulsing highlight).
   const [peekedId, setPeekedId] = useState<number | null>(null);
-  // Where a dragged tile would land: index into picked, or -1 for the end.
-  const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
   const pickedIds = new Set(picked.map((c) => c.id));
   const done = score !== null;
+
+  // Touch-friendly dragging (see lib/games/useTileDrag). Drop targets:
+  // "line:<i>" inserts before picked word i, "line:end" appends, "bank"
+  // ejects a picked word back to the bank.
+  const {drag, over, startDrag, didDrag} = useTileDrag((id, target) => {
+    if (target === null || done) return;
+    if (target === "bank") {
+      setPicked((p) => p.filter((x) => x.id !== id));
+      setPeekedId(null);
+      return;
+    }
+    const m = /^line:(end|\d+)$/.exec(target);
+    if (m) insertAt(id, m[1] === "end" ? picked.length : Number(m[1]));
+  });
 
   // The window: the earliest unpicked sentence words, displayed in their fixed
   // rank order so tiles don't jump around on pick.
@@ -347,12 +360,6 @@ function BuildRound({
     });
     setTyped("");
     setPeekedId(null);
-    setDragOverIdx(null);
-  }
-
-  function dropId(e: React.DragEvent): number | null {
-    const id = Number(e.dataTransfer.getData("text/plain"));
-    return Number.isFinite(id) && tiles.some((t) => t.id === id) ? id : null;
   }
 
   // Point at the word that belongs in the next slot (scoring is positional, so
@@ -392,20 +399,7 @@ function BuildRound({
         </div>
         {showTransliteration && <div className='gt-translit'>{ayah.transliteration}</div>}
       </div>
-      <div
-        className={`gt-build-line${dragOverIdx === -1 ? " drop-end" : ""}`}
-        onDragOver={(e) => {
-          if (done) return;
-          e.preventDefault();
-          setDragOverIdx(-1);
-        }}
-        onDragLeave={() => setDragOverIdx(null)}
-        onDrop={(e) => {
-          e.preventDefault();
-          const id = dropId(e);
-          if (id !== null) insertAt(id, picked.length);
-        }}
-      >
+      <div className={`gt-build-line${over === "line:end" ? " drop-end" : ""}`} data-drop='line:end'>
         {picked.length === 0 && (
           <span className='gm-meta'>Build the translation word by word — tap tiles, or drag them into place…</span>
         )}
@@ -415,23 +409,11 @@ function BuildRound({
             <button
               key={c.id}
               type='button'
-              className={`gq-tile en${cls}${peekedId === c.id ? " peek" : ""}${dragOverIdx === i ? " drop-before" : ""}`}
-              draggable={!done}
-              onDragStart={(e) => e.dataTransfer.setData("text/plain", String(c.id))}
-              onDragOver={(e) => {
-                if (done) return;
-                e.preventDefault();
-                e.stopPropagation();
-                setDragOverIdx(i);
-              }}
-              onDrop={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const id = dropId(e);
-                if (id !== null) insertAt(id, i);
-              }}
+              className={`gq-tile en${cls}${peekedId === c.id ? " peek" : ""}${over === `line:${i}` ? " drop-before" : ""}`}
+              data-drop={`line:${i}`}
+              onPointerDown={done ? undefined : (e) => startDrag(e, c.id, c.text)}
               onClick={() => {
-                if (done) return;
+                if (done || didDrag.current) return;
                 setPicked((p) => p.filter((x) => x.id !== c.id));
                 setPeekedId(null);
               }}
@@ -460,15 +442,16 @@ function BuildRound({
           }}
         />
       )}
-      <div className='gq-bank en'>
+      <div className='gq-bank en' data-drop='bank'>
         {visible.map((t) => (
           <button
             key={t.id}
             type='button'
             className={`gq-tile en${matchIds.has(t.id) ? " match" : ""}${peekedId === t.id ? " peek" : ""}`}
-            draggable={!done}
-            onDragStart={(e) => e.dataTransfer.setData("text/plain", String(t.id))}
-            onClick={() => pick(t)}
+            onPointerDown={done ? undefined : (e) => startDrag(e, t.id, t.text)}
+            onClick={() => {
+              if (!didDrag.current) pick(t);
+            }}
             disabled={done || picked.length >= refWords.length}
           >
             {t.text}
@@ -476,6 +459,11 @@ function BuildRound({
         ))}
         {hiddenCount > 0 && <span className='gt-more-tiles'>+{hiddenCount} more as you go</span>}
       </div>
+      {drag && (
+        <div className='gq-tile en drag-ghost' style={{left: drag.x, top: drag.y}}>
+          {drag.text}
+        </div>
+      )}
       {done ? (
         <>
           <div className={`gm-verdict-big ${score! >= 70 ? "good" : score! >= 40 ? "mid" : "bad"}`}>{score}%</div>
