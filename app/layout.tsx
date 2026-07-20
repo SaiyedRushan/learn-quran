@@ -3,6 +3,7 @@ import Link from "next/link";
 import SettingsControl from "@/components/SettingsControl";
 import PrimaryNav from "@/components/PrimaryNav";
 import Walkthrough from "@/components/Walkthrough";
+import ClickSounds from "@/components/ClickSounds";
 import JsonLd from "@/components/JsonLd";
 import {SITE} from "@/lib/site";
 import {Analytics} from "@vercel/analytics/next";
@@ -90,6 +91,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         </header>
         <main className='wrap'>{children}</main>
         <Walkthrough />
+        <ClickSounds />
         <footer className='site-footer'>
           A free, open resource for reading, understanding, and memorizing the Quran.
           <div style={{marginTop: 10}}>

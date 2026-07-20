@@ -26,7 +26,8 @@ export default function SettingsControl() {
     settings.arabicScale === DEFAULTS.arabicScale &&
     settings.englishScale === DEFAULTS.englishScale &&
     settings.zenMode === DEFAULTS.zenMode &&
-    settings.showTransliteration === DEFAULTS.showTransliteration;
+    settings.showTransliteration === DEFAULTS.showTransliteration &&
+    settings.clickSound === DEFAULTS.clickSound;
 
   return (
     <>
@@ -112,6 +113,23 @@ export default function SettingsControl() {
                   aria-label='Zen mode'
                   className={`switch ${settings.zenMode ? "on" : ""}`}
                   onClick={() => setSetting("zenMode", !settings.zenMode)}
+                >
+                  <span className='switch-knob' />
+                </button>
+              </div>
+
+              <div className='setting-toggle'>
+                <div className='toggle-copy'>
+                  <span className='setting-label'>Click sounds</span>
+                  <span className='toggle-desc'>Play a subtle click when you tap buttons, links, and other controls. Turn off for a silent, distraction-free experience.</span>
+                </div>
+                <button
+                  type='button'
+                  role='switch'
+                  aria-checked={settings.clickSound}
+                  aria-label='Click sounds'
+                  className={`switch ${settings.clickSound ? "on" : ""}`}
+                  onClick={() => setSetting("clickSound", !settings.clickSound)}
                 >
                   <span className='switch-knob' />
                 </button>

@@ -20,9 +20,11 @@ export interface Settings {
   zenMode: boolean;
   // Show the romanized (ALA-LC) transliteration line beneath each verse.
   showTransliteration: boolean;
+  // Play a subtle click sound when tapping buttons, links, and other controls.
+  clickSound: boolean;
 }
 
-export const DEFAULTS: Settings = {arabicScale: 1, englishScale: 1, zenMode: false, showTransliteration: true};
+export const DEFAULTS: Settings = {arabicScale: 1, englishScale: 1, zenMode: false, showTransliteration: true, clickSound: true};
 
 let cache: Settings | null = null;
 const listeners = new Set<() => void>();
