@@ -8,6 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "check": "tsc --noEmit && next lint",
     "fetch:verses": "node scripts/fetch-verses.mjs",
     "fetch:verses:juz29": "node scripts/fetch-verses-juz29.mjs",
     "fetch:transliteration": "node scripts/fetch-transliteration.mjs"

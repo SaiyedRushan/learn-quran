@@ -3254,6 +3254,9 @@ a {
 }
 
 /* Surah picker */
+.gm-pick .search {
+  margin-bottom: 24px;
+}
 .gm-pick-group {
   margin-bottom: 22px;
 }

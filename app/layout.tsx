@@ -91,14 +91,9 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <main className='wrap'>{children}</main>
         <Walkthrough />
         <footer className='site-footer'>
-          Arabic text (Uthmani) and the Sahih International translation are sourced from the{" "}
-          <a href='https://alquran.cloud/api' target='_blank' rel='noreferrer'>
-            AlQuran Cloud API
-          </a>
-          . The teaching commentary (overviews, memory hooks, vocabulary notes, and recitation guidance) is an educational aid. Please verify any point of religious ruling with a trusted teacher.
+          A free, open resource for reading, understanding, and memorizing the Quran.
           <div style={{marginTop: 10}}>
-            Questions, corrections, or ideas?{" "}
-            <Link href='/contact/'>Get in touch</Link>.
+            <Link href='/about/'>About</Link> · <Link href='/contact/'>Contact</Link>
           </div>
         </footer>
         <Analytics />
