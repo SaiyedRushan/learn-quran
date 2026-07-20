@@ -267,6 +267,9 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
           <Link href={`/games/translate/${guide.meta.slug}/`} className='quiz-link-btn'>
             🗣️ Guess the translation
           </Link>
+          <Link href={`/games/order/${guide.meta.slug}/`} className='quiz-link-btn'>
+            🔀 Order the verses
+          </Link>
         </div>
         {weakCount > 0 && (
           <div className='weak-bar'>
