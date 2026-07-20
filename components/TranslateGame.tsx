@@ -87,8 +87,28 @@ export default function TranslateGame({
           You&apos;ll see the Arabic of {rounds} {rounds === 1 ? "verse" : "verses"}.{" "}
           {mode === "type"
             ? "Type the English meaning in your own words — scoring is forgiving about word order, typos, and filler words, and shows you exactly which words you caught."
-            : "Rebuild the translation word by word — tap a tile, or type and hit Enter to grab the matching one. Only the next few words are offered at a time, and the Arabic fades as you work through it."}
+            : "Rebuild the translation word by word. Only the next few words are offered at a time, and the Arabic fades as you work through it."}
         </p>
+        {mode === "type" ? (
+          <ul className='gm-help'>
+            <li>
+              <kbd>Enter</kbd> submits your answer · <kbd>Shift</kbd>+<kbd>Enter</kbd> starts a new line.
+            </li>
+            <li>💡 Peek reveals the translation word by word if you&apos;re stuck — no penalty.</li>
+          </ul>
+        ) : (
+          <ul className='gm-help'>
+            <li>
+              Tap tiles in order — or type a few letters and press <kbd>Enter</kbd> or <kbd>Space</kbd> to
+              grab the matching tile.
+            </li>
+            <li>
+              <kbd>Backspace</kbd> in the empty box takes back your last word.
+            </li>
+            <li>Drag a tile between placed words to insert it; drag a placed word back to the bank to remove it.</li>
+            <li>💡 Peek pulses the tile that belongs next.</li>
+          </ul>
+        )}
         {!challenged && (
           <>
             <div className='gm-row'>

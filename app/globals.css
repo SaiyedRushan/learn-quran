@@ -3338,6 +3338,25 @@ a {
   font-size: 12px;
   color: var(--color-text-tertiary);
 }
+.gm-help {
+  margin: 0 0 14px;
+  padding-left: 18px;
+  font-size: 12.5px;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+.gm-help li::marker {
+  color: var(--color-text-tertiary);
+}
+.gm-help kbd {
+  padding: 1px 5px;
+  border-radius: 4px;
+  border: 0.5px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--color-text-primary);
+}
 .gm-row {
   display: flex;
   align-items: center;

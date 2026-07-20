@@ -77,9 +77,15 @@ export default function FillBlanksQuiz({
           </div>
         )}
         <p className='gm-sub'>
-          Every verse appears once with words missing. Tap a word in the bank (or drag it) to fill each
-          blank, then check yourself. Wrong picks are flagged as weak spots for your drill.
+          Every verse appears once with words missing. Fill the blanks from the word bank, then check
+          yourself — wrong picks are flagged as weak spots for your drill.
         </p>
+        <ul className='gm-help'>
+          <li>Tap a word to drop it into the next empty blank — or tap a blank first to aim at it.</li>
+          <li>Drag works too: pull a word from the bank straight onto any blank.</li>
+          <li>Tap a filled blank to take its word back.</li>
+          <li>The translation is shown under each verse as a hint.</li>
+        </ul>
         <div className='gm-row'>
           <span className='gm-row-label'>Difficulty</span>
           {QUIZ_LEVELS.map((lv, i) => (
