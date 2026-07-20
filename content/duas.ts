@@ -148,6 +148,20 @@ const duas: DuasContent = {
           source: "<a class='cite-link' href='https://sunnah.com/abudawud:871' target='_blank' rel='noopener noreferrer'>Abu Dawud</a> & others",
         },
         {
+          name: "Subbuhun Quddusun (in rukuʿ and sujud)",
+          when: "In the bowing and in the prostration — an authentic addition to the tasbih above",
+          lines: [
+            {
+              arabic: "سُبُّوحٌ قُدُّوسٌ، رَبُّ الْمَلَائِكَةِ وَالرُّوحِ.",
+              transliteration: "Subbuhun Quddusun, Rabbu-l-malaʾikati wa-r-ruh.",
+              translation:
+                "Most Glorified, Most Holy, Lord of the angels and the Spirit (Jibril).",
+            },
+          ],
+          note: "ʿAʾishah (ra) reported that the Prophet ﷺ used to say this in his rukuʿ and his sujud. It is recited alongside — not in place of — the tasbih above, and reflects his command to \"glorify the Lord\" in bowing and to strive in supplication in prostration.",
+          source: "<a class='cite-link' href='https://sunnah.com/muslim:487' target='_blank' rel='noopener noreferrer'>Sahih Muslim</a> (ʿAʾishah); also <a class='cite-link' href='https://sunnah.com/riyadussalihin:1426' target='_blank' rel='noopener noreferrer'>Riyad as-Salihin 1426</a>",
+        },
+        {
           name: "Between the two prostrations",
           when: "Sitting between the two sajdahs",
           lines: [
