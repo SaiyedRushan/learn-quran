@@ -3,6 +3,7 @@
 
 import type {Ayah} from "@/content/types";
 import {mulberry32, sampleIndices, shuffled} from "./random";
+import {isArabicWord} from "./text";
 
 export const QUIZ_LEVELS = [
   {label: "Easy", blanks: 1, distractors: 3},
@@ -39,16 +40,19 @@ export function buildQuiz(ayahs: Ayah[], seed: number, level: number): QuizRound
   const wordsPerAyah = ayahs.map((a) => a.arabic.split(/\s+/).filter(Boolean));
 
   // Distractors come from the same surah so they look plausible; dedupe by
-  // text so the bank never carries two identical wrong chips.
-  const allWords = Array.from(new Set(wordsPerAyah.flat()));
+  // text so the bank never carries two identical wrong chips. Pause marks and
+  // other ornaments are display-only — never a distractor.
+  const allWords = Array.from(new Set(wordsPerAyah.flat().filter(isArabicWord)));
 
   let chipId = 0;
   return ayahs.map((ayah, ai) => {
     const words = wordsPerAyah[ai];
+    // Only real words are blankable — ornaments (waqf marks etc.) stay visible.
+    const eligible = words.map((_, i) => i).filter((i) => isArabicWord(words[i]));
     // Never blank more than half the verse (short verses stay solvable), but
     // always blank at least one word.
-    const blankCount = Math.max(1, Math.min(cfg.blanks, Math.floor(words.length / 2)));
-    const blanks = sampleIndices(words.length, blankCount, rand);
+    const blankCount = Math.max(1, Math.min(cfg.blanks, Math.floor(eligible.length / 2)));
+    const blanks = sampleIndices(eligible.length, blankCount, rand).map((k) => eligible[k]);
     const correctTexts = new Set(blanks.map((b) => words[b]));
 
     // Prefer distractors of similar length to the answers so length alone

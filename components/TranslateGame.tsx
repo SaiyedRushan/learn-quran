@@ -14,6 +14,7 @@ import {mulberry32, newSeed, sampleIndices} from "@/lib/games/random";
 import {scoreGuess, scoreSequence, type GuessResult} from "@/lib/games/scoring";
 import {decodeChallenge, challengeUrl, type RivalScore} from "@/lib/games/challenge";
 import {useTileDrag} from "@/lib/games/useTileDrag";
+import {isEnglishWord} from "@/lib/games/text";
 import {useSettings} from "@/lib/settings";
 
 type Mode = "type" | "build";
@@ -186,7 +187,7 @@ function TypeRound({ayah, onDone}: {ayah: Ayah; onDone: (score: number) => void}
   const [result, setResult] = useState<GuessResult | null>(null);
   // Struggling? Reveal the translation's opening words one at a time.
   const [hintCount, setHintCount] = useState(0);
-  const refWords = useMemo(() => ayah.translation.split(/\s+/).filter(Boolean), [ayah]);
+  const refWords = useMemo(() => ayah.translation.split(/\s+/).filter(isEnglishWord), [ayah]);
 
   function submit() {
     if (result || guess.trim() === "") return;
@@ -293,7 +294,9 @@ function BuildRound({
   onDone: (score: number) => void;
 }) {
   const {showTransliteration} = useSettings();
-  const refWords = useMemo(() => ayah.translation.split(/\s+/).filter(Boolean), [ayah]);
+  // Bare dashes / stray quotes in the translation are punctuation, not words —
+  // they'd make baffling tiles, so both the tiles and the scoring skip them.
+  const refWords = useMemo(() => ayah.translation.split(/\s+/).filter(isEnglishWord), [ayah]);
   const arWords = useMemo(() => ayah.arabic.split(/\s+/).filter(Boolean), [ayah]);
 
   const tiles: Chip[] = useMemo(() => {
