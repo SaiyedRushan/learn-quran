@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { surahIndex, getGuide } from "@/lib/content";
 import SurahIndexView, { type SurahListItem } from "@/components/SurahIndexView";
 import IntentionBlock from "@/components/IntentionBlock";
@@ -59,6 +60,22 @@ export default function Home() {
       <IntentionBlock />
 
       <TodayDashboard surahs={dashSurahs} duas={dashDuas} />
+
+      <Link href="/games/" className="home-games-cta">
+        <span className="hg-icon" aria-hidden="true">
+          🎮
+        </span>
+        <span className="hg-main">
+          <span className="hg-title">Test yourself with the games</span>
+          <span className="hg-sub">
+            Fill in the blanks on any surah, or guess the translation — solo, or send a friend a
+            challenge link with your score to beat.
+          </span>
+        </span>
+        <span className="hg-arrow" aria-hidden="true">
+          →
+        </span>
+      </Link>
 
       <SurahIndexView surahs={surahs} />
 

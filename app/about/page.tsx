@@ -48,6 +48,11 @@ const FEATURES: {icon: string; title: string; text: string}[] = [
     text: "Natural stopping points and practical tips for reciting each surah, verse by verse.",
   },
   {
+    icon: "🎮",
+    title: "Games — solo or vs a friend",
+    text: "A fill-in-the-blanks quiz on every surah and a guess-the-translation game, with challenge links that hand a friend the exact same puzzle and your score to beat. No account needed.",
+  },
+  {
     icon: "🤲",
     title: "Prayer duas",
     text: "The supplications of the salah — opening, rukūʿ and sujūd, the Tashahhud, and more — with transliteration and meaning in one place.",

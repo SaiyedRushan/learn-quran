@@ -109,6 +109,60 @@ function ClozePanel() {
   );
 }
 
+// A mini round of the fill-in-the-blanks game: one word missing, a word bank
+// beneath. On a timer the correct tile lights up, then lands in the blank —
+// then it resets and loops. Honours prefers-reduced-motion by showing the
+// solved state.
+const GAME_TILES = [
+  {text: "أَحَدٌ", correct: true},
+  {text: "ٱلصَّمَدُ", correct: false},
+  {text: "كُفُوًا", correct: false},
+];
+
+function GamesPanel() {
+  // 0 = blank waiting · 1 = correct tile highlighted · 2 = blank filled
+  const [stage, setStage] = useState(0);
+
+  useEffect(() => {
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setStage(2);
+      return;
+    }
+    const id = setInterval(() => setStage((s) => (s + 1) % 3), 1200);
+    return () => clearInterval(id);
+  }, []);
+
+  const filled = stage === 2;
+  return (
+    <div className="tour-game">
+      <div className="tour-cloze-ar" dir="rtl" lang="ar">
+        <span className="tour-cloze-word">قُلْ</span>
+        <span className="tour-cloze-word">هُوَ</span>
+        <span className="tour-cloze-word">ٱللَّهُ</span>
+        {filled ? (
+          <span className="tour-cloze-word just-filled">أَحَدٌ</span>
+        ) : (
+          <span className="tour-cloze-blank" style={{width: "4ch"}} aria-hidden="true" />
+        )}
+      </div>
+      <div className="tour-game-tiles" dir="rtl">
+        {GAME_TILES.map((t) => (
+          <span
+            key={t.text}
+            className={`tour-game-tile${t.correct && stage === 1 ? " hot" : ""}${t.correct && filled ? " used" : ""}`}
+          >
+            {t.text}
+          </span>
+        ))}
+      </div>
+      <span className="tour-cloze-cap">🔗 Solo — or send a friend the exact same puzzle</span>
+    </div>
+  );
+}
+
 const CONFIDENCE_CHIPS = ["Not started", "Learning", "Reviewing", "Solid"];
 
 // The five phases mirror the fading-crutches ladder in MemorizeMode — each
@@ -206,6 +260,11 @@ const STEPS: Step[] = [
     title: "Fill in the blanks",
     body: "The “Fill the gaps” phase is where recall gets tested: words drop out of the verse and you recite the whole thing, filling each blank from memory. Tap any blank to reveal just that word, and dial the blanks from light to heavy as you get stronger. Every verse always keeps at least one gap, so there’s never a line that quietly tests nothing.",
     panel: <ClozePanel />,
+  },
+  {
+    title: "Play the games — solo or against a friend",
+    body: "Two games turn review into play. Fill in the Blanks drops words out of every verse of a surah and hands you a word bank — misses are flagged as weak spots for your drill. Guess the Translation shows the Arabic and asks for the meaning, typed in your own words or rebuilt from tiles. Finish a round and challenge a friend: the link carries the exact same puzzle and your score to beat. Find them in the Games tab or on any surah's guide.",
+    panel: <GamesPanel />,
   },
   {
     title: "Set your confidence — build Today's plan",

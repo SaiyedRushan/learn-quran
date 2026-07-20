@@ -3159,6 +3159,81 @@ a {
 }
 
 /* ── Games (hub, fill-in-the-blanks quiz, translation game) ─────────────── */
+
+/* Tour step: mini fill-in-the-blanks round */
+.tour-game-tiles {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+.tour-game-tile {
+  padding: 4px 12px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  color: #4fd4a8;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.7;
+  transition: all 0.3s;
+}
+.tour-game-tile.hot {
+  border-color: var(--accent-bright);
+  background: #0d2e24;
+  transform: translateY(-2px);
+}
+.tour-game-tile.used {
+  opacity: 0.25;
+}
+
+/* Home-page banner linking to the games hub */
+.home-games-cta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+  padding: 14px 16px;
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.home-games-cta:hover {
+  border-color: var(--accent);
+}
+.home-games-cta:hover .hg-arrow {
+  color: var(--accent-bright);
+  transform: translateX(2px);
+}
+.hg-icon {
+  flex: none;
+  font-size: 22px;
+}
+.hg-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.hg-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.hg-sub {
+  font-size: 12.5px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+.hg-arrow {
+  flex: none;
+  font-size: 16px;
+  color: var(--color-text-tertiary);
+  transition: all 0.15s;
+}
 .quiz-link-btn {
   display: flex;
   align-items: center;
