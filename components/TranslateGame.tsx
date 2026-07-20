@@ -10,7 +10,7 @@
 import Link from "next/link";
 import {useEffect, useMemo, useState} from "react";
 import type {Ayah, VerseData} from "@/content/types";
-import {mulberry32, newSeed, sampleIndices, shuffled} from "@/lib/games/random";
+import {mulberry32, newSeed, sampleIndices} from "@/lib/games/random";
 import {scoreGuess, scoreSequence, type GuessResult} from "@/lib/games/scoring";
 import {decodeChallenge, challengeUrl, type RivalScore} from "@/lib/games/challenge";
 import {useSettings} from "@/lib/settings";
@@ -85,7 +85,7 @@ export default function TranslateGame({
           You&apos;ll see the Arabic of {rounds} {rounds === 1 ? "verse" : "verses"}.{" "}
           {mode === "type"
             ? "Type the English meaning in your own words — scoring is forgiving about word order, typos, and filler words, and shows you exactly which words you caught."
-            : "Rebuild the exact translation by tapping its shuffled words into order (a few decoys mixed in)."}
+            : "Rebuild the translation word by word — tap a tile, or type and hit Enter to grab the matching one. Only the next few words are offered at a time, and the Arabic fades as you work through it."}
         </p>
         {!challenged && (
           <>
@@ -160,7 +160,7 @@ export default function TranslateGame({
       {mode === "type" ? (
         <TypeRound key={`${seed}:${roundIdx}`} ayah={ayah} onDone={onRoundDone} />
       ) : (
-        <BuildRound key={`${seed}:${roundIdx}`} ayah={ayah} seed={seed + roundIdx} allAyahs={verses.ayahs} onDone={onRoundDone} />
+        <BuildRound key={`${seed}:${roundIdx}`} ayah={ayah} seed={seed + roundIdx} onDone={onRoundDone} />
       )}
     </div>
   );
@@ -183,6 +183,9 @@ function VersePrompt({ayah}: {ayah: Ayah}) {
 function TypeRound({ayah, onDone}: {ayah: Ayah; onDone: (score: number) => void}) {
   const [guess, setGuess] = useState("");
   const [result, setResult] = useState<GuessResult | null>(null);
+  // Struggling? Reveal the translation's opening words one at a time.
+  const [hintCount, setHintCount] = useState(0);
+  const refWords = useMemo(() => ayah.translation.split(/\s+/).filter(Boolean), [ayah]);
 
   function submit() {
     if (result || guess.trim() === "") return;
@@ -208,7 +211,21 @@ function TypeRound({ayah, onDone}: {ayah: Ayah; onDone: (score: number) => void}
             rows={3}
             autoFocus
           />
+          {hintCount > 0 && (
+            <div className='gt-hint'>
+              💡 {refWords.slice(0, hintCount).join(" ")}
+              {hintCount < refWords.length ? " …" : ""}
+            </div>
+          )}
           <div className='gm-actions'>
+            <button
+              type='button'
+              className='mm-chip'
+              onClick={() => setHintCount((c) => Math.min(refWords.length, c + 1))}
+              disabled={hintCount >= refWords.length}
+            >
+              💡 Peek next word
+            </button>
             <button type='button' className='mm-nav primary' onClick={submit} disabled={guess.trim() === ""}>
               Submit
             </button>
@@ -245,64 +262,179 @@ function TypeRound({ayah, onDone}: {ayah: Ayah; onDone: (score: number) => void}
 }
 
 // ── Build-it round ───────────────────────────────────────────────────────
+// Long verses used to dump every word of the translation into one huge bank.
+// Now the bank is a sliding window: only the next few words of the sentence
+// are offered, and new tiles slide in as you pick. A small typing box
+// highlights matching tiles as you type — Enter/space grabs the match — and
+// the Arabic fades word-by-word as your progress consumes it.
 
 interface Chip {
   id: number;
   text: string;
+  /** Position in the reference sentence. */
+  pos: number;
+  /** Deterministic display rank so tiles keep their spot as the window moves. */
+  rank: number;
 }
+
+/** How many upcoming sentence words are offered at once. */
+const BUILD_WINDOW = 6;
+
+const normWord = (s: string) => s.toLowerCase().replace(/[^a-z0-9']/g, "");
 
 function BuildRound({
   ayah,
   seed,
-  allAyahs,
   onDone,
 }: {
   ayah: Ayah;
   seed: number;
-  allAyahs: Ayah[];
   onDone: (score: number) => void;
 }) {
+  const {showTransliteration} = useSettings();
   const refWords = useMemo(() => ayah.translation.split(/\s+/).filter(Boolean), [ayah]);
+  const arWords = useMemo(() => ayah.arabic.split(/\s+/).filter(Boolean), [ayah]);
 
-  const bank: Chip[] = useMemo(() => {
+  const tiles: Chip[] = useMemo(() => {
     const rand = mulberry32(seed);
-    // Decoys: content-length words from other verses' translations.
-    const own = new Set(refWords.map((w) => w.toLowerCase()));
-    const pool = Array.from(
-      new Set(
-        allAyahs
-          .filter((a) => a.number !== ayah.number)
-          .flatMap((a) => a.translation.split(/\s+/))
-          .filter((w) => w.length >= 4 && !own.has(w.toLowerCase())),
-      ),
-    );
-    const decoys = shuffled(pool, rand).slice(0, Math.min(3, pool.length));
-    return shuffled([...refWords, ...decoys].map((text, id) => ({id, text})), rand);
-  }, [refWords, allAyahs, ayah, seed]);
+    return refWords.map((text, i) => ({id: i, text, pos: i, rank: rand()}));
+  }, [refWords, seed]);
 
   const [picked, setPicked] = useState<Chip[]>([]);
+  const [typed, setTyped] = useState("");
   const [score, setScore] = useState<number | null>(null);
+  // Tile the peek button is currently pointing at (pulsing highlight).
+  const [peekedId, setPeekedId] = useState<number | null>(null);
+  // Where a dragged tile would land: index into picked, or -1 for the end.
+  const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
   const pickedIds = new Set(picked.map((c) => c.id));
   const done = score !== null;
+
+  // The window: the earliest unpicked sentence words, displayed in their fixed
+  // rank order so tiles don't jump around on pick.
+  const upcoming = tiles
+    .filter((t) => !pickedIds.has(t.id))
+    .sort((a, b) => a.pos - b.pos)
+    .slice(0, BUILD_WINDOW);
+  const visible = [...upcoming].sort((a, b) => a.rank - b.rank);
+  const hiddenCount = refWords.length - picked.length - upcoming.length;
+
+  const query = normWord(typed);
+  const matches = query ? visible.filter((t) => normWord(t.text).startsWith(query)) : [];
+  const matchIds = new Set(matches.map((t) => t.id));
+
+  function pick(t: Chip) {
+    if (done || picked.length >= refWords.length) return;
+    setPicked((p) => [...p, t]);
+    setTyped("");
+    setPeekedId(null);
+  }
+
+  /** Drop handler: insert a bank tile at `index` (before that picked word), or
+   * move an already-picked tile there — realizing mid-line you skipped a word
+   * shouldn't mean tearing the whole tail down. */
+  function insertAt(tileId: number, index: number) {
+    const t = tiles.find((x) => x.id === tileId);
+    if (!t || done) return;
+    setPicked((p) => {
+      const oldIdx = p.findIndex((x) => x.id === tileId);
+      if (oldIdx < 0 && p.length >= refWords.length) return p; // line is full
+      const without = p.filter((x) => x.id !== tileId);
+      const at = oldIdx >= 0 && oldIdx < index ? index - 1 : index;
+      const next = [...without];
+      next.splice(Math.max(0, Math.min(at, next.length)), 0, t);
+      return next;
+    });
+    setTyped("");
+    setPeekedId(null);
+    setDragOverIdx(null);
+  }
+
+  function dropId(e: React.DragEvent): number | null {
+    const id = Number(e.dataTransfer.getData("text/plain"));
+    return Number.isFinite(id) && tiles.some((t) => t.id === id) ? id : null;
+  }
+
+  // Point at the word that belongs in the next slot (scoring is positional, so
+  // that's always the best pick — even after earlier mistakes). If that word
+  // is already sitting in a wrong earlier slot, the pulse lands on it there
+  // instead: "take this one back".
+  function peek() {
+    const exact = tiles.find((t) => t.pos === picked.length);
+    setPeekedId(exact?.id ?? null);
+  }
+
+  function typedPick() {
+    if (matches.length === 0) return;
+    pick(matches.find((t) => normWord(t.text) === query) ?? matches[0]);
+  }
 
   function check() {
     if (done || picked.length !== refWords.length) return;
     setScore(scoreSequence(picked.map((c) => c.text), refWords));
   }
 
+  // Arabic progress: fade the portion of the verse your English has covered
+  // (proportional — word alignment between the languages is only approximate).
+  const frac = refWords.length > 0 ? picked.length / refWords.length : 0;
+  const doneAr = done ? arWords.length : Math.round(frac * arWords.length);
+
   return (
     <>
-      <VersePrompt ayah={ayah} />
-      <div className='gt-build-line'>
-        {picked.length === 0 && <span className='gm-meta'>Tap the words below in order…</span>}
+      <div className='gq-verse'>
+        <div className='mm-ar'>
+          {arWords.map((w, i) => (
+            <span key={i} className={i < doneAr ? "gt-ar-done" : undefined}>
+              {w}
+              {i < arWords.length - 1 ? " " : ""}
+            </span>
+          ))}
+        </div>
+        {showTransliteration && <div className='gt-translit'>{ayah.transliteration}</div>}
+      </div>
+      <div
+        className={`gt-build-line${dragOverIdx === -1 ? " drop-end" : ""}`}
+        onDragOver={(e) => {
+          if (done) return;
+          e.preventDefault();
+          setDragOverIdx(-1);
+        }}
+        onDragLeave={() => setDragOverIdx(null)}
+        onDrop={(e) => {
+          e.preventDefault();
+          const id = dropId(e);
+          if (id !== null) insertAt(id, picked.length);
+        }}
+      >
+        {picked.length === 0 && (
+          <span className='gm-meta'>Build the translation word by word — tap tiles, or drag them into place…</span>
+        )}
         {picked.map((c, i) => {
           const cls = done ? (c.text.toLowerCase() === refWords[i]?.toLowerCase() ? " hit" : " miss") : "";
           return (
             <button
               key={c.id}
               type='button'
-              className={`gq-tile en${cls}`}
-              onClick={() => !done && setPicked((p) => p.filter((x) => x.id !== c.id))}
+              className={`gq-tile en${cls}${peekedId === c.id ? " peek" : ""}${dragOverIdx === i ? " drop-before" : ""}`}
+              draggable={!done}
+              onDragStart={(e) => e.dataTransfer.setData("text/plain", String(c.id))}
+              onDragOver={(e) => {
+                if (done) return;
+                e.preventDefault();
+                e.stopPropagation();
+                setDragOverIdx(i);
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const id = dropId(e);
+                if (id !== null) insertAt(id, i);
+              }}
+              onClick={() => {
+                if (done) return;
+                setPicked((p) => p.filter((x) => x.id !== c.id));
+                setPeekedId(null);
+              }}
               disabled={done}
             >
               {c.text}
@@ -310,21 +442,39 @@ function BuildRound({
           );
         })}
       </div>
+      {!done && (
+        <input
+          className='gt-input gt-type'
+          type='text'
+          placeholder='Type to find the next word — Enter picks it (or just tap a tile)'
+          value={typed}
+          onChange={(e) => setTyped(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              typedPick();
+            } else if (e.key === "Backspace" && typed === "" && picked.length > 0) {
+              e.preventDefault();
+              setPicked((p) => p.slice(0, -1));
+            }
+          }}
+        />
+      )}
       <div className='gq-bank en'>
-        {bank.map((c) => {
-          const used = pickedIds.has(c.id);
-          return (
-            <button
-              key={c.id}
-              type='button'
-              className={`gq-tile en${used ? " used" : ""}`}
-              onClick={() => !done && !used && picked.length < refWords.length && setPicked((p) => [...p, c])}
-              disabled={done || used}
-            >
-              {c.text}
-            </button>
-          );
-        })}
+        {visible.map((t) => (
+          <button
+            key={t.id}
+            type='button'
+            className={`gq-tile en${matchIds.has(t.id) ? " match" : ""}${peekedId === t.id ? " peek" : ""}`}
+            draggable={!done}
+            onDragStart={(e) => e.dataTransfer.setData("text/plain", String(t.id))}
+            onClick={() => pick(t)}
+            disabled={done || picked.length >= refWords.length}
+          >
+            {t.text}
+          </button>
+        ))}
+        {hiddenCount > 0 && <span className='gt-more-tiles'>+{hiddenCount} more as you go</span>}
       </div>
       {done ? (
         <>
@@ -344,6 +494,9 @@ function BuildRound({
           <span className='gm-meta'>
             {picked.length}/{refWords.length} words
           </span>
+          <button type='button' className='mm-chip' onClick={peek} disabled={picked.length >= refWords.length}>
+            💡 Peek next word
+          </button>
           <button type='button' className='mm-nav primary' onClick={check} disabled={picked.length !== refWords.length}>
             Check
           </button>
