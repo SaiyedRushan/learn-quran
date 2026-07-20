@@ -50,65 +50,6 @@ function PhasesPanel() {
   );
 }
 
-// A live demo of the "Fill the gaps" stage: a real verse (Al-Ikhlāṣ 1) with two
-// words blanked out. On a timer the blanks reveal one at a time — the same
-// tap-to-reveal a learner does — then it resets and loops. Honours
-// prefers-reduced-motion by showing every word filled in.
-const CLOZE_DEMO = {
-  words: ["قُلْ", "هُوَ", "ٱللَّهُ", "أَحَدٌ"],
-  blanks: [1, 3], // indices of the words hidden as blanks
-  meaning: "Say, He is Allah, [who is] One.",
-};
-
-function ClozePanel() {
-  // How many of the blanks are currently revealed (0 → all → loop).
-  const [filled, setFilled] = useState(0);
-
-  useEffect(() => {
-    const reduce =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      setFilled(CLOZE_DEMO.blanks.length);
-      return;
-    }
-    const id = setInterval(
-      () => setFilled((f) => (f + 1) % (CLOZE_DEMO.blanks.length + 1)),
-      1300,
-    );
-    return () => clearInterval(id);
-  }, []);
-
-  return (
-    <div className="tour-cloze">
-      <div className="tour-cloze-ar" dir="rtl" lang="ar">
-        {CLOZE_DEMO.words.map((w, i) => {
-          const blankIdx = CLOZE_DEMO.blanks.indexOf(i);
-          const isBlank = blankIdx !== -1;
-          const revealed = !isBlank || blankIdx < filled;
-          if (revealed) {
-            return (
-              <span key={i} className={`tour-cloze-word${isBlank ? " just-filled" : ""}`}>
-                {w}
-              </span>
-            );
-          }
-          return (
-            <span
-              key={i}
-              className="tour-cloze-blank"
-              style={{width: `${Math.max(2, w.length)}ch`}}
-              aria-hidden="true"
-            />
-          );
-        })}
-      </div>
-      <p className="tour-cloze-meaning">{CLOZE_DEMO.meaning}</p>
-      <span className="tour-cloze-cap">Tap a blank to reveal the word</span>
-    </div>
-  );
-}
-
 // A mini round of the fill-in-the-blanks game: one word missing, a word bank
 // beneath. On a timer the correct tile lights up, then lands in the blank —
 // then it resets and loops. Honours prefers-reduced-motion by showing the
@@ -155,6 +96,50 @@ function TypeDemo() {
   );
 }
 
+// The order-the-verses third of the demo: three cards toggle between shuffled
+// and sorted — the real two (Al-Ikhlāṣ 1–2) gain their numbers and the decoy
+// (An-Nās 1) is flagged and fades. Honours prefers-reduced-motion by holding
+// the sorted state.
+const ORDER_DEMO = [
+  {ar: "قُلْ هُوَ ٱللَّهُ أَحَدٌ", n: 1},
+  {ar: "ٱللَّهُ ٱلصَّمَدُ", n: 2},
+  {ar: "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ", n: null}, // decoy — An-Nās 1
+];
+
+function OrderDemo() {
+  const [sorted, setSorted] = useState(false);
+
+  useEffect(() => {
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setSorted(true);
+      return;
+    }
+    const id = setInterval(() => setSorted((s) => !s), 1800);
+    return () => clearInterval(id);
+  }, []);
+
+  const cards = sorted ? ORDER_DEMO : [ORDER_DEMO[1], ORDER_DEMO[2], ORDER_DEMO[0]];
+  return (
+    <div className="tour-order">
+      {cards.map((c) => (
+        <span
+          key={c.ar}
+          className={`tour-order-card${sorted ? (c.n !== null ? " ok" : " out") : ""}`}
+        >
+          <span className="tour-order-num">{sorted && c.n !== null ? c.n : "?"}</span>
+          <span className="tour-order-ar" dir="rtl" lang="ar">
+            {c.ar}
+          </span>
+          {sorted && c.n === null && <span className="tour-order-tag">decoy</span>}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function GamesPanel() {
   // 0 = blank waiting · 1 = correct tile highlighted · 2 = blank filled
   const [stage, setStage] = useState(0);
@@ -197,12 +182,12 @@ function GamesPanel() {
       </div>
       <span className="tour-game-eyebrow tour-game-eyebrow-gap">🗣️ Guess the translation</span>
       <TypeDemo />
+      <span className="tour-game-eyebrow tour-game-eyebrow-gap">🔀 Order the verses</span>
+      <OrderDemo />
       <span className="tour-cloze-cap">🔗 Solo — or send a friend the exact same puzzle</span>
     </div>
   );
 }
-
-const CONFIDENCE_CHIPS = ["Not started", "Learning", "Reviewing", "Solid"];
 
 // The five phases mirror the fading-crutches ladder in MemorizeMode — each
 // phase removes one support until you can recite from a blank slate.
@@ -217,19 +202,7 @@ const PHASES: {label: string; hint: string}[] = [
 const STEPS: Step[] = [
   {
     title: "Welcome to Learn Quran",
-    body: "A free, section-by-section way to memorize and understand Juz 29 (Tabārak) and Juz 30 (Juz ʿAmma) — with verified Arabic and translation. No account, and your progress stays in your browser.",
-    panel: (
-      <div className="tour-hero">
-        <span className="tour-glyph" aria-hidden="true">
-          ق
-        </span>
-        <span className="tour-hero-tag">Juz 29 & 30 · 40+ surahs</span>
-      </div>
-    ),
-  },
-  {
-    title: "Begin with your intention",
-    body: "At the top of the home page you can write your own intention — your niyyah, the reasons you're learning. It greets you every time you return, so on the days motivation runs low you're reminded why you started. Tap it anytime to write or revise.",
+    body: "A free, section-by-section way to memorize and understand Juz 29 (Tabārak) and Juz 30 (Juz ʿAmma) — with verified Arabic and translation. No account, and your progress stays in your browser. Start by writing your intention — your niyyah — at the top of the home page; it greets you every time you return, so on the days motivation runs low you're reminded why you started.",
     panel: (
       <div className="tour-intention">
         <div className="tour-intention-head">
@@ -244,24 +217,33 @@ const STEPS: Step[] = [
     ),
   },
   {
-    title: "Browse the library",
-    body: "The home page lists every surah, grouped into collapsible collections. Each shows its confidence badge, so you can see at a glance what you've started and what's solid.",
+    title: "Your library — and Today's plan",
+    body: "The home page lists every surah in collapsible collections. Mark each one Learning, Reviewing, or Solid as you go — the badges show at a glance where you stand, and they power the Today's plan panel, which tells you exactly what to study and review next, with rough time estimates.",
     panel: (
-      <div className="tour-rows">
-        {[
-          {n: "112", name: "Al-Ikhlāṣ", ep: "Sincerity", badge: "Solid", tone: "solid"},
-          {n: "114", name: "An-Nās", ep: "Mankind", badge: "Learning", tone: "learn"},
-          {n: "94", name: "Ash-Sharḥ", ep: "The Relief", badge: null, tone: "none"},
-        ].map((r) => (
-          <div className="tour-row" key={r.n}>
-            <span className="tour-row-num">{r.n}</span>
-            <span className="tour-row-main">
-              <span className="tour-row-name">{r.name}</span>
-              <span className="tour-row-ep">{r.ep}</span>
-            </span>
-            {r.badge && <span className={`tour-badge ${r.tone}`}>{r.badge}</span>}
-          </div>
-        ))}
+      <div className="tour-stack">
+        <div className="tour-rows">
+          {[
+            {n: "112", name: "Al-Ikhlāṣ", ep: "Sincerity", badge: "Solid", tone: "solid"},
+            {n: "114", name: "An-Nās", ep: "Mankind", badge: "Learning", tone: "learn"},
+          ].map((r) => (
+            <div className="tour-row" key={r.n}>
+              <span className="tour-row-num">{r.n}</span>
+              <span className="tour-row-main">
+                <span className="tour-row-name">{r.name}</span>
+                <span className="tour-row-ep">{r.ep}</span>
+              </span>
+              <span className={`tour-badge ${r.tone}`}>{r.badge}</span>
+            </div>
+          ))}
+        </div>
+        <div className="tour-plan">
+          <span className="tour-plan-dot" />
+          <span className="tour-plan-main">
+            <span className="tour-plan-name">An-Naba</span>
+            <span className="tour-plan-sub">2 of 4 sections left · next: §3</span>
+          </span>
+          <span className="tour-plan-time">~6 min</span>
+        </div>
       </div>
     ),
   },
@@ -292,41 +274,13 @@ const STEPS: Step[] = [
   },
   {
     title: "Memorize a section in five phases",
-    body: "When you're ready, Memorize mode drills one section at a time and removes a single crutch at each phase — read it with its meaning, then Arabic only, recall it from the meaning, fill in the blanks, and finally a blank slate. Letter and word peeks are there whenever you get stuck, and it quietly flags the words you keep forgetting.",
+    body: "When you're ready, Memorize mode drills one section at a time and removes a single crutch at each phase — read it with its meaning, then Arabic only, recall it from the meaning, fill in the gaps (words drop out and you fill each blank from memory, dialing them from light to heavy), and finally a blank slate. Letter and word peeks are there whenever you get stuck, and it quietly flags the words you keep forgetting.",
     panel: <PhasesPanel />,
   },
   {
-    title: "Fill in the blanks",
-    body: "The “Fill the gaps” phase is where recall gets tested: words drop out of the verse and you recite the whole thing, filling each blank from memory. Tap any blank to reveal just that word, and dial the blanks from light to heavy as you get stronger. Every verse always keeps at least one gap, so there’s never a line that quietly tests nothing.",
-    panel: <ClozePanel />,
-  },
-  {
     title: "Play the games — solo or against a friend",
-    body: "Two games turn review into play. Fill in the Blanks drops words out of every verse of a surah and hands you a word bank — misses are flagged as weak spots for your drill. Guess the Translation shows the Arabic and asks for the meaning, typed in your own words or rebuilt from tiles. Finish a round and challenge a friend: the link carries the exact same puzzle and your score to beat. Find them in the Games tab or on any surah's guide.",
+    body: "Three games turn review into play. Fill in the Blanks drops words out of every verse of a surah and hands you a word bank — misses are flagged as weak spots for your drill. Guess the Translation shows the Arabic and asks for the meaning, typed in your own words or rebuilt from tiles. Order the Verses shuffles a run of verses with decoys from other surahs mixed in — put the real ones back in order. Finish a round and challenge a friend: the link carries the exact same puzzle and your score to beat. Find them in the Games tab or on any surah's guide.",
     panel: <GamesPanel />,
-  },
-  {
-    title: "Set your confidence — build Today's plan",
-    body: "Mark each surah and dua as Learning, Reviewing, or Solid. Your choices power the Today's plan panel on the home page, which tells you exactly what to study and review next, with rough time estimates.",
-    panel: (
-      <div className="tour-stack">
-        <div className="tour-chips">
-          {CONFIDENCE_CHIPS.map((c, i) => (
-            <span key={c} className={`tour-chip ${i === 1 ? "on" : ""}`}>
-              {c}
-            </span>
-          ))}
-        </div>
-        <div className="tour-plan">
-          <span className="tour-plan-dot" />
-          <span className="tour-plan-main">
-            <span className="tour-plan-name">An-Naba</span>
-            <span className="tour-plan-sub">2 of 4 sections left · next: §3</span>
-          </span>
-          <span className="tour-plan-time">~6 min</span>
-        </div>
-      </div>
-    ),
   },
   {
     title: "Duas, and make it yours",

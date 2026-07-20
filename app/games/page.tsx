@@ -5,11 +5,12 @@ import {SITE, absoluteUrl} from "@/lib/site";
 export const metadata: Metadata = {
   title: "Games — Learn Through Play",
   description:
-    "Two ways to test your Quran knowledge: guess the English translation of a verse, or fill the missing Arabic words in any surah. Play solo or challenge a friend with a link.",
+    "Three ways to test your Quran knowledge: guess the English translation of a verse, fill the missing Arabic words in any surah, or put shuffled verses back in order past the decoys. Play solo or challenge a friend with a link.",
   alternates: {canonical: "/games/"},
   openGraph: {
     title: `Games · ${SITE.name}`,
-    description: "Guess the translation or fill in the blanks — solo, or against a friend via a share link.",
+    description:
+      "Guess the translation, fill in the blanks, or order the verses — solo, or against a friend via a share link.",
     url: absoluteUrl("/games/"),
   },
 };
@@ -37,6 +38,15 @@ export default function GamesPage() {
           <div className='gm-card-sub'>
             Every verse of a surah with words missing — tap or drag the right Arabic words into place.
             Misses are flagged as weak spots for your memorization drill.
+          </div>
+        </Link>
+        <Link href='/games/order/' className='gm-card'>
+          <div className='gm-card-icon'>🔀</div>
+          <div className='gm-card-title'>Order the Verses</div>
+          <div className='gm-card-sub'>
+            A run of verses from a surah, shuffled — with decoy verses from other surahs mixed in. Arrange
+            the real ones in recitation order and leave the impostors behind. Stuck? A hint shows the
+            passage&apos;s English in order.
           </div>
         </Link>
       </div>

@@ -50,7 +50,7 @@ const FEATURES: {icon: string; title: string; text: string}[] = [
   {
     icon: "🎮",
     title: "Games — solo or vs a friend",
-    text: "A fill-in-the-blanks quiz on every surah and a guess-the-translation game, with challenge links that hand a friend the exact same puzzle and your score to beat. No account needed.",
+    text: "A fill-in-the-blanks quiz on every surah, a guess-the-translation game, and an order-the-verses puzzle with decoy verses to spot — with challenge links that hand a friend the exact same puzzle and your score to beat. No account needed.",
   },
   {
     icon: "🤲",

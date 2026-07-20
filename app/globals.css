@@ -2777,33 +2777,6 @@ a {
   gap: 12px;
 }
 
-/* Step 1 — welcome */
-.tour-hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-.tour-glyph {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  font-family: var(--font-serif);
-  font-size: 34px;
-  color: #fff;
-  background: var(--accent);
-  box-shadow: 0 6px 24px rgba(29, 158, 117, 0.35);
-}
-.tour-hero-tag {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--accent-bright);
-  letter-spacing: 0.02em;
-}
-
 /* Intention step — mirrors the home-page intention block */
 .tour-intention {
   width: 100%;
@@ -3036,15 +3009,7 @@ a {
   color: var(--color-text-tertiary);
 }
 
-/* Fill-the-gaps demo — a verse with blanks that fill in on a loop */
-.tour-cloze {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 6px 4px;
-}
+/* Arabic verse line with blank slots — shared by the tour's game demos */
 .tour-cloze-ar {
   display: flex;
   flex-wrap: wrap;
@@ -3080,13 +3045,6 @@ a {
   background: rgba(29, 158, 117, 0.12);
   border-radius: 3px 3px 0 0;
 }
-.tour-cloze-meaning {
-  font-size: 12px;
-  font-style: italic;
-  color: var(--color-text-secondary);
-  text-align: center;
-  margin: 0;
-}
 .tour-cloze-cap {
   font-size: 11px;
   color: var(--color-text-tertiary);
@@ -3097,27 +3055,7 @@ a {
   }
 }
 
-/* Step 5 — confidence chips + a Today's-plan row */
-.tour-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  justify-content: center;
-}
-.tour-chip {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--color-text-secondary);
-  padding: 5px 10px;
-  border-radius: 999px;
-  border: 0.5px solid var(--color-border-secondary);
-  background: var(--color-background-primary);
-}
-.tour-chip.on {
-  color: #fff;
-  background: var(--accent);
-  border-color: var(--accent);
-}
+/* Library step — a Today's-plan row under the surah rows */
 .tour-plan {
   display: flex;
   align-items: center;
@@ -3235,6 +3173,55 @@ a {
   color: var(--accent-bright);
   font-size: 11.5px;
   font-weight: 600;
+}
+/* Tour step: mini order-the-verses round */
+.tour-order {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tour-order-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 10px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  transition: all 0.3s;
+}
+.tour-order-card.ok {
+  border-color: var(--accent);
+}
+.tour-order-card.out {
+  opacity: 0.45;
+  border-style: dashed;
+}
+.tour-order-num {
+  flex: none;
+  min-width: 14px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+.tour-order-card.ok .tour-order-num {
+  color: var(--accent-bright);
+}
+.tour-order-ar {
+  flex: 1;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.8;
+  color: #4fd4a8;
+}
+.tour-order-tag {
+  flex: none;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  color: #e0a84a;
 }
 @media (prefers-reduced-motion: reduce) {
   .tour-type-caret {
@@ -3760,6 +3747,150 @@ a {
   font-size: 12.5px;
   color: var(--color-text-tertiary);
   line-height: 1.5;
+}
+
+/* Order-the-verses game */
+.go-label {
+  display: block;
+  margin-bottom: 6px;
+}
+.go-line {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 58px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  border: 1px dashed var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  transition: border-color 0.15s;
+}
+.go-line.drop-end {
+  border-color: var(--accent);
+}
+.go-bank {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 40px;
+}
+.go-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  text-align: start;
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+  /* Pointer-based dragging: the browser must not claim card touches for
+     scrolling, text selection, or the iOS long-press callout. */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.go-card:hover:not(:disabled) {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+.go-card:disabled {
+  cursor: default;
+  transform: none;
+}
+.go-card.hit {
+  border-color: var(--accent);
+}
+.go-card.miss {
+  border-color: #e07a6a;
+}
+.go-card.drop-before {
+  box-shadow: 0 -3px 0 var(--accent-bright);
+}
+.go-card.drag-ghost {
+  position: fixed;
+  z-index: 300;
+  width: auto;
+  max-width: min(320px, 80vw);
+  pointer-events: none;
+  transform: translate(-50%, -130%);
+  opacity: 0.95;
+  border-color: var(--accent);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+}
+.go-num {
+  flex: none;
+  min-width: 26px;
+  padding-top: 3px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+.go-card.hit .go-num {
+  color: var(--accent-bright);
+}
+.go-card.miss .go-num {
+  color: #e07a6a;
+}
+.go-card-body {
+  display: block;
+  flex: 1;
+  min-width: 0;
+}
+.go-card-ar {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: calc(19px * var(--scale-ar));
+  line-height: 1.9;
+  color: #4fd4a8;
+}
+.go-card.miss .go-card-ar {
+  color: #e07a6a;
+}
+.go-card-tr {
+  display: block;
+  margin-top: 4px;
+  font-size: calc(12.5px * var(--scale-en));
+  line-height: 1.6;
+  color: var(--color-text-tertiary);
+}
+.go-card-en {
+  display: block;
+  margin-top: 4px;
+  font-size: calc(12.5px * var(--scale-en));
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+.go-card-src {
+  display: block;
+  margin-top: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #e0a84a;
+}
+.go-card.decoy {
+  border-style: dashed;
+}
+/* .gt-hint only spaces itself from above; as an order-game reference panel it
+   also needs air before the sequence label below it. */
+.go-hint {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+.go-hint-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.go-answer-row {
+  margin-bottom: 6px;
+}
+.go-answer-row .go-num {
+  margin-right: 4px;
 }
 
 /* Results */

@@ -32,7 +32,17 @@ export interface TranslateChallenge {
   rival?: RivalScore;
 }
 
-export type Challenge = QuizChallenge | TranslateChallenge;
+export interface OrderChallenge {
+  game: "order";
+  slug: string;
+  seed: number;
+  rounds: number;
+  /** Verses per round (length of the sequence to arrange). */
+  size: number;
+  rival?: RivalScore;
+}
+
+export type Challenge = QuizChallenge | TranslateChallenge | OrderChallenge;
 
 function toBase64Url(json: string): string {
   const b64 = btoa(String.fromCharCode(...new TextEncoder().encode(json)));
@@ -65,6 +75,7 @@ export function decodeChallenge(hash: string): Challenge | null {
       (obj.mode === "type" || obj.mode === "build")
     )
       return obj;
+    if (obj.game === "order" && Number.isFinite(obj.rounds) && Number.isFinite(obj.size)) return obj;
     return null;
   } catch {
     return null;
