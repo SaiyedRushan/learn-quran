@@ -2,7 +2,8 @@
 
 import {useEffect, useState} from "react";
 import {createPortal} from "react-dom";
-import {useSettings, setSetting, resetSettings, SCALE_MIN, SCALE_MAX, SCALE_STEP, DEFAULTS} from "@/lib/settings";
+import {useSettings, setSetting, resetSettings, SCALE_MIN, SCALE_MAX, SCALE_STEP, VOLUME_MIN, VOLUME_MAX, VOLUME_STEP, DEFAULTS} from "@/lib/settings";
+import {playClick, setClickVolume} from "@/lib/clickSound";
 
 export default function SettingsControl() {
   const [open, setOpen] = useState(false);
@@ -27,7 +28,8 @@ export default function SettingsControl() {
     settings.englishScale === DEFAULTS.englishScale &&
     settings.zenMode === DEFAULTS.zenMode &&
     settings.showTransliteration === DEFAULTS.showTransliteration &&
-    settings.clickSound === DEFAULTS.clickSound;
+    settings.clickSound === DEFAULTS.clickSound &&
+    settings.soundVolume === DEFAULTS.soundVolume;
 
   return (
     <>
@@ -133,6 +135,32 @@ export default function SettingsControl() {
                 >
                   <span className='switch-knob' />
                 </button>
+              </div>
+
+              <div className='setting' aria-disabled={!settings.clickSound} style={settings.clickSound ? undefined : {opacity: 0.45}}>
+                <div className='setting-row'>
+                  <span className='setting-label'>Sound volume</span>
+                  <span className='setting-val'>{pct(settings.soundVolume)}</span>
+                </div>
+                <input
+                  className='slider'
+                  type='range'
+                  min={VOLUME_MIN}
+                  max={VOLUME_MAX}
+                  step={VOLUME_STEP}
+                  value={settings.soundVolume}
+                  disabled={!settings.clickSound}
+                  aria-label='Sound volume'
+                  onChange={(e) => {
+                    const v = Number(e.target.value);
+                    setSetting("soundVolume", v);
+                    // Preview the new loudness immediately. setSetting also syncs
+                    // it via the ClickSounds effect, but that runs after commit —
+                    // set it here so this click uses the value just chosen.
+                    setClickVolume(v);
+                    if (v > 0) playClick();
+                  }}
+                />
               </div>
 
               <div className='preview' aria-hidden='true'>

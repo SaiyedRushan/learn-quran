@@ -8,7 +8,7 @@
 
 import {useEffect} from "react";
 import {useSettings} from "@/lib/settings";
-import {playClick, preloadClick} from "@/lib/clickSound";
+import {playClick, preloadClick, setClickVolume} from "@/lib/clickSound";
 
 // What counts as a "clickable" control. Covers native buttons and links plus
 // the ARIA roles we use for toggles/tabs. Text inputs, sliders, and the modal
@@ -16,7 +16,13 @@ import {playClick, preloadClick} from "@/lib/clickSound";
 const SELECTOR = 'button, a[href], [role="button"], [role="switch"], [role="tab"], [role="menuitem"], summary';
 
 export default function ClickSounds() {
-  const {clickSound} = useSettings();
+  const {clickSound, soundVolume} = useSettings();
+
+  // Keep the play path's loudness in sync with the setting, independent of the
+  // on/off toggle below.
+  useEffect(() => {
+    setClickVolume(soundVolume);
+  }, [soundVolume]);
 
   useEffect(() => {
     if (!clickSound) return;

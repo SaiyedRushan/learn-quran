@@ -12,6 +12,11 @@ export const SCALE_MIN = 0.85;
 export const SCALE_MAX = 1.6;
 export const SCALE_STEP = 0.05;
 
+// Click-sound loudness, as a 0–1 multiplier over the clip's baseline gain.
+export const VOLUME_MIN = 0;
+export const VOLUME_MAX = 1;
+export const VOLUME_STEP = 0.05;
+
 export interface Settings {
   arabicScale: number;
   englishScale: number;
@@ -22,14 +27,18 @@ export interface Settings {
   showTransliteration: boolean;
   // Play a subtle click sound when tapping buttons, links, and other controls.
   clickSound: boolean;
+  // Loudness of that click sound, 0–1 (see VOLUME_MIN/MAX). Applied as a
+  // multiplier over the clip's baseline gain in lib/clickSound.
+  soundVolume: number;
 }
 
-export const DEFAULTS: Settings = {arabicScale: 1, englishScale: 1, zenMode: false, showTransliteration: true, clickSound: true};
+export const DEFAULTS: Settings = {arabicScale: 1, englishScale: 1, zenMode: false, showTransliteration: true, clickSound: true, soundVolume: 1};
 
 let cache: Settings | null = null;
 const listeners = new Set<() => void>();
 
 const clamp = (n: number) => Math.min(SCALE_MAX, Math.max(SCALE_MIN, Math.round(n * 100) / 100));
+const clampVolume = (n: number) => Math.min(VOLUME_MAX, Math.max(VOLUME_MIN, Math.round(n * 100) / 100));
 
 function read(): Settings {
   if (cache) return cache;
@@ -85,7 +94,9 @@ export function useSettings(): Settings {
 }
 
 export function setSetting<K extends keyof Settings>(key: K, value: Settings[K]): void {
-  const next = typeof value === "number" ? clamp(value) : value;
+  // Numeric settings clamp to their own range — the font scales and the sound
+  // volume have different bounds, so pick the clamp by key.
+  const next = typeof value === "number" ? (key === "soundVolume" ? clampVolume(value) : clamp(value)) : value;
   write({...read(), [key]: next});
 }
 
