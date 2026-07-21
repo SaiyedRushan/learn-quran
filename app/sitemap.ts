@@ -1,5 +1,5 @@
 import type {MetadataRoute} from "next";
-import {surahIndex} from "@/lib/content";
+import {surahIndex, getGuide, MIN_ORDERABLE_SECTIONS} from "@/lib/content";
 import {getAllPosts} from "@/content/blog";
 import {SITE, absoluteUrl} from "@/lib/site";
 
@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {url: absoluteUrl("/games/translate/"), lastModified: now, changeFrequency: "monthly", priority: 0.6},
     {url: absoluteUrl("/games/quiz/"), lastModified: now, changeFrequency: "monthly", priority: 0.6},
     {url: absoluteUrl("/games/order/"), lastModified: now, changeFrequency: "monthly", priority: 0.6},
+    {url: absoluteUrl("/games/sections/"), lastModified: now, changeFrequency: "monthly", priority: 0.6},
     {url: absoluteUrl("/about/"), lastModified: now, changeFrequency: "yearly", priority: 0.4},
     {url: absoluteUrl("/contact/"), lastModified: now, changeFrequency: "yearly", priority: 0.5},
   ];
@@ -50,6 +51,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]);
 
+  // Only surahs with enough thematic sections get an order-the-sections page.
+  const sectionGameEntries: MetadataRoute.Sitemap = surahIndex
+    .filter((s) => (getGuide(s.slug)?.sections.length ?? 0) >= MIN_ORDERABLE_SECTIONS)
+    .map((s) => ({
+      url: absoluteUrl(`/games/sections/${s.slug}/`),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    }));
+
   const blogEntries: MetadataRoute.Sitemap = getAllPosts().map((p) => ({
     url: absoluteUrl(`/blog/${p.slug}/`),
     lastModified: new Date(p.date),
@@ -57,5 +68,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticEntries, ...surahEntries, ...gameEntries, ...blogEntries];
+  return [...staticEntries, ...surahEntries, ...gameEntries, ...sectionGameEntries, ...blogEntries];
 }

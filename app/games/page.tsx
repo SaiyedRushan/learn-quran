@@ -5,12 +5,12 @@ import {SITE, absoluteUrl} from "@/lib/site";
 export const metadata: Metadata = {
   title: "Games — Learn Through Play",
   description:
-    "Three ways to test your Quran knowledge: guess the English translation of a verse, fill the missing Arabic words in any surah, or put shuffled verses back in order past the decoys. Play solo or challenge a friend with a link.",
+    "Four ways to test your Quran knowledge: guess the English translation of a verse, fill the missing Arabic words in any surah, put shuffled verses back in order past the decoys, or reorder a surah's thematic sections. Play solo or challenge a friend with a link.",
   alternates: {canonical: "/games/"},
   openGraph: {
     title: `Games · ${SITE.name}`,
     description:
-      "Guess the translation, fill in the blanks, or order the verses — solo, or against a friend via a share link.",
+      "Guess the translation, fill in the blanks, order the verses, or reorder a surah's sections — solo, or against a friend via a share link.",
     url: absoluteUrl("/games/"),
   },
 };
@@ -44,9 +44,17 @@ export default function GamesPage() {
           <div className='gm-card-icon'>🔀</div>
           <div className='gm-card-title'>Order the Verses</div>
           <div className='gm-card-sub'>
-            A run of verses from a surah, shuffled — with decoy verses from other surahs mixed in. Arrange
-            the real ones in recitation order and leave the impostors behind. Stuck? A hint shows the
+            A run of verses from a surah, shuffled — with decoy verses from nearby and other surahs mixed in.
+            Arrange the real ones in recitation order and leave the impostors behind. Stuck? A hint shows the
             passage&apos;s English in order.
+          </div>
+        </Link>
+        <Link href='/games/sections/' className='gm-card'>
+          <div className='gm-card-icon'>🗂️</div>
+          <div className='gm-card-title'>Order the Sections</div>
+          <div className='gm-card-sub'>
+            A surah&apos;s thematic sections, shuffled — put them back into the order they unfold. A quick
+            test of whether you&apos;ve grasped how a surah is structured, not just its words.
           </div>
         </Link>
       </div>

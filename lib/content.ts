@@ -66,6 +66,24 @@ export function gamePickerGroups() {
   ];
 }
 
+/** Fewest sections a surah needs before its guide is worth reordering as a
+ * game — two sections is a coin flip, so require at least three. */
+export const MIN_ORDERABLE_SECTIONS = 3;
+
+/** Picker groups for the "Order the sections" game — only surahs whose guide
+ * has enough thematic sections to reorder meaningfully. */
+export function sectionsGamePickerGroups() {
+  return gamePickerGroups()
+    .map((group) => ({
+      ...group,
+      items: group.items.filter((e) => {
+        const guide = getGuide(e.slug);
+        return (guide?.sections.length ?? 0) >= MIN_ORDERABLE_SECTIONS;
+      }),
+    }))
+    .filter((group) => group.items.length > 0);
+}
+
 /** Previous / next entry within the same collection (for the pager). */
 export function neighbours(slug: string): {
   prev?: IndexEntry;
