@@ -3893,6 +3893,55 @@ a {
   margin-right: 4px;
 }
 
+/* Order-the-sections game — reuses .go-line / .go-card, with a section title
+   in place of the Arabic and per-card move controls. */
+.gs-card {
+  align-items: center;
+}
+.gs-title {
+  display: block;
+  font-size: calc(14.5px * var(--scale-en));
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.go-card.miss .gs-title {
+  color: #e07a6a;
+}
+.gs-controls {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 4px;
+}
+.gs-move {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 22px;
+  padding: 0;
+  border-radius: 6px;
+  border: 0.5px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  color: var(--color-text-secondary);
+  font-size: 10px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.gs-move:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent-bright);
+}
+.gs-move:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.gs-range {
+  color: var(--color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
 /* Results */
 .gm-score-big {
   font-size: 34px;
