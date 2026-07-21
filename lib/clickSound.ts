@@ -9,6 +9,16 @@
 const SRC = "/click-sound.wav";
 const VOLUME = 0.35;
 
+// User-controlled loudness (the `soundVolume` display setting), 0–1, applied
+// on top of the clip's baseline VOLUME. Kept as a module-level value so the
+// hot playClick path needn't read React state; ClickSounds keeps it in sync.
+let volumeMultiplier = 1;
+
+/** Set the 0–1 loudness multiplier applied to every click. */
+export function setClickVolume(multiplier: number): void {
+  volumeMultiplier = Math.min(1, Math.max(0, multiplier));
+}
+
 let ctx: AudioContext | null = null;
 let buffer: AudioBuffer | null = null;
 let decoding: Promise<void> | null = null;
@@ -49,11 +59,12 @@ export function playClick(): void {
     preloadClick();
     return;
   }
+  if (volumeMultiplier <= 0) return; // muted
   try {
     const src = c.createBufferSource();
     src.buffer = buffer;
     const gain = c.createGain();
-    gain.gain.value = VOLUME;
+    gain.gain.value = VOLUME * volumeMultiplier;
     src.connect(gain).connect(c.destination);
     src.start();
   } catch {
