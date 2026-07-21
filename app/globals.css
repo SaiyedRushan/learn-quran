@@ -3133,10 +3133,50 @@ a {
   text-align: center;
   margin-bottom: 8px;
 }
-.tour-game-eyebrow-gap {
-  margin-top: 16px;
+/* Games step: previews stack on phones (each divided from the next), and tile
+   into a 2-column grid inside the widened modal on larger screens (see
+   .tour-modal-wide) so four games don't make a very tall dialog. */
+.tour-game {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.tour-game-item + .tour-game-item {
+  margin-top: 14px;
   padding-top: 14px;
   border-top: 0.5px solid var(--color-border-tertiary);
+}
+.tour-game .tour-cloze-cap {
+  margin-top: 14px;
+  text-align: center;
+}
+@media (min-width: 560px) {
+  .tour-modal-wide {
+    max-width: 680px;
+  }
+  .tour-modal-wide .tour-game {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    align-items: stretch;
+  }
+  /* In the grid each item is a self-contained tile, so give every item its own
+     outline instead of the stacked divider between siblings. */
+  .tour-modal-wide .tour-game-item {
+    padding: 12px 10px;
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+  }
+  .tour-modal-wide .tour-game-item + .tour-game-item {
+    margin-top: 0;
+    padding-top: 12px;
+    border-top: 0.5px solid var(--color-border-tertiary);
+  }
+  .tour-modal-wide .tour-game .tour-cloze-cap {
+    grid-column: 1 / -1;
+    margin-top: 2px;
+  }
 }
 .tour-type {
   display: flex;

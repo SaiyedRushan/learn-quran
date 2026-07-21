@@ -15,6 +15,8 @@ interface Step {
   title: string;
   body: string;
   panel: React.ReactNode;
+  /** Widen the modal for this step (the games step tiles four previews). */
+  wide?: boolean;
 }
 
 // The five-phase panel sweeps its highlight forward on a timer, marking each
@@ -194,35 +196,45 @@ function GamesPanel() {
   }, []);
 
   const filled = stage === 2;
+  // Each game is wrapped in a .tour-game-item so the four previews stack on
+  // phones but tile into a 2-column grid in the widened modal on larger screens.
   return (
     <div className="tour-game">
-      <span className="tour-game-eyebrow">🧩 Fill in the blanks</span>
-      <div className="tour-cloze-ar" dir="rtl" lang="ar">
-        <span className="tour-cloze-word">قُلْ</span>
-        <span className="tour-cloze-word">هُوَ</span>
-        <span className="tour-cloze-word">ٱللَّهُ</span>
-        {filled ? (
-          <span className="tour-cloze-word just-filled">أَحَدٌ</span>
-        ) : (
-          <span className="tour-cloze-blank" style={{width: "4ch"}} aria-hidden="true" />
-        )}
+      <div className="tour-game-item">
+        <span className="tour-game-eyebrow">🧩 Fill in the blanks</span>
+        <div className="tour-cloze-ar" dir="rtl" lang="ar">
+          <span className="tour-cloze-word">قُلْ</span>
+          <span className="tour-cloze-word">هُوَ</span>
+          <span className="tour-cloze-word">ٱللَّهُ</span>
+          {filled ? (
+            <span className="tour-cloze-word just-filled">أَحَدٌ</span>
+          ) : (
+            <span className="tour-cloze-blank" style={{width: "4ch"}} aria-hidden="true" />
+          )}
+        </div>
+        <div className="tour-game-tiles" dir="rtl">
+          {GAME_TILES.map((t) => (
+            <span
+              key={t.text}
+              className={`tour-game-tile${t.correct && stage === 1 ? " hot" : ""}${t.correct && filled ? " used" : ""}`}
+            >
+              {t.text}
+            </span>
+          ))}
+        </div>
       </div>
-      <div className="tour-game-tiles" dir="rtl">
-        {GAME_TILES.map((t) => (
-          <span
-            key={t.text}
-            className={`tour-game-tile${t.correct && stage === 1 ? " hot" : ""}${t.correct && filled ? " used" : ""}`}
-          >
-            {t.text}
-          </span>
-        ))}
+      <div className="tour-game-item">
+        <span className="tour-game-eyebrow">🗣️ Guess the translation</span>
+        <TypeDemo />
       </div>
-      <span className="tour-game-eyebrow tour-game-eyebrow-gap">🗣️ Guess the translation</span>
-      <TypeDemo />
-      <span className="tour-game-eyebrow tour-game-eyebrow-gap">🔀 Order the verses</span>
-      <OrderDemo />
-      <span className="tour-game-eyebrow tour-game-eyebrow-gap">🗂️ Order the sections</span>
-      <SectionsDemo />
+      <div className="tour-game-item">
+        <span className="tour-game-eyebrow">🔀 Order the verses</span>
+        <OrderDemo />
+      </div>
+      <div className="tour-game-item">
+        <span className="tour-game-eyebrow">🗂️ Order the sections</span>
+        <SectionsDemo />
+      </div>
       <span className="tour-cloze-cap">🔗 Solo — or send a friend the exact same puzzle</span>
     </div>
   );
@@ -320,6 +332,7 @@ const STEPS: Step[] = [
     title: "Play the games — solo or against a friend",
     body: "Four games turn review into play. Fill in the Blanks drops words out of every verse of a surah and hands you a word bank — misses are flagged as weak spots for your drill. Guess the Translation shows the Arabic and asks for the meaning, typed in your own words or rebuilt from tiles. Order the Verses shuffles a run of verses with decoys from other surahs mixed in — put the real ones back in order. Order the Sections shuffles a surah's thematic sections and asks you to rebuild its structure. Finish a round and challenge a friend: the link carries the exact same puzzle and your score to beat. Find them in the Games tab or on any surah's guide.",
     panel: <GamesPanel />,
+    wide: true,
   },
   {
     title: "Duas, and make it yours",
@@ -395,7 +408,7 @@ export default function Walkthrough() {
   return createPortal(
     <div className="modal-overlay" onClick={close} role="presentation">
       <div
-        className="modal tour-modal"
+        className={`modal tour-modal${current.wide ? " tour-modal-wide" : ""}`}
         role="dialog"
         aria-modal="true"
         aria-label="Product tour"
