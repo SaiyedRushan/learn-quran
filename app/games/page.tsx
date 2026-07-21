@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: `Games · ${SITE.name}`,
     description:
-      "Guess the translation, fill in the blanks, or order the verses — solo, or against a friend via a share link.",
+      "Guess the translation, fill in the blanks, order the verses, or reorder a surah's sections — solo, or against a friend via a share link.",
     url: absoluteUrl("/games/"),
   },
 };

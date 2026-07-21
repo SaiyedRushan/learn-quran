@@ -140,6 +140,43 @@ function OrderDemo() {
   );
 }
 
+// Order-the-sections demo — a surah's thematic sections, out of order, snapping
+// back into the sequence they unfold. Like OrderDemo but with English section
+// titles and no decoys (every card belongs — it's purely the order).
+const SECTIONS_DEMO = [
+  {en: "The command to declare", n: 1},
+  {en: "God's absolute oneness", n: 2},
+  {en: "Beyond compare or kin", n: 3},
+];
+
+function SectionsDemo() {
+  const [sorted, setSorted] = useState(false);
+
+  useEffect(() => {
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setSorted(true);
+      return;
+    }
+    const id = setInterval(() => setSorted((s) => !s), 1800);
+    return () => clearInterval(id);
+  }, []);
+
+  const cards = sorted ? SECTIONS_DEMO : [SECTIONS_DEMO[2], SECTIONS_DEMO[0], SECTIONS_DEMO[1]];
+  return (
+    <div className="tour-order">
+      {cards.map((c) => (
+        <span key={c.en} className={`tour-order-card${sorted ? " ok" : ""}`}>
+          <span className="tour-order-num">{sorted ? c.n : "?"}</span>
+          <span className="tour-order-en">{c.en}</span>
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function GamesPanel() {
   // 0 = blank waiting · 1 = correct tile highlighted · 2 = blank filled
   const [stage, setStage] = useState(0);
@@ -184,6 +221,8 @@ function GamesPanel() {
       <TypeDemo />
       <span className="tour-game-eyebrow tour-game-eyebrow-gap">🔀 Order the verses</span>
       <OrderDemo />
+      <span className="tour-game-eyebrow tour-game-eyebrow-gap">🗂️ Order the sections</span>
+      <SectionsDemo />
       <span className="tour-cloze-cap">🔗 Solo — or send a friend the exact same puzzle</span>
     </div>
   );
@@ -279,7 +318,7 @@ const STEPS: Step[] = [
   },
   {
     title: "Play the games — solo or against a friend",
-    body: "Three games turn review into play. Fill in the Blanks drops words out of every verse of a surah and hands you a word bank — misses are flagged as weak spots for your drill. Guess the Translation shows the Arabic and asks for the meaning, typed in your own words or rebuilt from tiles. Order the Verses shuffles a run of verses with decoys from other surahs mixed in — put the real ones back in order. Finish a round and challenge a friend: the link carries the exact same puzzle and your score to beat. Find them in the Games tab or on any surah's guide.",
+    body: "Four games turn review into play. Fill in the Blanks drops words out of every verse of a surah and hands you a word bank — misses are flagged as weak spots for your drill. Guess the Translation shows the Arabic and asks for the meaning, typed in your own words or rebuilt from tiles. Order the Verses shuffles a run of verses with decoys from other surahs mixed in — put the real ones back in order. Order the Sections shuffles a surah's thematic sections and asks you to rebuild its structure. Finish a round and challenge a friend: the link carries the exact same puzzle and your score to beat. Find them in the Games tab or on any surah's guide.",
     panel: <GamesPanel />,
   },
   {

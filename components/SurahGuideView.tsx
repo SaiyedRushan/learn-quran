@@ -15,6 +15,7 @@ import {
   clearGuideWeakSpots,
 } from "@/lib/progress";
 import {useSettings} from "@/lib/settings";
+import {MIN_ORDERABLE_SECTIONS} from "@/lib/content";
 import {sectionAnchor, currentHash, flashScrollTo} from "@/lib/anchors";
 import MemorizeMode, {type MemorizeScope} from "@/components/MemorizeMode";
 
@@ -270,6 +271,11 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
           <Link href={`/games/order/${guide.meta.slug}/`} className='quiz-link-btn'>
             🔀 Order the verses
           </Link>
+          {sectionsTotal >= MIN_ORDERABLE_SECTIONS && (
+            <Link href={`/games/sections/${guide.meta.slug}/`} className='quiz-link-btn'>
+              🗂️ Order the sections
+            </Link>
+          )}
         </div>
         {weakCount > 0 && (
           <div className='weak-bar'>
