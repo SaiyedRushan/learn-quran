@@ -95,7 +95,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <footer className='site-footer'>
           A free, open resource for reading, understanding, and memorizing the Quran.
           <div style={{marginTop: 10}}>
-            <Link href='/about/'>About</Link> · <Link href='/contact/'>Contact</Link>
+            <Link href='/about/'>About</Link> · <Link href='/contact/'>Contact</Link> · <Link href='/privacy/'>Privacy</Link>
           </div>
         </footer>
         <Analytics />

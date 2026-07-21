@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {url: absoluteUrl("/games/sections/"), lastModified: now, changeFrequency: "monthly", priority: 0.6},
     {url: absoluteUrl("/about/"), lastModified: now, changeFrequency: "yearly", priority: 0.4},
     {url: absoluteUrl("/contact/"), lastModified: now, changeFrequency: "yearly", priority: 0.5},
+    {url: absoluteUrl("/privacy/"), lastModified: now, changeFrequency: "yearly", priority: 0.3},
   ];
 
   const surahEntries: MetadataRoute.Sitemap = surahIndex.map((s) => ({
