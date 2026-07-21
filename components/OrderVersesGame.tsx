@@ -1,12 +1,14 @@
 "use client";
 
 // Order-the-verses game. A round deals a contiguous run of verses from the
-// passage plus a few decoy verses from neighbouring surahs, all shuffled into
-// one bank of cards showing only Arabic (and transliteration). The player
-// arranges the real verses in order and leaves the decoys behind; a hint
-// button reveals the English translations at no penalty. Rounds are drawn
-// deterministically from a seed, so a challenge link (lib/games/challenge.ts)
-// gives a friend the same puzzle and carries scores back.
+// passage plus a few decoys — verses from just before or after the run in the
+// same passage (the trickiest impostors, since they read in the same voice),
+// topped up with verses from neighbouring surahs — all shuffled into one bank
+// of cards showing only Arabic (and transliteration). The player arranges the
+// real verses in order and leaves the decoys behind; a hint button reveals the
+// English translations at no penalty. Rounds are drawn deterministically from a
+// seed, so a challenge link (lib/games/challenge.ts) gives a friend the same
+// puzzle and carries scores back.
 
 import Link from "next/link";
 import {useEffect, useMemo, useState} from "react";
@@ -34,10 +36,12 @@ interface OrderTile {
   arabic: string;
   transliteration: string;
   translation: string;
-  /** Verse number within the surah, for the real ones. */
+  /** Verse number within the surah — set for real verses AND nearby decoys. */
   ayahNumber: number | null;
   /** Decoy provenance; null for real verses. */
   source: string | null;
+  /** True for a decoy drawn from just before/after the run in this passage. */
+  nearby: boolean;
 }
 
 interface OrderRound {
@@ -47,8 +51,11 @@ interface OrderRound {
   answer: OrderTile[];
 }
 
-/** Decoys per round — one more on long sequences so the bank stays busy. */
-const decoyCount = (size: number, poolSize: number) => Math.min(size >= 5 ? 3 : 2, poolSize);
+/** How many verses before/after the run to pull same-passage decoys from. */
+const NEARBY_WINDOW = 4;
+
+/** Total decoys per round — one more on long sequences so the bank stays busy. */
+const decoyTarget = (size: number) => (size >= 5 ? 3 : 2);
 
 export default function OrderVersesGame({
   slug,
@@ -104,21 +111,60 @@ export default function OrderVersesGame({
         translation: a.translation,
         ayahNumber: a.number,
         source: null,
+        nearby: false,
       }));
       // A decoy identical to a real verse (repeated refrains) would be
       // unfair — and two identical decoys just look broken.
       const seen = new Set(answer.map((t) => t.arabic));
-      const eligible = decoys.filter((d) => {
+
+      // Nearby decoys: verses just before/after the run within this same
+      // passage. They read in the same register as the answer, so they're the
+      // sharpest impostors — the point of this variant.
+      const nearbyPool: OrderTile[] = [];
+      const lo = Math.max(0, start - NEARBY_WINDOW);
+      const hi = Math.min(ayahCount, start + size + NEARBY_WINDOW);
+      for (let i = lo; i < hi; i++) {
+        if (i >= start && i < start + size) continue; // inside the run itself
+        const a = verses.ayahs[i];
+        if (seen.has(a.arabic)) continue;
+        seen.add(a.arabic);
+        nearbyPool.push({
+          id: 0, // real id assigned once the draw order is fixed, below
+          arabic: a.arabic,
+          transliteration: a.transliteration,
+          translation: a.translation,
+          ayahNumber: a.number,
+          source: name,
+          nearby: true,
+        });
+      }
+
+      // Cross-surah decoys — believable impostors from other surahs (the pool
+      // built at the page level).
+      const crossPool = decoys.filter((d) => {
         if (seen.has(d.arabic)) return false;
         seen.add(d.arabic);
         return true;
       });
-      const picked = shuffled(eligible, rand)
-        .slice(0, decoyCount(size, eligible.length))
-        .map((d): OrderTile => ({id: nextId++, ...d, ayahNumber: null, source: d.source}));
+
+      // Draw both pools from the PRNG in a fixed order (so a challenge link
+      // reproduces the exact bank), then fill the decoy slots nearby-first and
+      // top up with cross-surah decoys.
+      const nearbyShuffled = shuffled(nearbyPool, rand);
+      const crossShuffled = shuffled(crossPool, rand);
+      const want = Math.min(decoyTarget(size), nearbyShuffled.length + crossShuffled.length);
+      const picked: OrderTile[] = [];
+      for (const t of nearbyShuffled) {
+        if (picked.length >= want) break;
+        picked.push({...t, id: nextId++});
+      }
+      for (const d of crossShuffled) {
+        if (picked.length >= want) break;
+        picked.push({id: nextId++, ...d, ayahNumber: null, source: d.source, nearby: false});
+      }
       return {tiles: shuffled([...answer, ...picked], rand), answer};
     });
-  }, [verses, decoys, seed, rounds, size, ayahCount]);
+  }, [verses, decoys, seed, rounds, size, ayahCount, name]);
 
   const [roundIdx, setRoundIdx] = useState(0);
   const [scores, setScores] = useState<number[]>([]);
@@ -148,8 +194,9 @@ export default function OrderVersesGame({
         )}
         <p className='gm-sub'>
           Each round deals {size === 1 ? "a verse" : `${size} consecutive verses`} of this passage, shuffled —
-          with a couple of decoy verses from other surahs mixed in. Arrange the real ones in the order they are
-          recited, and leave the impostors in the bank. Only the Arabic and transliteration are shown.
+          with a couple of decoy verses mixed in, some drawn from just before or after the run in this same
+          surah and some from other surahs. Arrange the real ones in the order they are recited, and leave the
+          impostors in the bank. Only the Arabic and transliteration are shown.
         </p>
         <ul className='gm-help'>
           <li>Tap a card to add it as the next verse — or drag cards to reorder or insert between others.</li>
@@ -354,7 +401,13 @@ function OrderRoundView({
           </span>
           {showTransliteration && <span className='go-card-tr'>{t.transliteration}</span>}
           {done && <span className='go-card-en'>{t.translation}</span>}
-          {isDecoyRevealed && <span className='go-card-src'>🕵️ Decoy — this is from Surah {t.source}</span>}
+          {isDecoyRevealed && (
+            <span className='go-card-src'>
+              {t.nearby
+                ? `🕵️ Decoy — verse ${t.ayahNumber} of Surah ${surahName}, just outside this run`
+                : `🕵️ Decoy — this is from Surah ${t.source}`}
+            </span>
+          )}
         </span>
       </button>
     );
