@@ -4127,3 +4127,174 @@ a {
   background: var(--accent-bright);
   transform: scale(1.25);
 }
+
+/* ============================================================
+   Homepage surah index — multi-column grid on wide screens (#3)
+   Keeps the intro, progress summary and search at a comfortable
+   reading width, but lets the card lists break out of the 720px
+   column into a centered 2-column grid so the side space is used.
+   The breakout is scrollbar-safe: the block never exceeds 94vw.
+   ============================================================ */
+@media (min-width: 1080px) {
+  .surah-list {
+    --grid-w: min(1040px, 94vw);
+    width: var(--grid-w);
+    margin-left: calc((100% - var(--grid-w)) / 2);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+}
+
+/* ============================================================
+   Surah guide side rails on wide screens (#1 section nav, #2 tools)
+   The reading column stays at its 720px measure; the empty margins
+   hold a sticky section navigator (left) and the practice tools
+   (right). Hidden below the breakpoint, where the in-flow versions
+   take over. Rails are fixed and centered on the viewport via the
+   column half-width (360px) + a 24px gutter.
+   ============================================================ */
+.guide-toc,
+.guide-rail {
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .guide-toc,
+  .guide-rail {
+    position: fixed;
+    top: 84px;
+    width: 200px;
+    max-height: calc(100vh - 104px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 5;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-secondary) transparent;
+  }
+  .guide-toc {
+    right: calc(50% + 384px);
+  }
+  .guide-rail {
+    left: calc(50% + 384px);
+  }
+
+  /* On wide screens the rail owns the practice controls — hide the
+     in-flow originals (rail copies carry .rail-only and are spared). */
+  .guide-shell .sec-progress,
+  .guide-shell .test-surah-btn:not(.rail-only),
+  .guide-shell .guide-drills:not(.rail-only),
+  .guide-shell .weak-bar:not(.rail-only),
+  .guide-shell .conf-picker:not(.rail-only) {
+    display: none;
+  }
+}
+
+/* Shared rail heading */
+.toc-title,
+.rail-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  padding: 0 2px;
+}
+
+/* Left rail — section navigator */
+.toc-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 2px 4px;
+}
+.toc-progress-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+.toc-progress-label strong {
+  color: var(--color-text-primary);
+}
+.toc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.toc-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 8px;
+  border: none;
+  background: transparent;
+  border-radius: var(--border-radius-md);
+  text-align: left;
+  color: var(--color-text-secondary);
+  font-family: inherit;
+  font-size: 12.5px;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.toc-item:hover,
+.toc-item.active {
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+}
+.toc-item.active .toc-item-title {
+  font-weight: 600;
+}
+.toc-item.done .toc-item-title {
+  color: var(--color-text-tertiary);
+}
+.toc-badge {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+}
+.toc-item-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.toc-check {
+  flex-shrink: 0;
+  color: var(--accent-bright);
+  font-size: 11px;
+}
+
+/* Right rail — practice tools. Reuse the in-flow control styles but
+   drop their block margins (the rail lays them out with flex gap) and
+   stack the drills / confidence options to fit the narrow column. */
+.guide-rail .test-surah-btn,
+.guide-rail .guide-drills,
+.guide-rail .weak-bar,
+.guide-rail .conf-picker {
+  margin: 0;
+}
+.guide-rail .guide-drills {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.guide-rail .quiz-link-btn {
+  font-size: 12.5px;
+  padding: 10px;
+}
+.guide-rail .conf-picker-row {
+  flex-wrap: wrap;
+}
+.guide-rail .conf-opt {
+  flex: 1 1 calc(50% - 3px);
+}

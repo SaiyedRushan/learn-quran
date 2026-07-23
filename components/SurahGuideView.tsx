@@ -60,6 +60,8 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
   const confidence = useConfidence(guide.meta.slug);
   const learnedSections = new Set(useLearnedSections(guide.meta.slug));
   const {zenMode, showTransliteration} = useSettings();
+  // Section currently at the top of the viewport — highlighted in the side nav.
+  const [activeSec, setActiveSec] = useState(0);
 
   // A "next section" link from Today's plan arrives as /surah/slug/#sec-N —
   // open that section (so its verses are visible) and scroll to it on mount.
@@ -73,6 +75,32 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
     // Wait a frame so the just-opened section has laid out before we scroll.
     const raf = requestAnimationFrame(() => flashScrollTo(hash));
     return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Scroll-spy for the section navigator (wide screens only; harmless on
+  // narrow, where the rail is hidden). Tracks which section headers sit in the
+  // top band of the viewport and marks the topmost one active.
+  useEffect(() => {
+    if (guide.sections.length <= 1) return;
+    const els = guide.sections
+      .map((_, i) => document.getElementById(sectionAnchor(i)))
+      .filter((el): el is HTMLElement => el !== null);
+    if (!els.length) return;
+    const visible = new Set<number>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const i = Number((e.target as HTMLElement).dataset.secIndex);
+          if (e.isIntersecting) visible.add(i);
+          else visible.delete(i);
+        }
+        if (visible.size) setActiveSec(Math.min(...visible));
+      },
+      {rootMargin: "-80px 0px -65% 0px", threshold: 0},
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -169,8 +197,119 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
     );
   }
 
+  // Open a section (switching to the Sections tab first) and scroll to it —
+  // used by the side navigator on wide screens.
+  function goToSection(i: number) {
+    setTab("sections");
+    setOpen((prev) => new Set(prev).add(i));
+    requestAnimationFrame(() => flashScrollTo(sectionAnchor(i)));
+  }
+
+  // The practice controls render both in the normal flow (mobile / narrow) and
+  // in the right rail (wide). Rail copies carry `rail-only` so the wide-screen
+  // CSS can hide the in-flow originals without touching them.
+  const testButton = (railCopy: boolean) => (
+    <button
+      className={`test-surah-btn${railCopy ? " rail-only" : ""}`}
+      onClick={() => setMemorizeScope({kind: "surah"})}
+    >
+      🎯 Test myself on {wholeLabel}
+    </button>
+  );
+
+  const drillsBlock = (railCopy: boolean) => (
+    <div className={`guide-drills${railCopy ? " rail-only" : ""}`}>
+      <Link href={`/surah/${guide.meta.slug}/quiz/`} className='quiz-link-btn'>
+        🧩 Fill-in-the-blanks quiz
+      </Link>
+      <Link href={`/drills/translate/${guide.meta.slug}/`} className='quiz-link-btn'>
+        🗣️ Guess the translation
+      </Link>
+      <Link href={`/drills/order/${guide.meta.slug}/`} className='quiz-link-btn'>
+        🔀 Order the verses
+      </Link>
+      {sectionsTotal >= MIN_ORDERABLE_SECTIONS && (
+        <Link href={`/drills/sections/${guide.meta.slug}/`} className='quiz-link-btn'>
+          🗂️ Order the sections
+        </Link>
+      )}
+    </div>
+  );
+
+  const weakBlock = (railCopy: boolean) => (
+    <div className={`weak-bar${railCopy ? " rail-only" : ""}`}>
+      <span className='weak-bar-count'>
+        ⚑ {weakCount} weak {weakCount === 1 ? "spot" : "spots"} flagged
+      </span>
+      <button className='weak-bar-drill' onClick={() => setMemorizeScope({kind: "weak"})}>
+        Drill these
+      </button>
+      <button className='weak-bar-clear' onClick={() => clearGuideWeakSpots(guide.meta.slug)}>
+        Clear all
+      </button>
+    </div>
+  );
+
+  const confPicker = (railCopy: boolean) => (
+    <div className={`conf-picker${railCopy ? " rail-only" : ""}`}>
+      <div className='conf-picker-label'>How well do you know this surah?</div>
+      <div className='conf-picker-row'>
+        {CONF_LEVELS.map((lvl) => (
+          <button
+            key={lvl.value}
+            className={`conf-opt conf-${lvl.value} ${confidence === lvl.value ? "active" : ""}`}
+            aria-pressed={confidence === lvl.value}
+            onClick={() => selectLevel(lvl.value)}
+          >
+            {lvl.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
-    <>
+    <div className='guide-shell'>
+      {/* Section navigator — sticky left rail on wide screens. */}
+      {sectionsTotal > 1 && (
+        <aside className='guide-toc' aria-label='Section navigator'>
+          <div className='toc-title'>Sections</div>
+          <div className='toc-progress'>
+            <span className='toc-progress-label'>
+              <strong>{sectionsDone}</strong>/{sectionsTotal} learned
+            </span>
+            <div className='progress-track'>
+              <div className='progress-fill' style={{width: `${secPct}%`}} />
+            </div>
+          </div>
+          <nav className='toc-list'>
+            {guide.sections.map((sec, i) => {
+              const done = learnedSections.has(i);
+              return (
+                <button
+                  key={i}
+                  className={`toc-item${activeSec === i ? " active" : ""}${done ? " done" : ""}`}
+                  onClick={() => goToSection(i)}
+                >
+                  <span className={`toc-badge ${PILL[sec.color]}`}>{i + 1}</span>
+                  <span className='toc-item-title'>{sec.title}</span>
+                  {done && <span className='toc-check'>✓</span>}
+                </button>
+              );
+            })}
+          </nav>
+        </aside>
+      )}
+
+      {/* Practice tools — sticky right rail on wide screens. */}
+      <aside className='guide-rail' aria-label='Practice tools'>
+        <div className='rail-title'>Practice</div>
+        {testButton(true)}
+        {drillsBlock(true)}
+        {weakCount > 0 && weakBlock(true)}
+        {confPicker(true)}
+      </aside>
+
       {/* Top banner */}
       <div className='top'>
         <div className='surah-name'>
@@ -258,43 +397,14 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
             </div>
           </div>
         )}
-        <button className='test-surah-btn' onClick={() => setMemorizeScope({kind: "surah"})}>
-          🎯 Test myself on {wholeLabel}
-        </button>
-        <div className='guide-drills'>
-          <Link href={`/surah/${guide.meta.slug}/quiz/`} className='quiz-link-btn'>
-            🧩 Fill-in-the-blanks quiz
-          </Link>
-          <Link href={`/drills/translate/${guide.meta.slug}/`} className='quiz-link-btn'>
-            🗣️ Guess the translation
-          </Link>
-          <Link href={`/drills/order/${guide.meta.slug}/`} className='quiz-link-btn'>
-            🔀 Order the verses
-          </Link>
-          {sectionsTotal >= MIN_ORDERABLE_SECTIONS && (
-            <Link href={`/drills/sections/${guide.meta.slug}/`} className='quiz-link-btn'>
-              🗂️ Order the sections
-            </Link>
-          )}
-        </div>
-        {weakCount > 0 && (
-          <div className='weak-bar'>
-            <span className='weak-bar-count'>
-              ⚑ {weakCount} weak {weakCount === 1 ? "spot" : "spots"} flagged
-            </span>
-            <button className='weak-bar-drill' onClick={() => setMemorizeScope({kind: "weak"})}>
-              Drill these
-            </button>
-            <button className='weak-bar-clear' onClick={() => clearGuideWeakSpots(guide.meta.slug)}>
-              Clear all
-            </button>
-          </div>
-        )}
+        {testButton(false)}
+        {drillsBlock(false)}
+        {weakCount > 0 && weakBlock(false)}
         {guide.sections.map((sec, i) => {
           const isOpen = open.has(i);
           const secDone = learnedSections.has(i);
           return (
-            <div className='sec-card' id={sectionAnchor(i)} key={i}>
+            <div className='sec-card' id={sectionAnchor(i)} data-sec-index={i} key={i}>
               <div className='sec-hdr'>
                 <button className='sec-hdr-main' onClick={() => toggleSection(i)} aria-expanded={isOpen}>
                   <span className={`sec-badge ${PILL[sec.color]}`}>{sec.badge}</span>
@@ -414,21 +524,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
       )}
 
       {/* Confidence */}
-      <div className='conf-picker'>
-        <div className='conf-picker-label'>How well do you know this surah?</div>
-        <div className='conf-picker-row'>
-          {CONF_LEVELS.map((lvl) => (
-            <button
-              key={lvl.value}
-              className={`conf-opt conf-${lvl.value} ${confidence === lvl.value ? "active" : ""}`}
-              aria-pressed={confidence === lvl.value}
-              onClick={() => selectLevel(lvl.value)}
-            >
-              {lvl.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      {confPicker(false)}
 
       {memorizeScope && (
         <MemorizeMode
@@ -438,6 +534,6 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
           onClose={() => setMemorizeScope(null)}
         />
       )}
-    </>
+    </div>
   );
 }
