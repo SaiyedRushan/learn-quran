@@ -84,7 +84,9 @@ export function sectionsDrillPickerGroups() {
     .filter((group) => group.items.length > 0);
 }
 
-/** Previous / next entry within the same collection (for the pager). */
+/** Previous / next entry for the pager. Juz 29 and Juz 30 form one
+ *  continuous sequence so navigation flows across the juz boundary; the
+ *  supplementary "virtues" collection stays self-contained. */
 export function neighbours(slug: string): {
   prev?: IndexEntry;
   next?: IndexEntry;
@@ -94,9 +96,7 @@ export function neighbours(slug: string): {
   const list =
     entry.collection === "virtues"
       ? virtuesIndex
-      : entry.collection === "juz29"
-        ? juz29Index
-        : juz30Index;
+      : [...juz29Index, ...juz30Index];
   const i = list.findIndex((s) => s.slug === slug);
   return {
     prev: i > 0 ? list[i - 1] : undefined,
