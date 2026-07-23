@@ -10,7 +10,7 @@ import {Analytics} from "@vercel/analytics/next";
 import "./globals.css";
 
 // Applies saved font-size settings before paint, avoiding a flash of default size.
-const NO_FLASH = `(function(){try{var s=JSON.parse(localStorage.getItem('lq:settings:v1')||'{}');var d=document.documentElement;if(s.arabicScale)d.style.setProperty('--scale-ar',s.arabicScale);if(s.englishScale)d.style.setProperty('--scale-en',s.englishScale);}catch(e){}})();`;
+const NO_FLASH = `(function(){try{var s=JSON.parse(localStorage.getItem('lq:settings:v1')||'{}');var d=document.documentElement;if(s.arabicScale)d.style.setProperty('--scale-ar',s.arabicScale);if(s.englishScale)d.style.setProperty('--scale-en',s.englishScale);d.setAttribute('data-arabic-font',s.arabicFont||'uthmani');}catch(e){}})();`;
 
 const HOME_TITLE = `${SITE.name} — Juz 29 & 30 Memorization Guides`;
 

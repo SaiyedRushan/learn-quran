@@ -26,6 +26,7 @@ export default function SettingsControl() {
   const isDefault =
     settings.arabicScale === DEFAULTS.arabicScale &&
     settings.englishScale === DEFAULTS.englishScale &&
+    settings.arabicFont === DEFAULTS.arabicFont &&
     settings.zenMode === DEFAULTS.zenMode &&
     settings.showTransliteration === DEFAULTS.showTransliteration &&
     settings.clickSound === DEFAULTS.clickSound &&
@@ -50,7 +51,33 @@ export default function SettingsControl() {
                   ✕
                 </button>
               </div>
-              <div className='modal-sub'>Adjust the reading size of the Arabic text and the English translation. Saved on this device.</div>
+              <div className='modal-sub'>Choose the Arabic script and adjust reading sizes. Saved on this device.</div>
+
+              <div className='setting'>
+                <div className='setting-row'>
+                  <span className='setting-label'>Script</span>
+                </div>
+                <div className='segmented' role='group' aria-label='Arabic script'>
+                  <button
+                    type='button'
+                    className={`seg-opt ${settings.arabicFont === "uthmani" ? "active" : ""}`}
+                    aria-pressed={settings.arabicFont === "uthmani"}
+                    onClick={() => setSetting("arabicFont", "uthmani")}
+                  >
+                    Uthmani
+                    <span className='seg-opt-sub'>Mushaf naskh</span>
+                  </button>
+                  <button
+                    type='button'
+                    className={`seg-opt ${settings.arabicFont === "amiri" ? "active" : ""}`}
+                    aria-pressed={settings.arabicFont === "amiri"}
+                    onClick={() => setSetting("arabicFont", "amiri")}
+                  >
+                    Amiri
+                    <span className='seg-opt-sub'>Calligraphic</span>
+                  </button>
+                </div>
+              </div>
 
               <div className='setting'>
                 <div className='setting-row'>

@@ -63,7 +63,7 @@ export interface SurahMeta {
 
 /** A context / hadith callout in the overview. */
 export interface GuideBanner {
-  label: string;
+  label: string; // limited inline HTML allowed: <em>, <strong>
   text: string;
   attribution?: string;
 }
@@ -76,7 +76,7 @@ export interface Theme {
 /** A coloured note block inside a section. Maps to the original CSS note styles. */
 export interface GuideNote {
   kind: "core" | "memory" | "extra" | "teal";
-  label: string;
+  label: string; // limited inline HTML allowed: <em>, <strong>
   text: string; // limited inline HTML allowed: <em>, <strong>
 }
 

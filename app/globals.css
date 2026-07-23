@@ -2,7 +2,13 @@
 
 :root {
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-serif: "Amiri Quran", "Scheherazade New", "Traditional Arabic", "Geeza Pro", serif;
+  /* Arabic Quran typeface. Default is Scheherazade New — a mushaf naskh that
+     renders the full Uthmani text (alef-wasla, iqlāb small-meem, stacked
+     tanwīn) correctly. KFGQPC Uthmanic Hafs Ver18 collides below-marks on ~19
+     words (مَّسَدٍۭ …); "Me Quran" breaks the alef-wasla glyph — both rejected.
+     The Settings → Script control swaps this via the html[data-arabic-font]
+     rules below; every Arabic surface consumes this one variable. */
+  --font-serif: "Scheherazade New", "Amiri Quran", "Traditional Arabic", "Geeza Pro", serif;
   --color-background-primary: #1c1c1e;
   --color-background-secondary: #141416;
   --color-text-primary: #f0f0ec;
@@ -18,6 +24,17 @@
   /* user-adjustable font scaling (Settings dialog) */
   --scale-ar: 1;
   --scale-en: 1;
+}
+
+/* Arabic script preference (Settings → Script). The chosen value is written to
+   data-arabic-font on <html> — before paint by the no-flash script in the
+   layout, and reactively by lib/settings. Each variant just re-points
+   --font-serif; add IndoPak/Tajweed here (plus an @font-face + option) later. */
+html[data-arabic-font="uthmani"] {
+  --font-serif: "Scheherazade New", "Amiri Quran", "Traditional Arabic", "Geeza Pro", serif;
+}
+html[data-arabic-font="amiri"] {
+  --font-serif: "Amiri Quran", "Scheherazade New", "Traditional Arabic", "Geeza Pro", serif;
 }
 
 *,
@@ -1694,6 +1711,40 @@ a {
   border-radius: var(--border-radius-md);
   padding: 14px;
   margin: 6px 0 18px;
+}
+.segmented {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+.seg-opt {
+  flex: 1;
+  padding: 9px 10px;
+  border: 1px solid var(--color-border-secondary);
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.seg-opt:hover {
+  color: var(--color-text-primary);
+}
+.seg-opt.active {
+  border-color: var(--accent);
+  color: var(--accent-bright);
+  background: rgba(29, 158, 117, 0.12);
+}
+.seg-opt-sub {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--color-text-tertiary);
+  margin-top: 2px;
 }
 .preview-ar {
   font-family: var(--font-serif);

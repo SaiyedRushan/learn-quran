@@ -17,9 +17,17 @@ export const VOLUME_MIN = 0;
 export const VOLUME_MAX = 1;
 export const VOLUME_STEP = 0.05;
 
+// Arabic Quran typeface / script. Each value maps to an html[data-arabic-font]
+// rule in globals.css that re-points --font-serif. Extend with "indopak" /
+// "tajweed" when their fonts (and text data) are added.
+export type ArabicFont = "uthmani" | "amiri";
+
 export interface Settings {
   arabicScale: number;
   englishScale: number;
+  // Which Arabic typeface the Quran text renders in. "uthmani" is the KFGQPC
+  // Uthmanic Hafs face used by Quran.com; "amiri" is the calligraphic Naskh.
+  arabicFont: ArabicFont;
   // Zen mode: strip the teaching layer (overview, notes, tabs, vocab, etc.)
   // and show only the Arabic text with its English translation.
   zenMode: boolean;
@@ -32,7 +40,7 @@ export interface Settings {
   soundVolume: number;
 }
 
-export const DEFAULTS: Settings = {arabicScale: 1, englishScale: 1, zenMode: false, showTransliteration: true, clickSound: true, soundVolume: 1};
+export const DEFAULTS: Settings = {arabicScale: 1, englishScale: 1, arabicFont: "uthmani", zenMode: false, showTransliteration: true, clickSound: true, soundVolume: 1};
 
 let cache: Settings | null = null;
 const listeners = new Set<() => void>();
@@ -60,6 +68,7 @@ function apply(s: Settings): void {
   const d = document.documentElement;
   d.style.setProperty("--scale-ar", String(s.arabicScale));
   d.style.setProperty("--scale-en", String(s.englishScale));
+  d.setAttribute("data-arabic-font", s.arabicFont);
 }
 
 function write(next: Settings): void {

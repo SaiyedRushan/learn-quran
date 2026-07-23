@@ -349,7 +349,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
             </div>
             {guide.banners.map((b, i) => (
               <div className='hadith-banner' key={i} style={i > 0 ? {marginTop: 8} : undefined}>
-                <div className='hb-label'>{b.label}</div>
+                <Html className='hb-label' html={b.label} />
                 <Html className='hb-text' html={b.text} />
                 {b.attribution && (
                   <div className='hb-attr' dangerouslySetInnerHTML={{__html: b.attribution}} />
@@ -429,7 +429,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
                         const c = NOTE_CLASS[n.kind];
                         return (
                           <div className={c.box} key={`core-${ni}`}>
-                            <div className={c.label}>{n.label}</div>
+                            <Html className={c.label} html={n.label} />
                             <Html className={c.text} html={n.text} />
                           </div>
                         );
@@ -442,7 +442,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
                         const c = NOTE_CLASS[n.kind];
                         return (
                           <div className={c.box} key={`note-${ni}`}>
-                            <div className={c.label}>{n.label}</div>
+                            <Html className={c.label} html={n.label} />
                             <Html className={c.text} html={n.text} />
                           </div>
                         );
