@@ -3,28 +3,28 @@ import Link from "next/link";
 import {SITE, absoluteUrl} from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Games — Learn Through Play",
+  title: "Drills — Test What You've Memorized",
   description:
-    "Four ways to test your Quran knowledge: guess the English translation of a verse, fill the missing Arabic words in any surah, put shuffled verses back in order past the decoys, or reorder a surah's thematic sections. Play solo or challenge a friend with a link.",
-  alternates: {canonical: "/games/"},
+    "Four ways to test your Quran knowledge: guess the English translation of a verse, fill the missing Arabic words in any surah, put shuffled verses back in order past the decoys, or reorder a surah's thematic sections. Practise solo or challenge a friend with a link.",
+  alternates: {canonical: "/drills/"},
   openGraph: {
-    title: `Games · ${SITE.name}`,
+    title: `Drills · ${SITE.name}`,
     description:
-      "Guess the translation, fill in the blanks, order the verses, or reorder a surah's sections — solo, or against a friend via a share link.",
-    url: absoluteUrl("/games/"),
+      "Guess the translation, fill in the blanks, order the verses, or reorder a surah's sections — on your own, or with a friend via a share link.",
+    url: absoluteUrl("/drills/"),
   },
 };
 
-export default function GamesPage() {
+export default function DrillsPage() {
   return (
     <>
       <div className='top'>
-        <div className='surah-name'>Games</div>
-        <div className='meta'>Play with what you&apos;ve memorized — solo, or against a friend</div>
+        <div className='surah-name'>Drills</div>
+        <div className='meta'>Strengthen what you&apos;ve memorized — on your own, or with a friend</div>
       </div>
 
       <div className='gm-cards'>
-        <Link href='/games/translate/' className='gm-card'>
+        <Link href='/drills/translate/' className='gm-card'>
           <div className='gm-card-icon'>🗣️</div>
           <div className='gm-card-title'>Guess the Translation</div>
           <div className='gm-card-sub'>
@@ -32,15 +32,15 @@ export default function GamesPage() {
             word-by-word scoring) or rebuild it from shuffled word tiles.
           </div>
         </Link>
-        <Link href='/games/quiz/' className='gm-card'>
+        <Link href='/drills/quiz/' className='gm-card'>
           <div className='gm-card-icon'>🧩</div>
           <div className='gm-card-title'>Fill in the Blanks</div>
           <div className='gm-card-sub'>
             Every verse of a surah with words missing — tap or drag the right Arabic words into place.
-            Misses are flagged as weak spots for your memorization drill.
+            Misses are flagged as weak spots for your memorization review.
           </div>
         </Link>
-        <Link href='/games/order/' className='gm-card'>
+        <Link href='/drills/order/' className='gm-card'>
           <div className='gm-card-icon'>🔀</div>
           <div className='gm-card-title'>Order the Verses</div>
           <div className='gm-card-sub'>
@@ -49,7 +49,7 @@ export default function GamesPage() {
             passage&apos;s English in order.
           </div>
         </Link>
-        <Link href='/games/sections/' className='gm-card'>
+        <Link href='/drills/sections/' className='gm-card'>
           <div className='gm-card-icon'>🗂️</div>
           <div className='gm-card-title'>Order the Sections</div>
           <div className='gm-card-sub'>
@@ -60,9 +60,9 @@ export default function GamesPage() {
       </div>
 
       <div className='gm-how'>
-        <div className='gm-how-title'>Playing against a friend</div>
+        <div className='gm-how-title'>Challenging a friend</div>
         <p>
-          Finish a game and tap <strong>Challenge a friend</strong> — you get a link that contains the
+          Finish a drill and tap <strong>Challenge a friend</strong> — you get a link that contains the
           exact same puzzle and your score. Send it over WhatsApp, iMessage, anywhere. When your friend
           finishes, they can send a result link back. No accounts, nothing stored online.
         </p>

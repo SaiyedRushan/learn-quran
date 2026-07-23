@@ -47,9 +47,9 @@ export function getGuide(slug: string): SurahGuide | undefined {
   return guideBySlug.get(slug);
 }
 
-/** Surah groups for the game pickers — trimmed to what the (client-side)
+/** Surah groups for the drill pickers — trimmed to what the (client-side)
  * picker needs so page props stay lean. */
-export function gamePickerGroups() {
+export function drillPickerGroups() {
   const trim = (e: IndexEntry) => ({
     number: e.number,
     slug: e.slug,
@@ -67,13 +67,13 @@ export function gamePickerGroups() {
 }
 
 /** Fewest sections a surah needs before its guide is worth reordering as a
- * game — two sections is a coin flip, so require at least three. */
+ * drill — two sections is a coin flip, so require at least three. */
 export const MIN_ORDERABLE_SECTIONS = 3;
 
-/** Picker groups for the "Order the sections" game — only surahs whose guide
+/** Picker groups for the "Order the sections" drill — only surahs whose guide
  * has enough thematic sections to reorder meaningfully. */
-export function sectionsGamePickerGroups() {
-  return gamePickerGroups()
+export function sectionsDrillPickerGroups() {
+  return drillPickerGroups()
     .map((group) => ({
       ...group,
       items: group.items.filter((e) => {

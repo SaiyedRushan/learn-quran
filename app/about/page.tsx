@@ -35,7 +35,7 @@ const FEATURES: {icon: string; title: string; text: string}[] = [
   {
     icon: "🧠",
     title: "Memorize mode",
-    text: "A guided drill that removes one crutch at a time — read, Arabic-only, recall from the meaning, fill in the blanks, then a blank slate — with letter and word peeks when you get stuck.",
+    text: "A guided sequence that removes one crutch at a time — read, Arabic-only, recall from the meaning, fill in the blanks, then a blank slate — with letter and word peeks when you get stuck.",
   },
   {
     icon: "🔑",
@@ -49,8 +49,8 @@ const FEATURES: {icon: string; title: string; text: string}[] = [
   },
   {
     icon: "🎮",
-    title: "Games — solo or vs a friend",
-    text: "A fill-in-the-blanks quiz on every surah, a guess-the-translation game, and an order-the-verses puzzle with decoy verses to spot — with challenge links that hand a friend the exact same puzzle and your score to beat. No account needed.",
+    title: "Drills — solo or vs a friend",
+    text: "A fill-in-the-blanks quiz on every surah, a guess-the-translation drill, and an order-the-verses puzzle with decoy verses to spot — with challenge links that hand a friend the exact same puzzle and your score to beat. No account needed.",
   },
   {
     icon: "🤲",

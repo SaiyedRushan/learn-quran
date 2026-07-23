@@ -1,32 +1,32 @@
 import type {Metadata} from "next";
 import Link from "next/link";
-import GameSurahPicker from "@/components/GameSurahPicker";
-import {gamePickerGroups} from "@/lib/content";
+import DrillSurahPicker from "@/components/DrillSurahPicker";
+import {drillPickerGroups} from "@/lib/content";
 import {SITE, absoluteUrl} from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Guess the Translation — Pick a Surah",
   description:
-    "Choose a surah, see the Arabic of its verses, and guess the English meaning. Forgiving word-by-word scoring, and challenge links to play against a friend.",
-  alternates: {canonical: "/games/translate/"},
+    "Choose a surah, see the Arabic of its verses, and guess the English meaning. Forgiving word-by-word scoring, and challenge links to test a friend.",
+  alternates: {canonical: "/drills/translate/"},
   openGraph: {
     title: `Guess the Translation · ${SITE.name}`,
     description: "See the Arabic, guess the English meaning — solo or against a friend.",
-    url: absoluteUrl("/games/translate/"),
+    url: absoluteUrl("/drills/translate/"),
   },
 };
 
 export default function TranslatePickerPage() {
   return (
     <>
-      <Link href='/games/' className='back-link'>
-        ← All games
+      <Link href='/drills/' className='back-link'>
+        ← All drills
       </Link>
       <div className='top'>
         <div className='surah-name'>Guess the Translation</div>
         <div className='meta'>Pick a surah — you&apos;ll be shown its verses in Arabic</div>
       </div>
-      <GameSurahPicker hrefPattern='/games/translate/{slug}/' groups={gamePickerGroups()} />
+      <DrillSurahPicker hrefPattern='/drills/translate/{slug}/' groups={drillPickerGroups()} />
     </>
   );
 }

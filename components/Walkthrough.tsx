@@ -15,7 +15,7 @@ interface Step {
   title: string;
   body: string;
   panel: React.ReactNode;
-  /** Widen the modal for this step (the games step tiles four previews). */
+  /** Widen the modal for this step (the drills step tiles four previews). */
   wide?: boolean;
 }
 
@@ -52,11 +52,11 @@ function PhasesPanel() {
   );
 }
 
-// A mini round of the fill-in-the-blanks game: one word missing, a word bank
+// A mini round of the fill-in-the-blanks drill: one word missing, a word bank
 // beneath. On a timer the correct tile lights up, then lands in the blank —
 // then it resets and loops. Honours prefers-reduced-motion by showing the
 // solved state.
-const GAME_TILES = [
+const DRILL_TILES = [
   {text: "أَحَدٌ", correct: true},
   {text: "ٱلصَّمَدُ", correct: false},
   {text: "كُفُوًا", correct: false},
@@ -179,7 +179,7 @@ function SectionsDemo() {
   );
 }
 
-function GamesPanel() {
+function DrillsPanel() {
   // 0 = blank waiting · 1 = correct tile highlighted · 2 = blank filled
   const [stage, setStage] = useState(0);
 
@@ -196,12 +196,12 @@ function GamesPanel() {
   }, []);
 
   const filled = stage === 2;
-  // Each game is wrapped in a .tour-game-item so the four previews stack on
+  // Each drill is wrapped in a .tour-drill-item so the four previews stack on
   // phones but tile into a 2-column grid in the widened modal on larger screens.
   return (
-    <div className="tour-game">
-      <div className="tour-game-item">
-        <span className="tour-game-eyebrow">🧩 Fill in the blanks</span>
+    <div className="tour-drill">
+      <div className="tour-drill-item">
+        <span className="tour-drill-eyebrow">🧩 Fill in the blanks</span>
         <div className="tour-cloze-ar" dir="rtl" lang="ar">
           <span className="tour-cloze-word">قُلْ</span>
           <span className="tour-cloze-word">هُوَ</span>
@@ -212,27 +212,27 @@ function GamesPanel() {
             <span className="tour-cloze-blank" style={{width: "4ch"}} aria-hidden="true" />
           )}
         </div>
-        <div className="tour-game-tiles" dir="rtl">
-          {GAME_TILES.map((t) => (
+        <div className="tour-drill-tiles" dir="rtl">
+          {DRILL_TILES.map((t) => (
             <span
               key={t.text}
-              className={`tour-game-tile${t.correct && stage === 1 ? " hot" : ""}${t.correct && filled ? " used" : ""}`}
+              className={`tour-drill-tile${t.correct && stage === 1 ? " hot" : ""}${t.correct && filled ? " used" : ""}`}
             >
               {t.text}
             </span>
           ))}
         </div>
       </div>
-      <div className="tour-game-item">
-        <span className="tour-game-eyebrow">🗣️ Guess the translation</span>
+      <div className="tour-drill-item">
+        <span className="tour-drill-eyebrow">🗣️ Guess the translation</span>
         <TypeDemo />
       </div>
-      <div className="tour-game-item">
-        <span className="tour-game-eyebrow">🔀 Order the verses</span>
+      <div className="tour-drill-item">
+        <span className="tour-drill-eyebrow">🔀 Order the verses</span>
         <OrderDemo />
       </div>
-      <div className="tour-game-item">
-        <span className="tour-game-eyebrow">🗂️ Order the sections</span>
+      <div className="tour-drill-item">
+        <span className="tour-drill-eyebrow">🗂️ Order the sections</span>
         <SectionsDemo />
       </div>
       <span className="tour-cloze-cap">🔗 Solo — or send a friend the exact same puzzle</span>
@@ -329,9 +329,9 @@ const STEPS: Step[] = [
     panel: <PhasesPanel />,
   },
   {
-    title: "Play the games — solo or against a friend",
-    body: "Four games turn review into play. Fill in the Blanks drops words out of every verse of a surah and hands you a word bank — misses are flagged as weak spots for your drill. Guess the Translation shows the Arabic and asks for the meaning, typed in your own words or rebuilt from tiles. Order the Verses shuffles a run of verses with decoys from other surahs mixed in — put the real ones back in order. Order the Sections shuffles a surah's thematic sections and asks you to rebuild its structure. Finish a round and challenge a friend: the link carries the exact same puzzle and your score to beat. Find them in the Games tab or on any surah's guide.",
-    panel: <GamesPanel />,
+    title: "The drills — on your own or with a friend",
+    body: "Four drills turn review into active recall. Fill in the Blanks drops words out of every verse of a surah and hands you a word bank — misses are flagged as weak spots for your memorization review. Guess the Translation shows the Arabic and asks for the meaning, typed in your own words or rebuilt from tiles. Order the Verses shuffles a run of verses with decoys from other surahs mixed in — put the real ones back in order. Order the Sections shuffles a surah's thematic sections and asks you to rebuild its structure. Finish a round and challenge a friend: the link carries the exact same puzzle and your score to beat. Find them in the Drills tab or on any surah's guide.",
+    panel: <DrillsPanel />,
     wide: true,
   },
   {

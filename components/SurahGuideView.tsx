@@ -261,18 +261,18 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
         <button className='test-surah-btn' onClick={() => setMemorizeScope({kind: "surah"})}>
           🎯 Test myself on {wholeLabel}
         </button>
-        <div className='guide-games'>
+        <div className='guide-drills'>
           <Link href={`/surah/${guide.meta.slug}/quiz/`} className='quiz-link-btn'>
             🧩 Fill-in-the-blanks quiz
           </Link>
-          <Link href={`/games/translate/${guide.meta.slug}/`} className='quiz-link-btn'>
+          <Link href={`/drills/translate/${guide.meta.slug}/`} className='quiz-link-btn'>
             🗣️ Guess the translation
           </Link>
-          <Link href={`/games/order/${guide.meta.slug}/`} className='quiz-link-btn'>
+          <Link href={`/drills/order/${guide.meta.slug}/`} className='quiz-link-btn'>
             🔀 Order the verses
           </Link>
           {sectionsTotal >= MIN_ORDERABLE_SECTIONS && (
-            <Link href={`/games/sections/${guide.meta.slug}/`} className='quiz-link-btn'>
+            <Link href={`/drills/sections/${guide.meta.slug}/`} className='quiz-link-btn'>
               🗂️ Order the sections
             </Link>
           )}

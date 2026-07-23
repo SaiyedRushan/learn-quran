@@ -14,11 +14,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {url: absoluteUrl("/"), lastModified: now, changeFrequency: "weekly", priority: 1},
     {url: absoluteUrl("/blog/"), lastModified: now, changeFrequency: "weekly", priority: 0.8},
     {url: absoluteUrl("/duas/"), lastModified: now, changeFrequency: "monthly", priority: 0.7},
-    {url: absoluteUrl("/games/"), lastModified: now, changeFrequency: "monthly", priority: 0.7},
-    {url: absoluteUrl("/games/translate/"), lastModified: now, changeFrequency: "monthly", priority: 0.6},
-    {url: absoluteUrl("/games/quiz/"), lastModified: now, changeFrequency: "monthly", priority: 0.6},
-    {url: absoluteUrl("/games/order/"), lastModified: now, changeFrequency: "monthly", priority: 0.6},
-    {url: absoluteUrl("/games/sections/"), lastModified: now, changeFrequency: "monthly", priority: 0.6},
+    {url: absoluteUrl("/drills/"), lastModified: now, changeFrequency: "monthly", priority: 0.7},
+    {url: absoluteUrl("/drills/translate/"), lastModified: now, changeFrequency: "monthly", priority: 0.6},
+    {url: absoluteUrl("/drills/quiz/"), lastModified: now, changeFrequency: "monthly", priority: 0.6},
+    {url: absoluteUrl("/drills/order/"), lastModified: now, changeFrequency: "monthly", priority: 0.6},
+    {url: absoluteUrl("/drills/sections/"), lastModified: now, changeFrequency: "monthly", priority: 0.6},
     {url: absoluteUrl("/about/"), lastModified: now, changeFrequency: "yearly", priority: 0.4},
     {url: absoluteUrl("/contact/"), lastModified: now, changeFrequency: "yearly", priority: 0.5},
     {url: absoluteUrl("/privacy/"), lastModified: now, changeFrequency: "yearly", priority: 0.3},
@@ -31,7 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  const gameEntries: MetadataRoute.Sitemap = surahIndex.flatMap((s) => [
+  const drillEntries: MetadataRoute.Sitemap = surahIndex.flatMap((s) => [
     {
       url: absoluteUrl(`/surah/${s.slug}/quiz/`),
       lastModified: now,
@@ -39,13 +39,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
     },
     {
-      url: absoluteUrl(`/games/translate/${s.slug}/`),
+      url: absoluteUrl(`/drills/translate/${s.slug}/`),
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.5,
     },
     {
-      url: absoluteUrl(`/games/order/${s.slug}/`),
+      url: absoluteUrl(`/drills/order/${s.slug}/`),
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.5,
@@ -53,10 +53,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]);
 
   // Only surahs with enough thematic sections get an order-the-sections page.
-  const sectionGameEntries: MetadataRoute.Sitemap = surahIndex
+  const sectionDrillEntries: MetadataRoute.Sitemap = surahIndex
     .filter((s) => (getGuide(s.slug)?.sections.length ?? 0) >= MIN_ORDERABLE_SECTIONS)
     .map((s) => ({
-      url: absoluteUrl(`/games/sections/${s.slug}/`),
+      url: absoluteUrl(`/drills/sections/${s.slug}/`),
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.5,
@@ -69,5 +69,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticEntries, ...surahEntries, ...gameEntries, ...sectionGameEntries, ...blogEntries];
+  return [...staticEntries, ...surahEntries, ...drillEntries, ...sectionDrillEntries, ...blogEntries];
 }

@@ -1,4 +1,4 @@
-// Seeded, deterministic randomness for the games. A challenge link carries a
+// Seeded, deterministic randomness for the drills. A challenge link carries a
 // seed; both players' clients must derive the exact same rounds, blanks, and
 // option order from it, so nothing here may use Math.random().
 
@@ -13,7 +13,7 @@ export function mulberry32(seed: number): () => number {
   };
 }
 
-/** A fresh random 31-bit seed for starting a new game (not deterministic). */
+/** A fresh random 31-bit seed for starting a new drill (not deterministic). */
 export function newSeed(): number {
   return Math.floor(Math.random() * 0x7fffffff);
 }

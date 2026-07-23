@@ -56,7 +56,7 @@ export default function PrivacyPage() {
                 in your browser&apos;s (or the app&apos;s) local storage — they are never uploaded to us.
               </li>
               <li>
-                <strong>The mobile app is fully offline.</strong> All Quran text, translations, guides, duas, and games are
+                <strong>The mobile app is fully offline.</strong> All Quran text, translations, guides, duas, and drills are
                 bundled in the app and work with no internet connection.
               </li>
               <li>
@@ -80,7 +80,7 @@ export default function PrivacyPage() {
               <li>Which surahs and sections you&apos;ve marked as learned (your progress).</li>
               <li>Your settings, such as Arabic and English font sizes.</li>
               <li>Whether you&apos;ve completed the introductory walkthrough.</li>
-              <li>Game scores used to build challenge links you choose to share.</li>
+              <li>Drill scores used to build challenge links you choose to share.</li>
             </ul>
             <p>
               You can clear all of this at any time by clearing your browser&apos;s site data, or — in the mobile app — by

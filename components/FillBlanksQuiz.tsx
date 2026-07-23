@@ -4,16 +4,16 @@
 // blanked words + a word bank (correct words + same-surah distractors). Chips
 // fill blanks by tap (Duolingo-style) or drag-and-drop. Deterministic from a
 // seed, so a challenge link replays the identical puzzle for a friend; scores
-// travel back inside a share link — no backend (see lib/games/challenge.ts).
+// travel back inside a share link — no backend (see lib/drills/challenge.ts).
 // Wrong answers flag the word as a weak spot, feeding the guide's drill.
 
 import Link from "next/link";
 import {useEffect, useMemo, useState} from "react";
 import type {VerseData} from "@/content/types";
-import {buildQuiz, totalBlanks, QUIZ_LEVELS, type QuizRound} from "@/lib/games/quiz";
-import {newSeed} from "@/lib/games/random";
-import {decodeChallenge, challengeUrl, type RivalScore} from "@/lib/games/challenge";
-import {useTileDrag} from "@/lib/games/useTileDrag";
+import {buildQuiz, totalBlanks, QUIZ_LEVELS, type QuizRound} from "@/lib/drills/quiz";
+import {newSeed} from "@/lib/drills/random";
+import {decodeChallenge, challengeUrl, type RivalScore} from "@/lib/drills/challenge";
+import {useTileDrag} from "@/lib/drills/useTileDrag";
 import {setWeakSpot} from "@/lib/progress";
 
 type Phase = "setup" | "play" | "done";
@@ -37,7 +37,7 @@ export default function FillBlanksQuiz({
   // same puzzle the sender played.
   useEffect(() => {
     const c = decodeChallenge(window.location.hash);
-    if (c && c.game === "quiz" && c.slug === slug) {
+    if (c && c.drill === "quiz" && c.slug === slug) {
       setSeed(c.seed);
       setLevel(c.level);
       setRival(c.rival ?? null);
@@ -182,7 +182,7 @@ function QuizRoundView({
   const usedIds = new Set(placed.filter((p): p is number => p !== null));
   const allFilled = placed.every((p) => p !== null);
 
-  // Touch-friendly dragging (see lib/games/useTileDrag): bank chips drop onto
+  // Touch-friendly dragging (see lib/drills/useTileDrag): bank chips drop onto
   // "slot:<i>" targets.
   const {drag, over, startDrag, didDrag} = useTileDrag((id, target) => {
     const m = /^slot:(\d+)$/.exec(target ?? "");
@@ -390,7 +390,7 @@ function QuizResult({
 
   function copyChallenge() {
     const url = challengeUrl(window.location.pathname, {
-      game: "quiz",
+      drill: "quiz",
       slug,
       seed,
       level,
@@ -433,12 +433,12 @@ function QuizResult({
         </button>
       </div>
       <p className='gm-sub'>
-        The link contains this exact puzzle and your score — whoever opens it plays the same blanks and
+        The link contains this exact puzzle and your score — whoever opens it gets the same blanks and
         sees the comparison. No account needed.
       </p>
       <div className='gm-actions'>
         <button type='button' className='mm-nav' onClick={onRestart}>
-          ↻ Play again (new blanks)
+          ↻ Try again (new blanks)
         </button>
         <Link href={`/surah/${slug}/`} className='mm-nav gm-link-btn'>
           Back to the guide

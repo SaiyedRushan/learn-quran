@@ -15,7 +15,7 @@ export interface RivalScore {
 }
 
 export interface QuizChallenge {
-  game: "quiz";
+  drill: "quiz";
   slug: string;
   seed: number;
   /** Difficulty index into QUIZ_LEVELS. */
@@ -24,7 +24,7 @@ export interface QuizChallenge {
 }
 
 export interface TranslateChallenge {
-  game: "translate";
+  drill: "translate";
   slug: string;
   seed: number;
   rounds: number;
@@ -33,7 +33,7 @@ export interface TranslateChallenge {
 }
 
 export interface OrderChallenge {
-  game: "order";
+  drill: "order";
   slug: string;
   seed: number;
   rounds: number;
@@ -60,7 +60,7 @@ export function encodeChallenge(c: Challenge): string {
 }
 
 /** Parse a challenge out of a location.hash ("#c=..."). Null on anything
- * malformed — a bad link should degrade to a normal solo game, never crash. */
+ * malformed — a bad link should degrade to a normal solo drill, never crash. */
 export function decodeChallenge(hash: string): Challenge | null {
   const m = /[#&]c=([A-Za-z0-9_-]+)/.exec(hash);
   if (!m) return null;
@@ -68,14 +68,14 @@ export function decodeChallenge(hash: string): Challenge | null {
     const obj = JSON.parse(fromBase64Url(m[1])) as Challenge;
     if (typeof obj !== "object" || obj === null) return null;
     if (typeof obj.slug !== "string" || !Number.isFinite(obj.seed)) return null;
-    if (obj.game === "quiz" && Number.isFinite(obj.level)) return obj;
+    if (obj.drill === "quiz" && Number.isFinite(obj.level)) return obj;
     if (
-      obj.game === "translate" &&
+      obj.drill === "translate" &&
       Number.isFinite(obj.rounds) &&
       (obj.mode === "type" || obj.mode === "build")
     )
       return obj;
-    if (obj.game === "order" && Number.isFinite(obj.rounds) && Number.isFinite(obj.size)) return obj;
+    if (obj.drill === "order" && Number.isFinite(obj.rounds) && Number.isFinite(obj.size)) return obj;
     return null;
   } catch {
     return null;

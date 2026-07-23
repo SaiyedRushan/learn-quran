@@ -3009,7 +3009,7 @@ a {
   color: var(--color-text-tertiary);
 }
 
-/* Arabic verse line with blank slots — shared by the tour's game demos */
+/* Arabic verse line with blank slots — shared by the tour's drill demos */
 .tour-cloze-ar {
   display: flex;
   flex-wrap: wrap;
@@ -3096,16 +3096,16 @@ a {
   font-variant-numeric: tabular-nums;
 }
 
-/* ── Games (hub, fill-in-the-blanks quiz, translation game) ─────────────── */
+/* ── Drills (hub, fill-in-the-blanks quiz, translation drill) ─────────────── */
 
 /* Tour step: mini fill-in-the-blanks round */
-.tour-game-tiles {
+.tour-drill-tiles {
   display: flex;
   justify-content: center;
   gap: 8px;
   margin-top: 12px;
 }
-.tour-game-tile {
+.tour-drill-tile {
   padding: 4px 12px;
   border-radius: var(--border-radius-md);
   border: 0.5px solid var(--color-border-secondary);
@@ -3116,15 +3116,15 @@ a {
   line-height: 1.7;
   transition: all 0.3s;
 }
-.tour-game-tile.hot {
+.tour-drill-tile.hot {
   border-color: var(--accent-bright);
   background: #0d2e24;
   transform: translateY(-2px);
 }
-.tour-game-tile.used {
+.tour-drill-tile.used {
   opacity: 0.25;
 }
-.tour-game-eyebrow {
+.tour-drill-eyebrow {
   display: block;
   font-size: 10.5px;
   text-transform: uppercase;
@@ -3133,20 +3133,20 @@ a {
   text-align: center;
   margin-bottom: 8px;
 }
-/* Games step: previews stack on phones (each divided from the next), and tile
+/* Drills step: previews stack on phones (each divided from the next), and tile
    into a 2-column grid inside the widened modal on larger screens (see
-   .tour-modal-wide) so four games don't make a very tall dialog. */
-.tour-game {
+   .tour-modal-wide) so four drills don't make a very tall dialog. */
+.tour-drill {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
-.tour-game-item + .tour-game-item {
+.tour-drill-item + .tour-drill-item {
   margin-top: 14px;
   padding-top: 14px;
   border-top: 0.5px solid var(--color-border-tertiary);
 }
-.tour-game .tour-cloze-cap {
+.tour-drill .tour-cloze-cap {
   margin-top: 14px;
   text-align: center;
 }
@@ -3154,7 +3154,7 @@ a {
   .tour-modal-wide {
     max-width: 680px;
   }
-  .tour-modal-wide .tour-game {
+  .tour-modal-wide .tour-drill {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
@@ -3162,18 +3162,18 @@ a {
   }
   /* In the grid each item is a self-contained tile, so give every item its own
      outline instead of the stacked divider between siblings. */
-  .tour-modal-wide .tour-game-item {
+  .tour-modal-wide .tour-drill-item {
     padding: 12px 10px;
     background: var(--color-background-primary);
     border: 0.5px solid var(--color-border-tertiary);
     border-radius: var(--border-radius-md);
   }
-  .tour-modal-wide .tour-game-item + .tour-game-item {
+  .tour-modal-wide .tour-drill-item + .tour-drill-item {
     margin-top: 0;
     padding-top: 12px;
     border-top: 0.5px solid var(--color-border-tertiary);
   }
-  .tour-modal-wide .tour-game .tour-cloze-cap {
+  .tour-modal-wide .tour-drill .tour-cloze-cap {
     grid-column: 1 / -1;
     margin-top: 2px;
   }
@@ -3296,17 +3296,17 @@ a {
   border-color: var(--accent);
   color: var(--accent-bright);
 }
-.guide-games {
+.guide-drills {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin-bottom: 16px;
 }
-.guide-games .quiz-link-btn {
+.guide-drills .quiz-link-btn {
   margin-bottom: 0;
 }
 @media (max-width: 480px) {
-  .guide-games {
+  .guide-drills {
     grid-template-columns: 1fr;
   }
 }
@@ -3430,7 +3430,7 @@ a {
   color: var(--color-text-tertiary);
 }
 
-/* Shared game panel */
+/* Shared drill panel */
 .gm-panel {
   background: var(--color-background-secondary);
   border: 0.5px solid var(--color-border-tertiary);
@@ -3669,7 +3669,7 @@ a {
   opacity: 1;
 }
 
-/* Translation game */
+/* Translation drill */
 .gt-translit {
   font-size: calc(13px * var(--scale-en));
   color: var(--color-text-tertiary);
@@ -3796,7 +3796,7 @@ a {
   line-height: 1.5;
 }
 
-/* Order-the-verses game */
+/* Order-the-verses drill */
 .go-label {
   display: block;
   margin-bottom: 6px;
@@ -3923,7 +3923,7 @@ a {
 .go-card.decoy {
   border-style: dashed;
 }
-/* .gt-hint only spaces itself from above; as an order-game reference panel it
+/* .gt-hint only spaces itself from above; as an order-drill reference panel it
    also needs air before the sequence label below it. */
 .go-hint {
   margin-top: 0;
@@ -3940,7 +3940,7 @@ a {
   margin-right: 4px;
 }
 
-/* Order-the-sections game — reuses .go-line / .go-card, with a section title
+/* Order-the-sections drill — reuses .go-line / .go-card, with a section title
    in place of the Arabic and per-card move controls. */
 .gs-card {
   align-items: center;

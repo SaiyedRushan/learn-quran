@@ -3,7 +3,7 @@ import Link from "next/link";
 import {notFound} from "next/navigation";
 import {surahIndex, getIndexBySlug, getGuide} from "@/lib/content";
 import {getVerseData} from "@/lib/quran";
-import OrderVersesGame, {type DecoyVerse} from "@/components/OrderVersesGame";
+import OrderVersesDrill, {type DecoyVerse} from "@/components/OrderVersesDrill";
 import {SITE, absoluteUrl} from "@/lib/site";
 import type {VerseData} from "@/content/types";
 
@@ -20,8 +20,8 @@ export async function generateMetadata({
   const entry = getIndexBySlug(slug);
   if (!entry) return {title: "Surah not found"};
   const title = `Order the Verses — Surah ${entry.name}`;
-  const description = `Verses of Surah ${entry.name} (${entry.epithet}) shuffled with decoys from other surahs — arrange the real ones in order. Play solo or challenge a friend with a link.`;
-  const canonical = `/games/order/${entry.slug}/`;
+  const description = `Verses of Surah ${entry.name} (${entry.epithet}) shuffled with decoys from other surahs — arrange the real ones in order. Practise solo or challenge a friend with a link.`;
+  const canonical = `/drills/order/${entry.slug}/`;
   return {
     title,
     description,
@@ -31,7 +31,7 @@ export async function generateMetadata({
 }
 
 /** Same passage scoping as the quiz page: a surah's verse JSON can hold more
- * than one guide's passage, so limit the game to this guide's verses. */
+ * than one guide's passage, so limit the drill to this guide's verses. */
 function versesForSlug(slug: string, verses: VerseData): VerseData {
   const guide = getGuide(slug);
   if (!guide) return verses;
@@ -79,7 +79,7 @@ function buildDecoyPool(slug: string, target: VerseData): DecoyVerse[] {
   return pool;
 }
 
-export default async function OrderGamePage({params}: {params: Promise<{slug: string}>}) {
+export default async function OrderDrillPage({params}: {params: Promise<{slug: string}>}) {
   const {slug} = await params;
   const entry = getIndexBySlug(slug);
   if (!entry) notFound();
@@ -89,7 +89,7 @@ export default async function OrderGamePage({params}: {params: Promise<{slug: st
 
   return (
     <>
-      <Link href='/games/order/' className='back-link'>
+      <Link href='/drills/order/' className='back-link'>
         ← Pick another surah
       </Link>
       <div className='top'>
@@ -98,7 +98,7 @@ export default async function OrderGamePage({params}: {params: Promise<{slug: st
           Surah {entry.number} · {entry.passageRef ?? `${entry.verseCount} verses`}
         </div>
       </div>
-      <OrderVersesGame slug={entry.slug} name={entry.name} verses={verses} decoys={decoys} />
+      <OrderVersesDrill slug={entry.slug} name={entry.name} verses={verses} decoys={decoys} />
     </>
   );
 }

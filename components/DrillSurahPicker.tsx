@@ -1,7 +1,7 @@
 "use client";
 
-// Searchable surah list for a game's landing page. `hrefPattern` contains
-// "{slug}", e.g. "/games/translate/{slug}/" or "/surah/{slug}/quiz/". The
+// Searchable surah list for a drill's landing page. `hrefPattern` contains
+// "{slug}", e.g. "/drills/translate/{slug}/" or "/surah/{slug}/quiz/". The
 // entries arrive as props from the server page so the client bundle doesn't
 // drag in the guide content behind lib/content.
 
@@ -24,7 +24,7 @@ export interface PickerGroup {
   items: PickerEntry[];
 }
 
-export default function GameSurahPicker({
+export default function DrillSurahPicker({
   hrefPattern,
   groups,
 }: {

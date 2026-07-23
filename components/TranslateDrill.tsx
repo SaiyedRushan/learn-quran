@@ -1,20 +1,20 @@
 "use client";
 
-// Guess-the-translation game. A round shows a verse's Arabic; the player
+// Guess-the-translation drill. A round shows a verse's Arabic; the player
 // either types the English meaning (scored as fuzzy token-F1 with a colored
-// diff — see lib/games/scoring.ts) or rebuilds the real translation from
+// diff — see lib/drills/scoring.ts) or rebuilds the real translation from
 // shuffled word chips. Rounds are drawn deterministically from a seed, so a
-// challenge link (lib/games/challenge.ts) gives a friend the same verses and
+// challenge link (lib/drills/challenge.ts) gives a friend the same verses and
 // carries scores back — async multiplayer with no backend.
 
 import Link from "next/link";
 import {useEffect, useMemo, useState} from "react";
 import type {Ayah, VerseData} from "@/content/types";
-import {mulberry32, newSeed, sampleIndices} from "@/lib/games/random";
-import {scoreGuess, scoreSequence, type GuessResult} from "@/lib/games/scoring";
-import {decodeChallenge, challengeUrl, type RivalScore} from "@/lib/games/challenge";
-import {useTileDrag} from "@/lib/games/useTileDrag";
-import {isEnglishWord} from "@/lib/games/text";
+import {mulberry32, newSeed, sampleIndices} from "@/lib/drills/random";
+import {scoreGuess, scoreSequence, type GuessResult} from "@/lib/drills/scoring";
+import {decodeChallenge, challengeUrl, type RivalScore} from "@/lib/drills/challenge";
+import {useTileDrag} from "@/lib/drills/useTileDrag";
+import {isEnglishWord} from "@/lib/drills/text";
 import {useSettings} from "@/lib/settings";
 
 type Mode = "type" | "build";
@@ -22,7 +22,7 @@ type Phase = "setup" | "play" | "done";
 
 const ROUND_CHOICES = [5, 10];
 
-export default function TranslateGame({
+export default function TranslateDrill({
   slug,
   name,
   verses,
@@ -41,7 +41,7 @@ export default function TranslateGame({
 
   useEffect(() => {
     const c = decodeChallenge(window.location.hash);
-    if (c && c.game === "translate" && c.slug === slug) {
+    if (c && c.drill === "translate" && c.slug === slug) {
       setSeed(c.seed);
       setMode(c.mode);
       setRounds(Math.min(c.rounds, ayahCount));
@@ -349,7 +349,7 @@ function BuildRound({
   const pickedIds = new Set(picked.map((c) => c.id));
   const done = score !== null;
 
-  // Touch-friendly dragging (see lib/games/useTileDrag). Drop targets:
+  // Touch-friendly dragging (see lib/drills/useTileDrag). Drop targets:
   // "line:<i>" inserts before picked word i, "line:end" appends, "bank"
   // ejects a picked word back to the bank.
   const {drag, over, startDrag, didDrag} = useTileDrag((id, target) => {
@@ -581,7 +581,7 @@ function TranslateResult({
 
   function copyChallenge() {
     const url = challengeUrl(window.location.pathname, {
-      game: "translate",
+      drill: "translate",
       slug,
       seed,
       mode,
@@ -632,12 +632,12 @@ function TranslateResult({
         </button>
       </div>
       <p className='gm-sub'>
-        The link contains these exact verses and your score — whoever opens it plays the same rounds and
+        The link contains these exact verses and your score — whoever opens it gets the same rounds and
         sees the comparison. No account needed.
       </p>
       <div className='gm-actions'>
         <button type='button' className='mm-nav' onClick={onRestart}>
-          ↻ Play again (new verses)
+          ↻ Try again (new verses)
         </button>
         <Link href={`/surah/${slug}/`} className='mm-nav gm-link-btn'>
           Study this surah

@@ -3,7 +3,7 @@ import Link from "next/link";
 import {notFound} from "next/navigation";
 import {surahIndex, getIndexBySlug, getGuide} from "@/lib/content";
 import {getVerseData} from "@/lib/quran";
-import TranslateGame from "@/components/TranslateGame";
+import TranslateDrill from "@/components/TranslateDrill";
 import {SITE, absoluteUrl} from "@/lib/site";
 import type {VerseData} from "@/content/types";
 
@@ -20,8 +20,8 @@ export async function generateMetadata({
   const entry = getIndexBySlug(slug);
   if (!entry) return {title: "Surah not found"};
   const title = `Guess the Translation — Surah ${entry.name}`;
-  const description = `See the Arabic of Surah ${entry.name} (${entry.epithet}) verse by verse and guess the English meaning. Play solo or challenge a friend with a link.`;
-  const canonical = `/games/translate/${entry.slug}/`;
+  const description = `See the Arabic of Surah ${entry.name} (${entry.epithet}) verse by verse and guess the English meaning. Practise solo or challenge a friend with a link.`;
+  const canonical = `/drills/translate/${entry.slug}/`;
   return {
     title,
     description,
@@ -31,7 +31,7 @@ export async function generateMetadata({
 }
 
 /** Same passage scoping as the quiz page: a surah's verse JSON can hold more
- * than one guide's passage, so limit the game to this guide's verses. */
+ * than one guide's passage, so limit the drill to this guide's verses. */
 function versesForSlug(slug: string, verses: VerseData): VerseData {
   const guide = getGuide(slug);
   if (!guide) return verses;
@@ -41,7 +41,7 @@ function versesForSlug(slug: string, verses: VerseData): VerseData {
   return {...verses, ayahs};
 }
 
-export default async function TranslateGamePage({params}: {params: Promise<{slug: string}>}) {
+export default async function TranslateDrillPage({params}: {params: Promise<{slug: string}>}) {
   const {slug} = await params;
   const entry = getIndexBySlug(slug);
   if (!entry) notFound();
@@ -50,7 +50,7 @@ export default async function TranslateGamePage({params}: {params: Promise<{slug
 
   return (
     <>
-      <Link href='/games/translate/' className='back-link'>
+      <Link href='/drills/translate/' className='back-link'>
         ← Pick another surah
       </Link>
       <div className='top'>
@@ -59,7 +59,7 @@ export default async function TranslateGamePage({params}: {params: Promise<{slug
           Surah {entry.number} · {entry.passageRef ?? `${entry.verseCount} verses`}
         </div>
       </div>
-      <TranslateGame slug={entry.slug} name={entry.name} verses={verses} />
+      <TranslateDrill slug={entry.slug} name={entry.name} verses={verses} />
     </>
   );
 }

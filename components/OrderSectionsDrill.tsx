@@ -1,10 +1,10 @@
 "use client";
 
-// Order-the-sections game. A surah is broken into a handful of thematic
+// Order-the-sections drill. A surah is broken into a handful of thematic
 // sections in its guide (content/types → GuideSection); there are rarely more
 // than a few, so we show them all at once (up to SECTION_LIMIT), jumbled, and
 // ask the player to put them back into the order they appear in the surah.
-// Unlike the verses game there are no decoys — every card belongs, it's purely
+// Unlike the verses drill there are no decoys — every card belongs, it's purely
 // a reordering. Cards move by drag (touch-friendly, via useTileDrag) or the
 // ▲ / ▼ buttons; checking reveals each section's verse range and marks the
 // hits and misses.
@@ -12,10 +12,10 @@
 import Link from "next/link";
 import {useMemo, useState} from "react";
 import type {PillColor} from "@/content/types";
-import {mulberry32, newSeed, shuffled} from "@/lib/games/random";
-import {useTileDrag} from "@/lib/games/useTileDrag";
+import {mulberry32, newSeed, shuffled} from "@/lib/drills/random";
+import {useTileDrag} from "@/lib/drills/useTileDrag";
 
-/** One thematic section, trimmed from a guide for the game. */
+/** One thematic section, trimmed from a guide for the drill. */
 export interface SectionCard {
   badge: string; // "Section 1"
   title: string;
@@ -34,7 +34,7 @@ interface SectionTile extends SectionCard {
   id: number; // stable within a round, for keys and drag
 }
 
-export default function OrderSectionsGame({
+export default function OrderSectionsDrill({
   slug,
   name,
   sections,
@@ -238,7 +238,7 @@ function SectionRound({
           </div>
           <div className='gm-actions'>
             <button type='button' className='mm-nav primary' onClick={onRestart}>
-              ↻ Play again
+              ↻ Try again
             </button>
             <Link href={`/surah/${slug}/`} className='mm-nav gm-link-btn'>
               Study this surah

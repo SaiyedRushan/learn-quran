@@ -1,4 +1,4 @@
-// Scoring for the guess-the-translation game. Pure functions, no DOM.
+// Scoring for the guess-the-translation drill. Pure functions, no DOM.
 //
 // Exact word matching is too harsh ("Lord of the worlds" vs "Lord of all
 // worlds" is not 60% wrong), so a guess is scored as a weighted token-overlap

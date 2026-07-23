@@ -1,21 +1,21 @@
 "use client";
 
-// Order-the-verses game. A round deals a contiguous run of verses from the
+// Order-the-verses drill. A round deals a contiguous run of verses from the
 // passage plus a few decoys — verses from just before or after the run in the
 // same passage (the trickiest impostors, since they read in the same voice),
 // topped up with verses from neighbouring surahs — all shuffled into one bank
 // of cards showing only Arabic (and transliteration). The player arranges the
 // real verses in order and leaves the decoys behind; a hint button reveals the
 // English translations at no penalty. Rounds are drawn deterministically from a
-// seed, so a challenge link (lib/games/challenge.ts) gives a friend the same
+// seed, so a challenge link (lib/drills/challenge.ts) gives a friend the same
 // puzzle and carries scores back.
 
 import Link from "next/link";
 import {useEffect, useMemo, useState} from "react";
 import type {VerseData} from "@/content/types";
-import {mulberry32, newSeed, shuffled} from "@/lib/games/random";
-import {decodeChallenge, challengeUrl, type RivalScore} from "@/lib/games/challenge";
-import {useTileDrag} from "@/lib/games/useTileDrag";
+import {mulberry32, newSeed, shuffled} from "@/lib/drills/random";
+import {decodeChallenge, challengeUrl, type RivalScore} from "@/lib/drills/challenge";
+import {useTileDrag} from "@/lib/drills/useTileDrag";
 import {useSettings} from "@/lib/settings";
 
 /** A verse from another surah, mixed into the bank to be spotted and left out. */
@@ -57,7 +57,7 @@ const NEARBY_WINDOW = 4;
 /** Total decoys per round — one more on long sequences so the bank stays busy. */
 const decoyTarget = (size: number) => (size >= 5 ? 3 : 2);
 
-export default function OrderVersesGame({
+export default function OrderVersesDrill({
   slug,
   name,
   verses,
@@ -84,7 +84,7 @@ export default function OrderVersesGame({
 
   useEffect(() => {
     const c = decodeChallenge(window.location.hash);
-    if (c && c.game === "order" && c.slug === slug) {
+    if (c && c.drill === "order" && c.slug === slug) {
       setSeed(c.seed);
       setSize(Math.max(1, Math.min(c.size, ayahCount)));
       setRounds(c.rounds);
@@ -316,7 +316,7 @@ function OrderRoundView({
   const pickedIds = new Set(picked.map((t) => t.id));
   const bank = tiles.filter((t) => !pickedIds.has(t.id));
 
-  // Touch-friendly dragging (see lib/games/useTileDrag). Drop targets:
+  // Touch-friendly dragging (see lib/drills/useTileDrag). Drop targets:
   // "line:<i>" inserts before placed verse i, "line:end" appends, "bank"
   // ejects a placed verse back to the bank.
   const {drag, over, startDrag, didDrag} = useTileDrag((id, target) => {
@@ -510,7 +510,7 @@ function OrderResult({
 
   function copyChallenge() {
     const url = challengeUrl(window.location.pathname, {
-      game: "order",
+      drill: "order",
       slug,
       seed,
       size,
@@ -561,12 +561,12 @@ function OrderResult({
         </button>
       </div>
       <p className='gm-sub'>
-        The link contains these exact rounds and your score — whoever opens it plays the same puzzle and sees
+        The link contains these exact rounds and your score — whoever opens it gets the same puzzle and sees
         the comparison. No account needed.
       </p>
       <div className='gm-actions'>
         <button type='button' className='mm-nav' onClick={onRestart}>
-          ↻ Play again (new rounds)
+          ↻ Try again (new rounds)
         </button>
         <Link href={`/surah/${slug}/`} className='mm-nav gm-link-btn'>
           Study this surah
