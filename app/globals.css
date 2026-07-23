@@ -4298,3 +4298,54 @@ a {
 .guide-rail .conf-opt {
   flex: 1 1 calc(50% - 3px);
 }
+
+/* ============================================================
+   Surah page-turn arrows — fixed prev/next at the screen edges.
+   Shown ≥880px (where the side margins are wide enough to clear the
+   reading column). On wide screens the position tracks just outside
+   the section/practice rails via max(edge, calc(50% - rail-extent)).
+   Hidden in the 1200–1279px band, where the rails begin but leave no
+   room outside them — the bottom pager covers prev/next there.
+   ============================================================ */
+.surah-side-nav {
+  display: none;
+}
+@media (min-width: 880px) {
+  .surah-side-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 15;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(28, 28, 30, 0.9);
+    border: 0.5px solid var(--color-border-secondary);
+    color: var(--color-text-secondary);
+    backdrop-filter: saturate(160%) blur(8px);
+    -webkit-backdrop-filter: saturate(160%) blur(8px);
+    transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.15s;
+  }
+  .surah-side-nav:hover {
+    color: var(--accent-bright);
+    border-color: var(--accent);
+    background: var(--color-background-primary);
+    transform: translateY(-50%) scale(1.08);
+  }
+  /* Anchored to the edge, but pushed outward to clear the 200px rails
+     (which sit 384px from centre) as the viewport grows. */
+  .surah-side-nav.prev {
+    left: max(12px, calc(50% - 640px));
+  }
+  .surah-side-nav.next {
+    right: max(12px, calc(50% - 640px));
+  }
+}
+@media (min-width: 1200px) and (max-width: 1279px) {
+  .surah-side-nav {
+    display: none;
+  }
+}

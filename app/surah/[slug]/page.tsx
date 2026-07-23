@@ -107,6 +107,34 @@ export default async function SurahPage({
         <FallbackVerses entry={entry} verses={verses} />
       )}
 
+      {/* Fixed page-turn arrows at the screen edges (wide viewports only —
+          below the breakpoint the pager below handles prev/next). Positioned
+          just outside the section/practice rails so they never overlap. */}
+      {prev && (
+        <Link
+          href={`/surah/${prev.slug}/`}
+          className="surah-side-nav prev"
+          aria-label={`Previous surah: ${prev.name}`}
+          title={`${prev.number}. ${prev.name}`}
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </Link>
+      )}
+      {next && (
+        <Link
+          href={`/surah/${next.slug}/`}
+          className="surah-side-nav next"
+          aria-label={`Next surah: ${next.name}`}
+          title={`${next.number}. ${next.name}`}
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </Link>
+      )}
+
       <div className="pager">
         {prev ? (
           <Link href={`/surah/${prev.slug}/`} className="pager-btn">
