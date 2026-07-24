@@ -4343,6 +4343,17 @@ a {
   font-size: 12.5px;
   padding: 10px;
 }
+/* The narrow rail can't fit the count + both buttons on one row, so the
+   count text wrapped and the vertically-centred buttons overlapped it.
+   Give the count a full-width basis so the two buttons wrap together onto
+   the row beneath, each taking half the width. */
+.guide-rail .weak-bar-count {
+  flex-basis: 100%;
+}
+.guide-rail .weak-bar-drill,
+.guide-rail .weak-bar-clear {
+  flex: 1;
+}
 .guide-rail .conf-picker-row {
   flex-wrap: wrap;
 }
