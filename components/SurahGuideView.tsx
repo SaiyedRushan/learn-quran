@@ -15,6 +15,7 @@ import {
   clearGuideWeakSpots,
 } from "@/lib/progress";
 import {useSettings} from "@/lib/settings";
+import {pickArabic} from "@/lib/arabic";
 import {MIN_ORDERABLE_SECTIONS} from "@/lib/content";
 import {sectionAnchor, currentHash, flashScrollTo} from "@/lib/anchors";
 import MemorizeMode, {type MemorizeScope} from "@/components/MemorizeMode";
@@ -59,7 +60,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
   const [memorizeScope, setMemorizeScope] = useState<MemorizeScope | null>(null);
   const confidence = useConfidence(guide.meta.slug);
   const learnedSections = new Set(useLearnedSections(guide.meta.slug));
-  const {zenMode, showTransliteration} = useSettings();
+  const {zenMode, showTransliteration, arabicFont} = useSettings();
   // Section currently at the top of the viewport — highlighted in the side nav.
   const [activeSec, setActiveSec] = useState(0);
 
@@ -178,7 +179,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
           {ayahs.map((a, idx) => (
             <span key={a.number}>
               {idx > 0 && <span className='var-sep'>•</span>}
-              {a.arabic}
+              {pickArabic(a, arabicFont)}
             </span>
           ))}
         </div>

@@ -8,31 +8,36 @@
   "ayahs": [
     {
       "number": 1,
-      "arabic": "أَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ بِأَصْحَٰبِ ٱلْفِيلِ",
+      "arabic": "أَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ بِأَصْحَـٰبِ ٱلْفِيلِ",
+      "arabicIndopak": "اَلَمۡ تَرَ كَيۡفَ فَعَلَ رَبُّكَ بِاَصۡحٰبِ الۡفِيۡلِؕ‏",
       "transliteration": "Alam tara kayfa faʿala rabbuka biʾaṣḥābi-l-fīl",
       "translation": "Have you not considered, [O Muhammad], how your Lord dealt with the companions of the elephant?"
     },
     {
       "number": 2,
-      "arabic": "أَلَمْ يَجْعَلْ كَيْدَهُمْ فِى تَضْلِيلٍۢ",
+      "arabic": "أَلَمْ يَجْعَلْ كَيْدَهُمْ فِى تَضْلِيلٍ",
+      "arabicIndopak": "اَلَمۡ يَجۡعَلۡ كَيۡدَهُمۡ فِىۡ تَضۡلِيۡلٍۙ‏",
       "transliteration": "Alam yajʿal kaydahum fī taḍlīl",
       "translation": "Did He not make their plan into misguidance?"
     },
     {
       "number": 3,
       "arabic": "وَأَرْسَلَ عَلَيْهِمْ طَيْرًا أَبَابِيلَ",
+      "arabicIndopak": "وَّاَرۡسَلَ عَلَيۡهِمۡ طَيۡرًا اَبَابِيۡلَۙ‏",
       "transliteration": "Waʾarsala ʿalayhim ṭayran abābīl",
       "translation": "And He sent against them birds in flocks,"
     },
     {
       "number": 4,
-      "arabic": "تَرْمِيهِم بِحِجَارَةٍۢ مِّن سِجِّيلٍۢ",
+      "arabic": "تَرْمِيهِم بِحِجَارَةٍ مِّن سِجِّيلٍ",
+      "arabicIndopak": "تَرۡمِيۡهِمۡ بِحِجَارَةٍ مِّنۡ سِجِّيۡلٍۙ‏",
       "transliteration": "Tarmīhim biḥijāratin min sijjīl",
       "translation": "Striking them with stones of hard clay,"
     },
     {
       "number": 5,
-      "arabic": "فَجَعَلَهُمْ كَعَصْفٍۢ مَّأْكُولٍۭ",
+      "arabic": "فَجَعَلَهُمْ كَعَصْفٍ مَّأْكُولٍۭ",
+      "arabicIndopak": "فَجَعَلَهُمۡ كَعَصۡفٍ مَّاۡكُوۡلٍ‏",
       "transliteration": "Fajaʿalahum kaʿaṣfin maʾkūl",
       "translation": "And He made them like eaten straw."
     }

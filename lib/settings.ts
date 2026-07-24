@@ -18,15 +18,17 @@ export const VOLUME_MAX = 1;
 export const VOLUME_STEP = 0.05;
 
 // Arabic Quran typeface / script. Each value maps to an html[data-arabic-font]
-// rule in globals.css that re-points --font-serif. Extend with "indopak" /
-// "tajweed" when their fonts (and text data) are added.
-export type ArabicFont = "uthmani" | "amiri";
+// rule in globals.css that re-points --font-serif. "uthmani" and "amiri" render
+// the same Uthmani text in different faces; "indopak" is a distinct orthography
+// (ayah.arabicIndopak), so components pick the string via lib/arabic pickArabic.
+export type ArabicFont = "uthmani" | "amiri" | "indopak";
 
 export interface Settings {
   arabicScale: number;
   englishScale: number;
-  // Which Arabic typeface the Quran text renders in. "uthmani" is the KFGQPC
-  // Uthmanic Hafs face used by Quran.com; "amiri" is the calligraphic Naskh.
+  // Which Arabic script the Quran text renders in. "uthmani" is the KFGQPC
+  // Uthmanic Hafs face; "amiri" is the calligraphic Naskh; "indopak" is the
+  // subcontinental IndoPak orthography in a self-hosted Nastaleeq face.
   arabicFont: ArabicFont;
   // Zen mode: strip the teaching layer (overview, notes, tabs, vocab, etc.)
   // and show only the Arabic text with its English translation.

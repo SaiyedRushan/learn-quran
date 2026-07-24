@@ -10,6 +10,8 @@ import {
   setWeakSpot,
   useWeakSpots,
 } from "@/lib/progress";
+import {useSettings} from "@/lib/settings";
+import {pickArabic} from "@/lib/arabic";
 
 const PILL: Record<PillColor, string> = {
   teal: "tp-teal",
@@ -124,6 +126,8 @@ export default function MemorizeMode({
   // Progressive peek cursor per ayah (grapheme clusters revealed from the start).
   const [peek, setPeek] = useState<Record<number, number>>({});
 
+  const {arabicFont} = useSettings();
+
   const ayahs: Ayah[] = useMemo(() => {
     if (isWeakDrill) return verses.ayahs.filter((a) => drillAyahs.has(a.number));
     if (isSurah || !section) return verses.ayahs;
@@ -132,13 +136,16 @@ export default function MemorizeMode({
 
   // Flatten words with a stable global index for deterministic cloze blanking,
   // and pre-segment each ayah into grapheme clusters for progressive peeking.
+  // Segmentation follows the chosen script (IndoPak spaces words differently),
+  // so the cloze/peek mechanics act on the text actually shown.
   const wordRows = useMemo(() => {
     let g = 0;
     return ayahs.map((a) => {
-      const words = a.arabic.split(/\s+/).filter(Boolean).map((text) => ({text, g: g++}));
-      return {ayah: a, words, graphemes: toGraphemes(a.arabic)};
+      const text = pickArabic(a, arabicFont);
+      const words = text.split(/\s+/).filter(Boolean).map((t) => ({text: t, g: g++}));
+      return {ayah: a, words, graphemes: toGraphemes(text)};
     });
-  }, [ayahs]);
+  }, [ayahs, arabicFont]);
 
   const graphemesByAyah = useMemo(() => {
     const m: Record<number, string[]> = {};

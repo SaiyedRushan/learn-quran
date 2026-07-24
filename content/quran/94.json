@@ -9,48 +9,56 @@
     {
       "number": 1,
       "arabic": "أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ",
+      "arabicIndopak": "اَلَمۡ نَشۡرَحۡ لَـكَ صَدۡرَكَۙ‏",
       "transliteration": "Alam nashraḥ laka ṣadrak",
       "translation": "Did We not expand for you, [O Muhammad], your breast?"
     },
     {
       "number": 2,
       "arabic": "وَوَضَعْنَا عَنكَ وِزْرَكَ",
+      "arabicIndopak": "وَوَضَعۡنَا عَنۡكَ وِزۡرَكَۙ‏",
       "transliteration": "Wawaḍaʿnā ʿanka wizrak",
       "translation": "And We removed from you your burden"
     },
     {
       "number": 3,
       "arabic": "ٱلَّذِىٓ أَنقَضَ ظَهْرَكَ",
+      "arabicIndopak": "الَّذِىۡۤ اَنۡقَضَ ظَهۡرَكَۙ‏",
       "transliteration": "Alladhī anqaḍa ẓahrak",
       "translation": "Which had weighed upon your back"
     },
     {
       "number": 4,
       "arabic": "وَرَفَعْنَا لَكَ ذِكْرَكَ",
+      "arabicIndopak": "وَرَفَعۡنَا لَـكَ ذِكۡرَكَؕ‏",
       "transliteration": "Warafaʿnā laka dhikrak",
       "translation": "And raised high for you your repute."
     },
     {
       "number": 5,
       "arabic": "فَإِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
+      "arabicIndopak": "فَاِنَّ مَعَ الۡعُسۡرِ يُسۡرًا ۙ‏",
       "transliteration": "Faʾinna maʿa-l-ʿusri yusrā",
       "translation": "For indeed, with hardship [will be] ease."
     },
     {
       "number": 6,
-      "arabic": "إِنَّ مَعَ ٱلْعُسْرِ يُسْرًۭا",
+      "arabic": "إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
+      "arabicIndopak": "اِنَّ مَعَ الۡعُسۡرِ يُسۡرًا ؕ‏",
       "transliteration": "Inna maʿa-l-ʿusri yusrā",
       "translation": "Indeed, with hardship [will be] ease."
     },
     {
       "number": 7,
       "arabic": "فَإِذَا فَرَغْتَ فَٱنصَبْ",
+      "arabicIndopak": "فَاِذَا فَرَغۡتَ فَانۡصَبۡۙ‏",
       "transliteration": "Faʾidhā faraghta fanṣab",
       "translation": "So when you have finished [your duties], then stand up [for worship]."
     },
     {
       "number": 8,
       "arabic": "وَإِلَىٰ رَبِّكَ فَٱرْغَب",
+      "arabicIndopak": "وَاِلٰى رَبِّكَ فَارۡغَب‏",
       "transliteration": "Waʾilā rabbika farghab",
       "translation": "And to your Lord direct [your] longing."
     }

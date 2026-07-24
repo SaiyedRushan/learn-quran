@@ -9,42 +9,49 @@
     {
       "number": 1,
       "arabic": "أَرَءَيْتَ ٱلَّذِى يُكَذِّبُ بِٱلدِّينِ",
+      "arabicIndopak": "اَرَءَيۡتَ الَّذِىۡ يُكَذِّبُ بِالدِّيۡنِؕ‏",
       "transliteration": "Araʾayta-lladhī yukadhdhibu bid-dīn",
       "translation": "Have you seen the one who denies the Recompense?"
     },
     {
       "number": 2,
       "arabic": "فَذَٰلِكَ ٱلَّذِى يَدُعُّ ٱلْيَتِيمَ",
+      "arabicIndopak": "فَذٰلِكَ الَّذِىۡ يَدُعُّ الۡيَتِيۡمَۙ‏",
       "transliteration": "Fadhālika-lladhī yaduʿʿu-l-yatīm",
       "translation": "For that is the one who drives away the orphan"
     },
     {
       "number": 3,
       "arabic": "وَلَا يَحُضُّ عَلَىٰ طَعَامِ ٱلْمِسْكِينِ",
+      "arabicIndopak": "وَ لَا يَحُضُّ عَلٰى طَعَامِ الۡمِسۡكِيۡنِؕ‏",
       "transliteration": "Walā yaḥuḍḍu ʿalā ṭaʿāmi-l-miskīn",
       "translation": "And does not encourage the feeding of the poor."
     },
     {
       "number": 4,
-      "arabic": "فَوَيْلٌۭ لِّلْمُصَلِّينَ",
+      "arabic": "فَوَيْلٌ لِّلْمُصَلِّينَ",
+      "arabicIndopak": "فَوَيۡلٌ لِّلۡمُصَلِّيۡنَۙ‏",
       "transliteration": "Fawaylun lil-muṣallīn",
       "translation": "So woe to those who pray"
     },
     {
       "number": 5,
       "arabic": "ٱلَّذِينَ هُمْ عَن صَلَاتِهِمْ سَاهُونَ",
+      "arabicIndopak": "الَّذِيۡنَ هُمۡ عَنۡ صَلَاتِهِمۡ سَاهُوۡنَۙ‏",
       "transliteration": "Alladhīna hum ʿan ṣalātihim sāhūn",
       "translation": "[But] who are heedless of their prayer -"
     },
     {
       "number": 6,
       "arabic": "ٱلَّذِينَ هُمْ يُرَآءُونَ",
+      "arabicIndopak": "الَّذِيۡنَ هُمۡ يُرَآءُوۡنَۙ‏",
       "transliteration": "Alladhīna hum yurāʾūn",
       "translation": "Those who make show [of their deeds]"
     },
     {
       "number": 7,
       "arabic": "وَيَمْنَعُونَ ٱلْمَاعُونَ",
+      "arabicIndopak": "وَيَمۡنَعُوۡنَ الۡمَاعُوۡنَ‏",
       "transliteration": "Wayamnaʿūna-l-māʿūn",
       "translation": "And withhold [simple] assistance."
     }

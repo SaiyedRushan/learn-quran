@@ -9,6 +9,7 @@ import {
 } from "@/lib/content";
 import { getVerseData } from "@/lib/quran";
 import SurahGuideView from "@/components/SurahGuideView";
+import FallbackVersesList from "@/components/FallbackVersesList";
 import JsonLd from "@/components/JsonLd";
 import { SITE, absoluteUrl } from "@/lib/site";
 import type { IndexEntry } from "@/lib/content";
@@ -193,15 +194,7 @@ function FallbackVerses({
       </div>
       <div className="overview">
         <div className="ov-title">Verses</div>
-        <div className="verses" style={{ marginBottom: 0, marginTop: 4 }}>
-          {verses.ayahs.map((a) => (
-            <div className="vrow" key={a.number}>
-              <div className="vnum">{a.number}</div>
-              <div className="var">{a.arabic}</div>
-              <div className="vtrans">{a.translation}</div>
-            </div>
-          ))}
-        </div>
+        <FallbackVersesList ayahs={verses.ayahs} />
       </div>
     </>
   );

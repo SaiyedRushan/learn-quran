@@ -8,19 +8,22 @@
   "ayahs": [
     {
       "number": 1,
-      "arabic": "إِنَّآ أَعْطَيْنَٰكَ ٱلْكَوْثَرَ",
+      "arabic": "إِنَّآ أَعْطَيْنَـٰكَ ٱلْكَوْثَرَ",
+      "arabicIndopak": "اِنَّاۤ اَعۡطَيۡنٰكَ الۡكَوۡثَرَؕ‏",
       "transliteration": "Innā aʿṭaynāka-l-kawthar",
       "translation": "Indeed, We have granted you, [O Muhammad], al-Kawthar."
     },
     {
       "number": 2,
       "arabic": "فَصَلِّ لِرَبِّكَ وَٱنْحَرْ",
+      "arabicIndopak": "فَصَلِّ لِرَبِّكَ وَانۡحَرۡ ؕ‏",
       "transliteration": "Faṣalli lirabbika wanḥar",
       "translation": "So pray to your Lord and sacrifice [to Him alone]."
     },
     {
       "number": 3,
       "arabic": "إِنَّ شَانِئَكَ هُوَ ٱلْأَبْتَرُ",
+      "arabicIndopak": "اِنَّ شَانِئَكَ هُوَ الۡاَبۡتَرُ‏",
       "transliteration": "Inna shāniʾaka huwa-l-ʾabtar",
       "translation": "Indeed, your enemy is the one cut off."
     }

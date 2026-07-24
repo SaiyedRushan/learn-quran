@@ -2,9 +2,10 @@
 // Content schema for Learn Quran.
 //
 // Two layers, kept deliberately separate:
-//   1. VERIFIED verse data (Arabic + translation) — fetched from a trusted
-//      Quran API (alquran.cloud: Uthmani text + Sahih International). Never
-//      hand-typed or model-generated. Lives in content/quran/{num}.json.
+//   1. VERIFIED verse data (Arabic + translation) — fetched from trusted Quran
+//      APIs (Quran.com KFGQPC Uthmani + IndoPak text; alquran.cloud Sahih
+//      International translation). Never hand-typed or model-generated. Lives
+//      in content/quran/{num}.json.
 //   2. The authored GUIDE layer (overview, sections, memory hooks, vocab,
 //      recitation) — references verses by range so the sacred text always
 //      renders from the verified source, not from the guide.
@@ -15,7 +16,8 @@ export type PillColor = "teal" | "purple" | "amber" | "coral" | "slate";
 /** A single verified verse. */
 export interface Ayah {
   number: number; // ayah number within the surah (1-indexed)
-  arabic: string; // verified Uthmani text (bismillah stripped from ayah 1)
+  arabic: string; // verified KFGQPC Uthmani text (Quran.com text_uthmani; bismillah excluded from ayah 1)
+  arabicIndopak: string; // verified KFGQPC IndoPak text (Quran.com text_indopak) — different orthography, not just a font
   transliteration: string; // ALA-LC romanization, derived from the verified Arabic (scripts/lib/ala-lc.mjs)
   translation: string; // verified English (Sahih International)
 }

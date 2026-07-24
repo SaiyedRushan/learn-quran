@@ -1,5 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Scheherazade+New:wght@400;700&family=Inter:wght@400;500;600;700&display=swap");
 
+/* IndoPak script (Settings → Script). Self-hosted because it's not on Google
+   Fonts: KFGQPC's IndoPak Nastaleeq (waqf-lazim) face, which pairs with the
+   text_indopak orthography stored in ayah.arabicIndopak. Sourced from the
+   quran.com-frontend-next project. */
+@font-face {
+  font-family: "IndoPak Nastaleeq";
+  src: url("/fonts/indopak-nastaleeq.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
 :root {
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   /* Arabic Quran typeface. Default is Scheherazade New — a mushaf naskh that
@@ -35,6 +46,17 @@ html[data-arabic-font="uthmani"] {
 }
 html[data-arabic-font="amiri"] {
   --font-serif: "Amiri Quran", "Scheherazade New", "Traditional Arabic", "Geeza Pro", serif;
+}
+/* IndoPak renders the arabicIndopak orthography in a Nastaleeq face. Nastaleeq
+   is a steeply-sloped, tall script whose descenders clip at normal line height,
+   so verse surfaces get extra leading when this script is active. */
+html[data-arabic-font="indopak"] {
+  --font-serif: "IndoPak Nastaleeq", "Noto Nastaliq Urdu", "Scheherazade New", "Geeza Pro", serif;
+}
+html[data-arabic-font="indopak"] .var,
+html[data-arabic-font="indopak"] .mm-ar,
+html[data-arabic-font="indopak"] .go-card-ar {
+  line-height: 2.2;
 }
 
 *,
