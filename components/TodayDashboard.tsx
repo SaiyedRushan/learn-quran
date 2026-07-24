@@ -159,9 +159,11 @@ export default function TodayDashboard({
         </>
       )}
 
+      <div className="td-cols">
       {(learnItems.length > 0 || duaLearning.length > 0) && (
         <div className="td-group">
           <div className="td-group-label">Keep learning</div>
+          <div className="td-group-list">
           {learnItems.map(({ s, remaining, today, minutes }) => {
             // Jump straight to the next section to study (falls back to the top
             // once every section has been studied).
@@ -201,12 +203,14 @@ export default function TodayDashboard({
               <span className="td-item-time">~{DUA_LEARN_MIN} min</span>
             </Link>
           ))}
+          </div>
         </div>
       )}
 
       {(reviewToday.length > 0 || duaReviewing.length > 0) && (
         <div className="td-group">
           <div className="td-group-label">Review next</div>
+          <div className="td-group-list">
           {reviewToday.map((s) => (
             <Link href={`/surah/${s.slug}/`} className="td-item" key={s.slug}>
               <span className="td-dot review" />
@@ -229,6 +233,7 @@ export default function TodayDashboard({
               <span className="td-item-time">~{DUA_REVIEW_MIN} min</span>
             </Link>
           ))}
+          </div>
           {reviewOverflow > 0 && (
             <div className="td-more">
               +{reviewOverflow} more marked Reviewing — spread them over the week
@@ -236,6 +241,7 @@ export default function TodayDashboard({
           )}
         </div>
       )}
+      </div>
 
       <div className="td-dua">
         <span className="td-dua-icon" aria-hidden="true">🤲</span>

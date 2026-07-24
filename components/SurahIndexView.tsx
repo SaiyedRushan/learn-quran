@@ -175,19 +175,17 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
   return (
     <>
       <div className="progress-summary">
-        <div className="ps-top">
-          <span className="ps-label">Your progress</span>
-          <span className="ps-count">
-            <strong>{done}</strong> of {memorization.length} surahs
-          </span>
-        </div>
+        <span className="ps-label">Your progress</span>
+        <span className="ps-count">
+          <strong>{done}</strong> of {memorization.length} surahs
+        </span>
         <div className="progress-track">
           <div className="progress-fill" style={{ width: `${pct}%` }} />
         </div>
         {totalSections > 0 && (
-          <div className="ps-sub">
+          <span className="ps-sub">
             <strong>{learnedSectionsTotal}</strong> of {totalSections} sections studied
-          </div>
+          </span>
         )}
       </div>
 
