@@ -9,18 +9,21 @@
     {
       "number": 1,
       "arabic": "وَٱلْعَصْرِ",
+      "arabicIndopak": "وَالۡعَصۡرِۙ‏",
       "transliteration": "Wal-ʿaṣr",
       "translation": "By time,"
     },
     {
       "number": 2,
-      "arabic": "إِنَّ ٱلْإِنسَٰنَ لَفِى خُسْرٍ",
+      "arabic": "إِنَّ ٱلْإِنسَـٰنَ لَفِى خُسْرٍ",
+      "arabicIndopak": "اِنَّ الۡاِنۡسَانَ لَفِىۡ خُسۡرٍۙ‏",
       "transliteration": "Inna-l-ʾinsāna lafī khusr",
       "translation": "Indeed, mankind is in loss,"
     },
     {
       "number": 3,
-      "arabic": "إِلَّا ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ وَتَوَاصَوْا۟ بِٱلْحَقِّ وَتَوَاصَوْا۟ بِٱلصَّبْرِ",
+      "arabic": "إِلَّا ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ وَتَوَاصَوْا۟ بِٱلْحَقِّ وَتَوَاصَوْا۟ بِٱلصَّبْرِ",
+      "arabicIndopak": "اِلَّا الَّذِيۡنَ اٰمَنُوۡا وَ عَمِلُوا الصّٰلِحٰتِ وَتَوَاصَوۡا بِالۡحَقِّ   ۙ وَتَوَاصَوۡا بِالصَّبۡرِ‏",
       "transliteration": "Illā-lladhīna āmanū waʿamilū-ṣ-ṣāliḥāti watawāṣaw bil-ḥaqqi watawāṣaw biṣ-ṣabr",
       "translation": "Except for those who have believed and done righteous deeds and advised each other to truth and advised each other to patience."
     }

@@ -9,132 +9,154 @@
     {
       "number": 1,
       "arabic": "وَٱلسَّمَآءِ ذَاتِ ٱلْبُرُوجِ",
+      "arabicIndopak": "وَالسَّمَآءِ ذَاتِ الۡبُرُوۡجِۙ‏",
       "transliteration": "Was-samāʾi dhāti-l-burūj",
       "translation": "By the sky containing great stars"
     },
     {
       "number": 2,
       "arabic": "وَٱلْيَوْمِ ٱلْمَوْعُودِ",
+      "arabicIndopak": "وَالۡيَوۡمِ الۡمَوۡعُوۡدِۙ‏",
       "transliteration": "Wal-yawmi-l-mawʿūd",
       "translation": "And [by] the promised Day"
     },
     {
       "number": 3,
-      "arabic": "وَشَاهِدٍۢ وَمَشْهُودٍۢ",
+      "arabic": "وَشَاهِدٍ وَمَشْهُودٍ",
+      "arabicIndopak": "وَشَاهِدٍ وَّمَشۡهُوۡدٍؕ‏",
       "transliteration": "Washāhidin wamashhūd",
       "translation": "And [by] the witness and what is witnessed,"
     },
     {
       "number": 4,
-      "arabic": "قُتِلَ أَصْحَٰبُ ٱلْأُخْدُودِ",
+      "arabic": "قُتِلَ أَصْحَـٰبُ ٱلْأُخْدُودِ",
+      "arabicIndopak": "قُتِلَ اَصۡحٰبُ الۡاُخۡدُوۡدِۙ‏",
       "transliteration": "Qutila aṣḥābu-l-ʾukhdūd",
       "translation": "Cursed were the companions of the trench"
     },
     {
       "number": 5,
       "arabic": "ٱلنَّارِ ذَاتِ ٱلْوَقُودِ",
+      "arabicIndopak": "النَّارِ ذَاتِ الۡوَقُوۡدِۙ‏",
       "transliteration": "An-nāri dhāti-l-waqūd",
       "translation": "[Containing] the fire full of fuel,"
     },
     {
       "number": 6,
-      "arabic": "إِذْ هُمْ عَلَيْهَا قُعُودٌۭ",
+      "arabic": "إِذْ هُمْ عَلَيْهَا قُعُودٌ",
+      "arabicIndopak": "اِذۡ هُمۡ عَلَيۡهَا قُعُوۡدٌ ۙ‏",
       "transliteration": "Idh hum ʿalayhā quʿūd",
       "translation": "When they were sitting near it"
     },
     {
       "number": 7,
-      "arabic": "وَهُمْ عَلَىٰ مَا يَفْعَلُونَ بِٱلْمُؤْمِنِينَ شُهُودٌۭ",
+      "arabic": "وَهُمْ عَلَىٰ مَا يَفْعَلُونَ بِٱلْمُؤْمِنِينَ شُهُودٌ",
+      "arabicIndopak": "وَّهُمۡ عَلٰى مَا يَفۡعَلُوۡنَ بِالۡمُؤۡمِنِيۡنَ شُهُوۡدٌ ؕ‏",
       "transliteration": "Wahum ʿalā mā yafʿalūna bil-muʾminīna shuhūd",
       "translation": "And they, to what they were doing against the believers, were witnesses."
     },
     {
       "number": 8,
       "arabic": "وَمَا نَقَمُوا۟ مِنْهُمْ إِلَّآ أَن يُؤْمِنُوا۟ بِٱللَّهِ ٱلْعَزِيزِ ٱلْحَمِيدِ",
+      "arabicIndopak": "وَمَا نَقَمُوۡا مِنۡهُمۡ اِلَّاۤ اَنۡ يُّؤۡمِنُوۡا بِاللّٰهِ الۡعَزِيۡزِ الۡحَمِيۡدِۙ‏",
       "transliteration": "Wamā naqamū minhum illā an yuʾminū billāhi-l-ʿazīzi-l-ḥamīd",
       "translation": "And they resented them not except because they believed in Allah, the Exalted in Might, the Praiseworthy,"
     },
     {
       "number": 9,
-      "arabic": "ٱلَّذِى لَهُۥ مُلْكُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ ۚ وَٱللَّهُ عَلَىٰ كُلِّ شَىْءٍۢ شَهِيدٌ",
+      "arabic": "ٱلَّذِى لَهُۥ مُلْكُ ٱلسَّمَـٰوَٰتِ وَٱلْأَرْضِ ۚ وَٱللَّهُ عَلَىٰ كُلِّ شَىْءٍ شَهِيدٌ",
+      "arabicIndopak": "الَّذِىۡ لَهٗ مُلۡكُ السَّمٰوٰتِ وَالۡاَرۡضِ​ؕ وَ اللّٰهُ عَلٰى كُلِّ شَىۡءٍ شَهِيۡدٌ ؕ‏",
       "transliteration": "Alladhī lahu mulku-s-samāwāti wal-ʾarḍi wal-lahu ʿalā kulli shayʾin shahīd",
       "translation": "To whom belongs the dominion of the heavens and the earth. And Allah, over all things, is Witness."
     },
     {
       "number": 10,
-      "arabic": "إِنَّ ٱلَّذِينَ فَتَنُوا۟ ٱلْمُؤْمِنِينَ وَٱلْمُؤْمِنَٰتِ ثُمَّ لَمْ يَتُوبُوا۟ فَلَهُمْ عَذَابُ جَهَنَّمَ وَلَهُمْ عَذَابُ ٱلْحَرِيقِ",
+      "arabic": "إِنَّ ٱلَّذِينَ فَتَنُوا۟ ٱلْمُؤْمِنِينَ وَٱلْمُؤْمِنَـٰتِ ثُمَّ لَمْ يَتُوبُوا۟ فَلَهُمْ عَذَابُ جَهَنَّمَ وَلَهُمْ عَذَابُ ٱلْحَرِيقِ",
+      "arabicIndopak": "اِنَّ الَّذِيۡنَ فَتَـنُوا الۡمُؤۡمِنِيۡنَ وَ الۡمُؤۡمِنٰتِ ثُمَّ لَمۡ يَتُوۡبُوۡا فَلَهُمۡ عَذَابُ جَهَنَّمَ وَلَهُمۡ عَذَابُ الۡحَرِيۡقِؕ‏",
       "transliteration": "Inna-lladhīna fatanū-l-muʾminīna wal-muʾmināti thumma lam yatūbū falahum ʿadhābu jahannama walahum ʿadhābu-l-ḥarīq",
       "translation": "Indeed, those who have tortured the believing men and believing women and then have not repented will have the punishment of Hell, and they will have the punishment of the Burning Fire."
     },
     {
       "number": 11,
-      "arabic": "إِنَّ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ لَهُمْ جَنَّٰتٌۭ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ ۚ ذَٰلِكَ ٱلْفَوْزُ ٱلْكَبِيرُ",
+      "arabic": "إِنَّ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ لَهُمْ جَنَّـٰتٌ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَـٰرُ ۚ ذَٰلِكَ ٱلْفَوْزُ ٱلْكَبِيرُ",
+      "arabicIndopak": "اِنَّ الَّذِيۡنَ اٰمَنُوۡا وَعَمِلُوا الصّٰلِحٰتِ لَهُمۡ جَنّٰتٌ تَجۡرِىۡ مِنۡ تَحۡتِهَا الۡاَنۡهٰرُ ؕ ذٰلِكَ الۡفَوۡزُ الۡكَبِيۡرُؕ‏",
       "transliteration": "Inna-lladhīna āmanū waʿamilū-ṣ-ṣāliḥāti lahum jannātun tajrī min taḥtihā-l-ʾanhāru dhālika-l-fawzu-l-kabīr",
       "translation": "Indeed, those who have believed and done righteous deeds will have gardens beneath which rivers flow. That is the great attainment."
     },
     {
       "number": 12,
       "arabic": "إِنَّ بَطْشَ رَبِّكَ لَشَدِيدٌ",
+      "arabicIndopak": "اِنَّ بَطۡشَ رَبِّكَ لَشَدِيۡدٌ ؕ‏",
       "transliteration": "Inna baṭsha rabbika lashadīd",
       "translation": "Indeed, the vengeance of your Lord is severe."
     },
     {
       "number": 13,
       "arabic": "إِنَّهُۥ هُوَ يُبْدِئُ وَيُعِيدُ",
+      "arabicIndopak": "اِنَّهٗ هُوَ يُبۡدِئُ وَيُعِيۡدُ​ ۚ‏",
       "transliteration": "Innahu huwa yubdiʾu wayuʿīd",
       "translation": "Indeed, it is He who originates [creation] and repeats."
     },
     {
       "number": 14,
       "arabic": "وَهُوَ ٱلْغَفُورُ ٱلْوَدُودُ",
+      "arabicIndopak": "وَهُوَ الۡغَفُوۡرُ الۡوَدُوۡدُۙ‏",
       "transliteration": "Wahuwa-l-ghafūru-l-wadūd",
       "translation": "And He is the Forgiving, the Affectionate,"
     },
     {
       "number": 15,
       "arabic": "ذُو ٱلْعَرْشِ ٱلْمَجِيدُ",
+      "arabicIndopak": "ذُو الۡعَرۡشِ الۡمَجِيۡدُ ۙ‏",
       "transliteration": "Dhū-l-ʿarshi-l-majīd",
       "translation": "Honorable Owner of the Throne,"
     },
     {
       "number": 16,
-      "arabic": "فَعَّالٌۭ لِّمَا يُرِيدُ",
+      "arabic": "فَعَّالٌ لِّمَا يُرِيدُ",
+      "arabicIndopak": "فَعَّالٌ لِّمَا يُرِيۡدُ ؕ‏",
       "transliteration": "Faʿʿālun limā yurīd",
       "translation": "Effecter of what He intends."
     },
     {
       "number": 17,
       "arabic": "هَلْ أَتَىٰكَ حَدِيثُ ٱلْجُنُودِ",
+      "arabicIndopak": "هَلۡ اَتٰٮكَ حَدِيۡثُ الۡجُـنُوۡدِۙ‏",
       "transliteration": "Hal atāka ḥadīthu-l-junūd",
       "translation": "Has there reached you the story of the soldiers -"
     },
     {
       "number": 18,
       "arabic": "فِرْعَوْنَ وَثَمُودَ",
+      "arabicIndopak": "فِرۡعَوۡنَ وَثَمُوۡدَؕ‏",
       "transliteration": "Firʿawna wathamūd",
       "translation": "[Those of] Pharaoh and Thamud?"
     },
     {
       "number": 19,
-      "arabic": "بَلِ ٱلَّذِينَ كَفَرُوا۟ فِى تَكْذِيبٍۢ",
+      "arabic": "بَلِ ٱلَّذِينَ كَفَرُوا۟ فِى تَكْذِيبٍ",
+      "arabicIndopak": "بَلِ الَّذِيۡنَ كَفَرُوۡا فِىۡ تَكۡذِيۡبٍۙ‏",
       "transliteration": "Bali-lladhīna kafarū fī takdhīb",
       "translation": "But they who disbelieve are in [persistent] denial,"
     },
     {
       "number": 20,
       "arabic": "وَٱللَّهُ مِن وَرَآئِهِم مُّحِيطٌۢ",
+      "arabicIndopak": "وَّاللّٰهُ مِنۡ وَّرَآٮِٕهِمۡ مُّحِيۡطٌۚ‏",
       "transliteration": "Wal-lahu min warāʾihim muḥīṭ",
       "translation": "While Allah encompasses them from behind."
     },
     {
       "number": 21,
-      "arabic": "بَلْ هُوَ قُرْءَانٌۭ مَّجِيدٌۭ",
+      "arabic": "بَلْ هُوَ قُرْءَانٌ مَّجِيدٌ",
+      "arabicIndopak": "بَلۡ هُوَ قُرۡاٰنٌ مَّجِيۡدٌ ۙ‏",
       "transliteration": "Bal huwa qurʾānun majīd",
       "translation": "But this is an honored Qur'an"
     },
     {
       "number": 22,
-      "arabic": "فِى لَوْحٍۢ مَّحْفُوظٍۭ",
+      "arabic": "فِى لَوْحٍ مَّحْفُوظٍۭ",
+      "arabicIndopak": "فِىۡ لَوۡحٍ مَّحۡفُوۡظٍ‏",
       "transliteration": "Fī lawḥin maḥfūẓ",
       "translation": "[Inscribed] in a Preserved Slate."
     }

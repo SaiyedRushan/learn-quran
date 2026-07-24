@@ -69,6 +69,7 @@ function buildDecoyPool(slug: string, target: VerseData): DecoyVerse[] {
       seen.add(a.arabic);
       pool.push({
         arabic: a.arabic,
+        arabicIndopak: a.arabicIndopak,
         transliteration: a.transliteration,
         translation: a.translation,
         source: other.name,

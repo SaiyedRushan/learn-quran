@@ -76,6 +76,15 @@ export default function SettingsControl() {
                     Amiri
                     <span className='seg-opt-sub'>Calligraphic</span>
                   </button>
+                  <button
+                    type='button'
+                    className={`seg-opt ${settings.arabicFont === "indopak" ? "active" : ""}`}
+                    aria-pressed={settings.arabicFont === "indopak"}
+                    onClick={() => setSetting("arabicFont", "indopak")}
+                  >
+                    IndoPak
+                    <span className='seg-opt-sub'>Subcontinental</span>
+                  </button>
                 </div>
               </div>
 

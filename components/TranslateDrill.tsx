@@ -16,6 +16,7 @@ import {decodeChallenge, challengeUrl, type RivalScore} from "@/lib/drills/chall
 import {useTileDrag} from "@/lib/drills/useTileDrag";
 import {isEnglishWord} from "@/lib/drills/text";
 import {useSettings} from "@/lib/settings";
+import {pickArabic} from "@/lib/arabic";
 
 type Mode = "type" | "build";
 type Phase = "setup" | "play" | "done";
@@ -195,10 +196,10 @@ export default function TranslateDrill({
 // ── Shared verse header ──────────────────────────────────────────────────
 
 function VersePrompt({ayah}: {ayah: Ayah}) {
-  const {showTransliteration} = useSettings();
+  const {showTransliteration, arabicFont} = useSettings();
   return (
     <div className='gq-verse'>
-      <div className='mm-ar'>{ayah.arabic}</div>
+      <div className='mm-ar'>{pickArabic(ayah, arabicFont)}</div>
       {showTransliteration && <div className='gt-translit'>{ayah.transliteration}</div>}
     </div>
   );
@@ -330,11 +331,11 @@ function BuildRound({
   seed: number;
   onDone: (score: number) => void;
 }) {
-  const {showTransliteration} = useSettings();
+  const {showTransliteration, arabicFont} = useSettings();
   // Bare dashes / stray quotes in the translation are punctuation, not words —
   // they'd make baffling tiles, so both the tiles and the scoring skip them.
   const refWords = useMemo(() => ayah.translation.split(/\s+/).filter(isEnglishWord), [ayah]);
-  const arWords = useMemo(() => ayah.arabic.split(/\s+/).filter(Boolean), [ayah]);
+  const arWords = useMemo(() => pickArabic(ayah, arabicFont).split(/\s+/).filter(Boolean), [ayah, arabicFont]);
 
   const tiles: Chip[] = useMemo(() => {
     const rand = mulberry32(seed);

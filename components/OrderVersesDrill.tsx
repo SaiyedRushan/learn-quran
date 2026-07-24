@@ -17,10 +17,13 @@ import {mulberry32, newSeed, shuffled} from "@/lib/drills/random";
 import {decodeChallenge, challengeUrl, type RivalScore} from "@/lib/drills/challenge";
 import {useTileDrag} from "@/lib/drills/useTileDrag";
 import {useSettings} from "@/lib/settings";
+import {pickArabic} from "@/lib/arabic";
 
 /** A verse from another surah, mixed into the bank to be spotted and left out. */
 export interface DecoyVerse {
   arabic: string;
+  /** IndoPak variant of the same verse, shown when that script is selected. */
+  arabicIndopak: string;
   transliteration: string;
   translation: string;
   /** Where it's actually from — revealed after checking. */
@@ -33,7 +36,11 @@ const ROUND_CHOICES = [3, 5];
 
 interface OrderTile {
   id: number;
+  /** Canonical Uthmani text — the tile's identity for dedup and answer-checking
+   *  (kept stable across scripts). Display uses pickArabic(t, arabicFont). */
   arabic: string;
+  /** IndoPak variant of the same verse, shown when that script is selected. */
+  arabicIndopak: string;
   transliteration: string;
   translation: string;
   /** Verse number within the surah — set for real verses AND nearby decoys. */
@@ -107,6 +114,7 @@ export default function OrderVersesDrill({
       const answer: OrderTile[] = verses.ayahs.slice(start, start + size).map((a) => ({
         id: nextId++,
         arabic: a.arabic,
+        arabicIndopak: a.arabicIndopak,
         transliteration: a.transliteration,
         translation: a.translation,
         ayahNumber: a.number,
@@ -131,6 +139,7 @@ export default function OrderVersesDrill({
         nearbyPool.push({
           id: 0, // real id assigned once the draw order is fixed, below
           arabic: a.arabic,
+          arabicIndopak: a.arabicIndopak,
           transliteration: a.transliteration,
           translation: a.translation,
           ayahNumber: a.number,
@@ -302,7 +311,7 @@ function OrderRoundView({
   surahName: string;
   onDone: (score: number) => void;
 }) {
-  const {showTransliteration} = useSettings();
+  const {showTransliteration, arabicFont} = useSettings();
   const {tiles, answer} = round;
   const size = answer.length;
 
@@ -384,7 +393,7 @@ function OrderRoundView({
         type='button'
         className={`go-card${verdict}${isDecoyRevealed ? " decoy" : ""}${over === opts.drop ? " drop-before" : ""}${opts.ghost ? " drag-ghost" : ""}`}
         data-drop={opts.drop}
-        onPointerDown={done ? undefined : (e) => startDrag(e, t.id, t.arabic)}
+        onPointerDown={done ? undefined : (e) => startDrag(e, t.id, pickArabic(t, arabicFont))}
         onClick={() => {
           if (done || didDrag.current) return;
           if (opts.slot !== undefined) setPicked((p) => p.filter((x) => x.id !== t.id));
@@ -397,7 +406,7 @@ function OrderRoundView({
         )}
         <span className='go-card-body'>
           <span className='go-card-ar' dir='rtl' lang='ar'>
-            {t.arabic}
+            {pickArabic(t, arabicFont)}
           </span>
           {showTransliteration && <span className='go-card-tr'>{t.transliteration}</span>}
           {done && <span className='go-card-en'>{t.translation}</span>}

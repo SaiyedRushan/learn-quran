@@ -8,301 +8,351 @@
   "ayahs": [
     {
       "number": 1,
-      "arabic": "وَٱلْمُرْسَلَٰتِ عُرْفًۭا",
+      "arabic": "وَٱلْمُرْسَلَـٰتِ عُرْفًا",
+      "arabicIndopak": "وَالۡمُرۡسَلٰتِ عُرۡفًا ۙ‏",
       "transliteration": "Wal-mursalāti ʿurfā",
       "translation": "By those [winds] sent forth in gusts"
     },
     {
       "number": 2,
-      "arabic": "فَٱلْعَٰصِفَٰتِ عَصْفًۭا",
+      "arabic": "فَٱلْعَـٰصِفَـٰتِ عَصْفًا",
+      "arabicIndopak": "فَالۡعٰصِفٰتِ عَصۡفًا ۙ‏",
       "transliteration": "Fal-ʿāṣifāti ʿaṣfā",
       "translation": "And the winds that blow violently"
     },
     {
       "number": 3,
-      "arabic": "وَٱلنَّٰشِرَٰتِ نَشْرًۭا",
+      "arabic": "وَٱلنَّـٰشِرَٰتِ نَشْرًا",
+      "arabicIndopak": "وَّالنّٰشِرٰتِ نَشۡرًا ۙ‏",
       "transliteration": "Wan-nāshirāti nashrā",
       "translation": "And [by] the winds that spread [clouds]"
     },
     {
       "number": 4,
-      "arabic": "فَٱلْفَٰرِقَٰتِ فَرْقًۭا",
+      "arabic": "فَٱلْفَـٰرِقَـٰتِ فَرْقًا",
+      "arabicIndopak": "فَالۡفٰرِقٰتِ فَرۡقًا ۙ‏",
       "transliteration": "Fal-fāriqāti farqā",
       "translation": "And those [angels] who bring criterion"
     },
     {
       "number": 5,
-      "arabic": "فَٱلْمُلْقِيَٰتِ ذِكْرًا",
+      "arabic": "فَٱلْمُلْقِيَـٰتِ ذِكْرًا",
+      "arabicIndopak": "فَالۡمُلۡقِيٰتِ ذِكۡرًا ۙ‏",
       "transliteration": "Fal-mulqiyāti dhikrā",
       "translation": "And those [angels] who deliver a message"
     },
     {
       "number": 6,
       "arabic": "عُذْرًا أَوْ نُذْرًا",
+      "arabicIndopak": "عُذۡرًا اَوۡ نُذۡرًا ۙ‏",
       "transliteration": "ʿUdhran aw nudhrā",
       "translation": "As justification or warning,"
     },
     {
       "number": 7,
-      "arabic": "إِنَّمَا تُوعَدُونَ لَوَٰقِعٌۭ",
+      "arabic": "إِنَّمَا تُوعَدُونَ لَوَٰقِعٌ",
+      "arabicIndopak": "اِنَّمَا تُوۡعَدُوۡنَ لَوَاقِعٌ ؕ‏",
       "transliteration": "Innamā tūʿadūna lawāqiʿ",
       "translation": "Indeed, what you are promised is to occur."
     },
     {
       "number": 8,
       "arabic": "فَإِذَا ٱلنُّجُومُ طُمِسَتْ",
+      "arabicIndopak": "فَاِذَا النُّجُوۡمُ طُمِسَتۡۙ‏",
       "transliteration": "Faʾidhā-n-nujūmu ṭumisat",
       "translation": "So when the stars are obliterated"
     },
     {
       "number": 9,
       "arabic": "وَإِذَا ٱلسَّمَآءُ فُرِجَتْ",
+      "arabicIndopak": "وَ اِذَا السَّمَآءُ فُرِجَتۡۙ‏",
       "transliteration": "Waʾidhā-s-samāʾu furijat",
       "translation": "And when the heaven is opened"
     },
     {
       "number": 10,
       "arabic": "وَإِذَا ٱلْجِبَالُ نُسِفَتْ",
+      "arabicIndopak": "وَاِذَا الۡجِبَالُ نُسِفَتۡۙ‏",
       "transliteration": "Waʾidhā-l-jibālu nusifat",
       "translation": "And when the mountains are blown away"
     },
     {
       "number": 11,
       "arabic": "وَإِذَا ٱلرُّسُلُ أُقِّتَتْ",
+      "arabicIndopak": "وَاِذَا الرُّسُلُ اُقِّتَتۡؕ‏",
       "transliteration": "Waʾidhā-r-rusulu uqqitat",
       "translation": "And when the messengers' time has come..."
     },
     {
       "number": 12,
       "arabic": "لِأَىِّ يَوْمٍ أُجِّلَتْ",
+      "arabicIndopak": "لِاَىِّ يَوۡمٍ اُجِّلَتۡؕ‏",
       "transliteration": "Liʾayyi yawmin ujjilat",
       "translation": "For what Day was it postponed?"
     },
     {
       "number": 13,
       "arabic": "لِيَوْمِ ٱلْفَصْلِ",
+      "arabicIndopak": "لِيَوۡمِ الۡفَصۡلِ​ۚ‏",
       "transliteration": "Liyawmi-l-faṣl",
       "translation": "For the Day of Judgement."
     },
     {
       "number": 14,
       "arabic": "وَمَآ أَدْرَىٰكَ مَا يَوْمُ ٱلْفَصْلِ",
+      "arabicIndopak": "وَمَاۤ اَدۡرٰٮكَ مَا يَوۡمُ الۡفَصۡلِؕ‏",
       "transliteration": "Wamā adrāka mā yawmu-l-faṣl",
       "translation": "And what can make you know what is the Day of Judgement?"
     },
     {
       "number": 15,
-      "arabic": "وَيْلٌۭ يَوْمَئِذٍۢ لِّلْمُكَذِّبِينَ",
+      "arabic": "وَيْلٌ يَوْمَئِذٍ لِّلْمُكَذِّبِينَ",
+      "arabicIndopak": "وَيۡلٌ يَّوۡمَٮِٕذٍ لِّلۡمُكَذِّبِيۡنَ‏",
       "transliteration": "Waylun yawmaʾidhin lil-mukadhdhibīn",
       "translation": "Woe, that Day, to the deniers."
     },
     {
       "number": 16,
       "arabic": "أَلَمْ نُهْلِكِ ٱلْأَوَّلِينَ",
+      "arabicIndopak": "اَلَمۡ نُهۡلِكِ الۡاَوَّلِيۡنَؕ‏",
       "transliteration": "Alam nuhliki-l-ʾawwalīn",
       "translation": "Did We not destroy the former peoples?"
     },
     {
       "number": 17,
-      "arabic": "ثُمَّ نُتْبِعُهُمُ ٱلْءَاخِرِينَ",
+      "arabic": "ثُمَّ نُتْبِعُهُمُ ٱلْـَٔاخِرِينَ",
+      "arabicIndopak": "ثُمَّ نُتۡبِعُهُمُ الۡاٰخِرِيۡنَ‏",
       "transliteration": "Thumma nutbiʿuhumu-l-ʾākhirīn",
       "translation": "Then We will follow them with the later ones."
     },
     {
       "number": 18,
       "arabic": "كَذَٰلِكَ نَفْعَلُ بِٱلْمُجْرِمِينَ",
+      "arabicIndopak": "كَذٰلِكَ نَفۡعَلُ بِالۡمُجۡرِمِيۡنَ‏",
       "transliteration": "Kadhālika nafʿalu bil-mujrimīn",
       "translation": "Thus do We deal with the criminals."
     },
     {
       "number": 19,
-      "arabic": "وَيْلٌۭ يَوْمَئِذٍۢ لِّلْمُكَذِّبِينَ",
+      "arabic": "وَيْلٌ يَوْمَئِذٍ لِّلْمُكَذِّبِينَ",
+      "arabicIndopak": "وَيۡلٌ يَّوۡمَٮِٕذٍ لِّلۡمُكَذِّبِيۡنَ‏",
       "transliteration": "Waylun yawmaʾidhin lil-mukadhdhibīn",
       "translation": "Woe, that Day, to the deniers."
     },
     {
       "number": 20,
-      "arabic": "أَلَمْ نَخْلُقكُّم مِّن مَّآءٍۢ مَّهِينٍۢ",
+      "arabic": "أَلَمْ نَخْلُقكُّم مِّن مَّآءٍ مَّهِينٍ",
+      "arabicIndopak": "اَلَمۡ نَخۡلُقۡكُّمۡ مِّنۡ مَّآءٍ مَّهِيۡنٍۙ‏",
       "transliteration": "Alam nakhluqkum min māʾin mahīn",
       "translation": "Did We not create you from a liquid disdained?"
     },
     {
       "number": 21,
-      "arabic": "فَجَعَلْنَٰهُ فِى قَرَارٍۢ مَّكِينٍ",
+      "arabic": "فَجَعَلْنَـٰهُ فِى قَرَارٍ مَّكِينٍ",
+      "arabicIndopak": "فَجَعَلۡنٰهُ فِىۡ قَرَارٍ مَّكِيۡنٍۙ‏",
       "transliteration": "Fajaʿalnāhu fī qarārin makīn",
       "translation": "And We placed it in a firm lodging"
     },
     {
       "number": 22,
-      "arabic": "إِلَىٰ قَدَرٍۢ مَّعْلُومٍۢ",
+      "arabic": "إِلَىٰ قَدَرٍ مَّعْلُومٍ",
+      "arabicIndopak": "اِلٰى قَدَرٍ مَّعۡلُوۡمٍۙ‏",
       "transliteration": "Ilā qadarin maʿlūm",
       "translation": "For a known extent."
     },
     {
       "number": 23,
-      "arabic": "فَقَدَرْنَا فَنِعْمَ ٱلْقَٰدِرُونَ",
+      "arabic": "فَقَدَرْنَا فَنِعْمَ ٱلْقَـٰدِرُونَ",
+      "arabicIndopak": "فَقَدَرۡنَا ۖ فَنِعۡمَ الۡقٰدِرُوۡنَ‏",
       "transliteration": "Faqadarnā faniʿma-l-qādirūn",
       "translation": "And We determined [it], and excellent [are We] to determine."
     },
     {
       "number": 24,
-      "arabic": "وَيْلٌۭ يَوْمَئِذٍۢ لِّلْمُكَذِّبِينَ",
+      "arabic": "وَيْلٌ يَوْمَئِذٍ لِّلْمُكَذِّبِينَ",
+      "arabicIndopak": "وَيۡلٌ يَّوۡمَٮِٕذٍ لِّلۡمُكَذِّبِيۡنَ‏",
       "transliteration": "Waylun yawmaʾidhin lil-mukadhdhibīn",
       "translation": "Woe, that Day, to the deniers."
     },
     {
       "number": 25,
       "arabic": "أَلَمْ نَجْعَلِ ٱلْأَرْضَ كِفَاتًا",
+      "arabicIndopak": "اَلَمۡ نَجۡعَلِ الۡاَرۡضَ كِفَاتًا ۙ‏",
       "transliteration": "Alam najʿali-l-ʾarḍa kifātā",
       "translation": "Have We not made the earth a container"
     },
     {
       "number": 26,
-      "arabic": "أَحْيَآءًۭ وَأَمْوَٰتًۭا",
+      "arabic": "أَحْيَآءً وَأَمْوَٰتًا",
+      "arabicIndopak": "اَحۡيَآءً وَّاَمۡوَاتًا ۙ‏",
       "transliteration": "Aḥyāʾan waʾamwātā",
       "translation": "Of the living and the dead?"
     },
     {
       "number": 27,
-      "arabic": "وَجَعَلْنَا فِيهَا رَوَٰسِىَ شَٰمِخَٰتٍۢ وَأَسْقَيْنَٰكُم مَّآءًۭ فُرَاتًۭا",
+      "arabic": "وَجَعَلْنَا فِيهَا رَوَٰسِىَ شَـٰمِخَـٰتٍ وَأَسْقَيْنَـٰكُم مَّآءً فُرَاتًا",
+      "arabicIndopak": "وَّجَعَلۡنَا فِيۡهَا رَوَاسِىَ شٰمِخٰتٍ وَّ اَسۡقَيۡنٰكُمۡ مَّآءً فُرَاتًا ؕ‏",
       "transliteration": "Wajaʿalnā fīhā rawāsiya shāmikhātin waʾasqaynākum māʾan furātā",
       "translation": "And We placed therein lofty, firmly set mountains and have given you to drink sweet water."
     },
     {
       "number": 28,
-      "arabic": "وَيْلٌۭ يَوْمَئِذٍۢ لِّلْمُكَذِّبِينَ",
+      "arabic": "وَيْلٌ يَوْمَئِذٍ لِّلْمُكَذِّبِينَ",
+      "arabicIndopak": "وَيۡلٌ يَّوۡمَٮِٕذٍ لِّلۡمُكَذِّبِيۡنَ‏",
       "transliteration": "Waylun yawmaʾidhin lil-mukadhdhibīn",
       "translation": "Woe, that Day, to the deniers."
     },
     {
       "number": 29,
       "arabic": "ٱنطَلِقُوٓا۟ إِلَىٰ مَا كُنتُم بِهِۦ تُكَذِّبُونَ",
+      "arabicIndopak": "اِنْطَلِقُوۡۤا اِلٰى مَا كُنۡتُمۡ بِهٖ تُكَذِّبُوۡنَ​ۚ‏",
       "transliteration": "Inṭaliqū ilā mā kuntum bihi tukadhdhibūn",
       "translation": "[They will be told], \"Proceed to that which you used to deny."
     },
     {
       "number": 30,
-      "arabic": "ٱنطَلِقُوٓا۟ إِلَىٰ ظِلٍّۢ ذِى ثَلَٰثِ شُعَبٍۢ",
+      "arabic": "ٱنطَلِقُوٓا۟ إِلَىٰ ظِلٍّ ذِى ثَلَـٰثِ شُعَبٍ",
+      "arabicIndopak": "اِنْطَلِقُوۡۤا اِلٰى ظِلٍّ ذِىۡ ثَلٰثِ شُعَبٍۙ‏",
       "transliteration": "Inṭaliqū ilā ẓillin dhī thalāthi shuʿab",
       "translation": "Proceed to a shadow [of smoke] having three columns"
     },
     {
       "number": 31,
-      "arabic": "لَّا ظَلِيلٍۢ وَلَا يُغْنِى مِنَ ٱللَّهَبِ",
+      "arabic": "لَّا ظَلِيلٍ وَلَا يُغْنِى مِنَ ٱللَّهَبِ",
+      "arabicIndopak": "لَّا ظَلِيۡلٍ وَّلَا يُغۡنِىۡ مِنَ اللَّهَبِؕ‏",
       "transliteration": "Lā ẓalīlin walā yughnī mina-l-lahab",
       "translation": "[But having] no cool shade and availing not against the flame.\""
     },
     {
       "number": 32,
-      "arabic": "إِنَّهَا تَرْمِى بِشَرَرٍۢ كَٱلْقَصْرِ",
+      "arabic": "إِنَّهَا تَرْمِى بِشَرَرٍ كَٱلْقَصْرِ",
+      "arabicIndopak": "اِنَّهَا تَرۡمِىۡ بِشَرَرٍ كَالۡقَصۡرِ​ۚ‏",
       "transliteration": "Innahā tarmī bishararin kal-qaṣr",
       "translation": "Indeed, it throws sparks [as huge] as a fortress,"
     },
     {
       "number": 33,
-      "arabic": "كَأَنَّهُۥ جِمَٰلَتٌۭ صُفْرٌۭ",
+      "arabic": "كَأَنَّهُۥ جِمَـٰلَتٌ صُفْرٌ",
+      "arabicIndopak": "كَاَنَّهٗ جِمٰلَتٌ صُفۡرٌ ؕ‏",
       "transliteration": "Kaʾannahu jimālatun ṣufr",
       "translation": "As if they were yellowish [black] camels."
     },
     {
       "number": 34,
-      "arabic": "وَيْلٌۭ يَوْمَئِذٍۢ لِّلْمُكَذِّبِينَ",
+      "arabic": "وَيْلٌ يَوْمَئِذٍ لِّلْمُكَذِّبِينَ",
+      "arabicIndopak": "وَيۡلٌ يَّوۡمَٮِٕذٍ لِّلۡمُكَذِّبِيۡنَ‏",
       "transliteration": "Waylun yawmaʾidhin lil-mukadhdhibīn",
       "translation": "Woe, that Day, to the deniers."
     },
     {
       "number": 35,
-      "arabic": "هَٰذَا يَوْمُ لَا يَنطِقُونَ",
+      "arabic": "هَـٰذَا يَوْمُ لَا يَنطِقُونَ",
+      "arabicIndopak": "هٰذَا يَوۡمُ لَا يَنۡطِقُوۡنَۙ‏",
       "transliteration": "Hādhā yawmu lā yanṭiqūn",
       "translation": "This is a Day they will not speak,"
     },
     {
       "number": 36,
       "arabic": "وَلَا يُؤْذَنُ لَهُمْ فَيَعْتَذِرُونَ",
+      "arabicIndopak": "وَلَا يُؤۡذَنُ لَهُمۡ فَيَـعۡتَذِرُوۡنَ‏",
       "transliteration": "Walā yuʾdhanu lahum fayaʿtadhirūn",
       "translation": "Nor will it be permitted for them to make an excuse."
     },
     {
       "number": 37,
-      "arabic": "وَيْلٌۭ يَوْمَئِذٍۢ لِّلْمُكَذِّبِينَ",
+      "arabic": "وَيْلٌ يَوْمَئِذٍ لِّلْمُكَذِّبِينَ",
+      "arabicIndopak": "وَيۡلٌ يَّوۡمَٮِٕذٍ لِّلۡمُكَذِّبِيۡنَ‏",
       "transliteration": "Waylun yawmaʾidhin lil-mukadhdhibīn",
       "translation": "Woe, that Day, to the deniers."
     },
     {
       "number": 38,
-      "arabic": "هَٰذَا يَوْمُ ٱلْفَصْلِ ۖ جَمَعْنَٰكُمْ وَٱلْأَوَّلِينَ",
+      "arabic": "هَـٰذَا يَوْمُ ٱلْفَصْلِ ۖ جَمَعْنَـٰكُمْ وَٱلْأَوَّلِينَ",
+      "arabicIndopak": "هٰذَا يَوۡمُ الۡفَصۡلِ​ۚ جَمَعۡنٰكُمۡ وَالۡاَوَّلِيۡنَ‏",
       "transliteration": "Hādhā yawmu-l-faṣli jamaʿnākum wal-ʾawwalīn",
       "translation": "This is the Day of Judgement; We will have assembled you and the former peoples."
     },
     {
       "number": 39,
-      "arabic": "فَإِن كَانَ لَكُمْ كَيْدٌۭ فَكِيدُونِ",
+      "arabic": "فَإِن كَانَ لَكُمْ كَيْدٌ فَكِيدُونِ",
+      "arabicIndopak": "فَاِنۡ كَانَ لَـكُمۡ كَيۡدٌ فَكِيۡدُوۡنِ‏",
       "transliteration": "Faʾin kāna lakum kaydun fakīdūn",
       "translation": "So if you have a plan, then plan against Me."
     },
     {
       "number": 40,
-      "arabic": "وَيْلٌۭ يَوْمَئِذٍۢ لِّلْمُكَذِّبِينَ",
+      "arabic": "وَيْلٌ يَوْمَئِذٍ لِّلْمُكَذِّبِينَ",
+      "arabicIndopak": "وَيۡلٌ يَّوۡمَٮِٕذٍ لِّلۡمُكَذِّبِيۡنَ‏",
       "transliteration": "Waylun yawmaʾidhin lil-mukadhdhibīn",
       "translation": "Woe, that Day, to the deniers."
     },
     {
       "number": 41,
-      "arabic": "إِنَّ ٱلْمُتَّقِينَ فِى ظِلَٰلٍۢ وَعُيُونٍۢ",
+      "arabic": "إِنَّ ٱلْمُتَّقِينَ فِى ظِلَـٰلٍ وَعُيُونٍ",
+      "arabicIndopak": "اِنَّ الۡمُتَّقِيۡنَ فِىۡ ظِلٰلٍ وَّعُيُوۡنٍۙ‏",
       "transliteration": "Inna-l-muttaqīna fī ẓilālin waʿuyūn",
       "translation": "Indeed, the righteous will be among shades and springs"
     },
     {
       "number": 42,
       "arabic": "وَفَوَٰكِهَ مِمَّا يَشْتَهُونَ",
+      "arabicIndopak": "وَّفَوَاكِهَ مِمَّا يَشۡتَهُوۡنَؕ‏",
       "transliteration": "Wafawākiha mimmā yashtahūn",
       "translation": "And fruits from whatever they desire,"
     },
     {
       "number": 43,
       "arabic": "كُلُوا۟ وَٱشْرَبُوا۟ هَنِيٓـًٔۢا بِمَا كُنتُمْ تَعْمَلُونَ",
+      "arabicIndopak": "كُلُوۡا وَاشۡرَبُوۡا هَنِيْٓئًا ۢ بِمَا كُنۡتُمۡ تَعۡمَلُوۡنَ‏",
       "transliteration": "Kulū washrabū hanīʾan bimā kuntum taʿmalūn",
       "translation": "[Being told], \"Eat and drink in satisfaction for what you used to do.\""
     },
     {
       "number": 44,
       "arabic": "إِنَّا كَذَٰلِكَ نَجْزِى ٱلْمُحْسِنِينَ",
+      "arabicIndopak": "اِنَّا كَذٰلِكَ نَجۡزِى الۡمُحۡسِنِيۡنَ‏",
       "transliteration": "Innā kadhālika najzī-l-muḥsinīn",
       "translation": "Indeed, We thus reward the doers of good."
     },
     {
       "number": 45,
-      "arabic": "وَيْلٌۭ يَوْمَئِذٍۢ لِّلْمُكَذِّبِينَ",
+      "arabic": "وَيْلٌ يَوْمَئِذٍ لِّلْمُكَذِّبِينَ",
+      "arabicIndopak": "وَيۡلٌ يَّوۡمَٮِٕذٍ لِّلۡمُكَذِّبِيۡنَ‏",
       "transliteration": "Waylun yawmaʾidhin lil-mukadhdhibīn",
       "translation": "Woe, that Day, to the deniers."
     },
     {
       "number": 46,
       "arabic": "كُلُوا۟ وَتَمَتَّعُوا۟ قَلِيلًا إِنَّكُم مُّجْرِمُونَ",
+      "arabicIndopak": "كُلُوۡا وَتَمَتَّعُوۡا قَلِيۡلًا اِنَّكُمۡ مُّجۡرِمُوۡنَ‏",
       "transliteration": "Kulū watamattaʿū qalīlan innakum mujrimūn",
       "translation": "[O disbelievers], eat and enjoy yourselves a little; indeed, you are criminals."
     },
     {
       "number": 47,
-      "arabic": "وَيْلٌۭ يَوْمَئِذٍۢ لِّلْمُكَذِّبِينَ",
+      "arabic": "وَيْلٌ يَوْمَئِذٍ لِّلْمُكَذِّبِينَ",
+      "arabicIndopak": "وَيۡلٌ يَّوۡمَٮِٕذٍ لِّلۡمُكَذِّبِيۡنَ‏",
       "transliteration": "Waylun yawmaʾidhin lil-mukadhdhibīn",
       "translation": "Woe, that Day, to the deniers."
     },
     {
       "number": 48,
       "arabic": "وَإِذَا قِيلَ لَهُمُ ٱرْكَعُوا۟ لَا يَرْكَعُونَ",
+      "arabicIndopak": "وَاِذَا قِيۡلَ لَهُمُ ارۡكَعُوۡا لَا يَرۡكَعُوۡنَ‏",
       "transliteration": "Waʾidhā qīla lahumu-rkaʿū lā yarkaʿūn",
       "translation": "And when it is said to them, \"Bow [in prayer],\" they do not bow."
     },
     {
       "number": 49,
-      "arabic": "وَيْلٌۭ يَوْمَئِذٍۢ لِّلْمُكَذِّبِينَ",
+      "arabic": "وَيْلٌ يَوْمَئِذٍ لِّلْمُكَذِّبِينَ",
+      "arabicIndopak": "وَيۡلٌ يَّوۡمَٮِٕذٍ لِّلۡمُكَذِّبِيۡنَ‏",
       "transliteration": "Waylun yawmaʾidhin lil-mukadhdhibīn",
       "translation": "Woe, that Day, to the deniers."
     },
     {
       "number": 50,
       "arabic": "فَبِأَىِّ حَدِيثٍۭ بَعْدَهُۥ يُؤْمِنُونَ",
+      "arabicIndopak": "فَبِاَىِّ حَدِيۡثٍۢ بَعۡدَهٗ يُؤۡمِنُوۡنَ‏",
       "transliteration": "Fabiʾayyi ḥadīthin baʿdahu yuʾminūn",
       "translation": "Then in what statement after the Qur'an will they believe?"
     }

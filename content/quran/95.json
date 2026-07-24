@@ -9,48 +9,56 @@
     {
       "number": 1,
       "arabic": "وَٱلتِّينِ وَٱلزَّيْتُونِ",
+      "arabicIndopak": "وَالتِّيۡنِ وَالزَّيۡتُوۡنِۙ‏",
       "transliteration": "Wat-tīni waz-zaytūn",
       "translation": "By the fig and the olive"
     },
     {
       "number": 2,
       "arabic": "وَطُورِ سِينِينَ",
+      "arabicIndopak": "وَطُوۡرِ سِيۡنِيۡنَۙ‏",
       "transliteration": "Waṭūri sīnīn",
       "translation": "And [by] Mount Sinai"
     },
     {
       "number": 3,
-      "arabic": "وَهَٰذَا ٱلْبَلَدِ ٱلْأَمِينِ",
+      "arabic": "وَهَـٰذَا ٱلْبَلَدِ ٱلْأَمِينِ",
+      "arabicIndopak": "وَهٰذَا الۡبَلَدِ الۡاَمِيۡنِۙ‏",
       "transliteration": "Wahādhā-l-baladi-l-ʾamīn",
       "translation": "And [by] this secure city [Makkah],"
     },
     {
       "number": 4,
-      "arabic": "لَقَدْ خَلَقْنَا ٱلْإِنسَٰنَ فِىٓ أَحْسَنِ تَقْوِيمٍۢ",
+      "arabic": "لَقَدْ خَلَقْنَا ٱلْإِنسَـٰنَ فِىٓ أَحْسَنِ تَقْوِيمٍ",
+      "arabicIndopak": "لَقَدۡ خَلَقۡنَا الۡاِنۡسَانَ فِىۡۤ اَحۡسَنِ تَقۡوِيۡمٍ‏",
       "transliteration": "Laqad khalaqnā-l-ʾinsāna fī aḥsani taqwīm",
       "translation": "We have certainly created man in the best of stature;"
     },
     {
       "number": 5,
-      "arabic": "ثُمَّ رَدَدْنَٰهُ أَسْفَلَ سَٰفِلِينَ",
+      "arabic": "ثُمَّ رَدَدْنَـٰهُ أَسْفَلَ سَـٰفِلِينَ",
+      "arabicIndopak": "ثُمَّ رَدَدۡنٰهُ اَسۡفَلَ سَافِلِيۡنَۙ‏",
       "transliteration": "Thumma radadnāhu asfala sāfilīn",
       "translation": "Then We return him to the lowest of the low,"
     },
     {
       "number": 6,
-      "arabic": "إِلَّا ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ فَلَهُمْ أَجْرٌ غَيْرُ مَمْنُونٍۢ",
+      "arabic": "إِلَّا ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ فَلَهُمْ أَجْرٌ غَيْرُ مَمْنُونٍ",
+      "arabicIndopak": "اِلَّا الَّذِيۡنَ اٰمَنُوۡا وَعَمِلُوا الصّٰلِحٰتِ فَلَهُمۡ اَجۡرٌ غَيۡرُ مَمۡنُوۡنٍؕ‏",
       "transliteration": "Illā-lladhīna āmanū waʿamilū-ṣ-ṣāliḥāti falahum ajrun ghayru mamnūn",
       "translation": "Except for those who believe and do righteous deeds, for they will have a reward uninterrupted."
     },
     {
       "number": 7,
       "arabic": "فَمَا يُكَذِّبُكَ بَعْدُ بِٱلدِّينِ",
+      "arabicIndopak": "فَمَا يُكَذِّبُكَ بَعۡدُ بِالدِّيۡنِ‏",
       "transliteration": "Famā yukadhdhibuka baʿdu bid-dīn",
       "translation": "So what yet causes you to deny the Recompense?"
     },
     {
       "number": 8,
-      "arabic": "أَلَيْسَ ٱللَّهُ بِأَحْكَمِ ٱلْحَٰكِمِينَ",
+      "arabic": "أَلَيْسَ ٱللَّهُ بِأَحْكَمِ ٱلْحَـٰكِمِينَ",
+      "arabicIndopak": "اَلَيۡسَ اللّٰهُ بِاَحۡكَمِ الۡحٰكِمِيۡنَ‏",
       "transliteration": "Alaysa-llāhu biʾaḥkami-l-ḥākimīn",
       "translation": "Is not Allah the most just of judges?"
     }
