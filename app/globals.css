@@ -85,6 +85,19 @@ a {
   flex: 1 0 auto;
 }
 
+/* Home page only: widen the column and the navbar to the surah-grid measure
+   so the whole page shares one width instead of the cards breaking out of a
+   narrower column. Scoped via the (sr-only) `.home-intro` marker so surah
+   reading pages keep their 720px column and fixed side rails. Kept to >=1080px
+   — the same point the grid goes 2-column — and capped at 94vw to stay clear
+   of the scrollbar. Other routes are untouched. */
+@media (min-width: 1080px) {
+  .wrap:has(.home-intro),
+  body:has(.home-intro) .site-header-inner {
+    max-width: min(1040px, 94vw);
+  }
+}
+
 /* ── Site header ── */
 .site-header {
   position: sticky;
@@ -409,6 +422,38 @@ a {
      scrollbar; the negative margin pulls the edges back out. */
   padding: 0 10px;
   margin: 0 -10px;
+}
+
+/* Thin, themed scrollbar that stays hidden until you hover into the list
+   (mirroring the macOS overlay feel) so it never competes with the content.
+   Firefox uses scrollbar-color; WebKit/Blink uses the pseudo-elements. */
+.td-group-list {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.2s ease;
+}
+.td-group-list:hover,
+.td-group-list:focus-within {
+  scrollbar-color: var(--color-border-secondary) transparent;
+}
+.td-group-list::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.td-group-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.td-group-list::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 99px;
+  transition: background 0.2s ease;
+}
+.td-group-list:hover::-webkit-scrollbar-thumb,
+.td-group-list:focus-within::-webkit-scrollbar-thumb {
+  background: var(--color-border-secondary);
+}
+.td-group-list::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-tertiary);
 }
 
 /* On laptop/desktop widths the plan has ample horizontal room, so sit the two
@@ -4242,16 +4287,13 @@ a {
 
 /* ============================================================
    Homepage surah index — multi-column grid on wide screens (#3)
-   Keeps the intro, progress summary and search at a comfortable
-   reading width, but lets the card lists break out of the 720px
-   column into a centered 2-column grid so the side space is used.
-   The breakout is scrollbar-safe: the block never exceeds 94vw.
+   The home column itself widens to the grid measure (see the
+   `.wrap:has(.home-intro)` rule), so the cards just fill it as a
+   2-column grid — everything above (intro, progress, plan, search)
+   now shares the same edges instead of the cards breaking out.
    ============================================================ */
 @media (min-width: 1080px) {
   .surah-list {
-    --grid-w: min(1040px, 94vw);
-    width: var(--grid-w);
-    margin-left: calc((100% - var(--grid-w)) / 2);
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
