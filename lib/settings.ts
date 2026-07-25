@@ -23,6 +23,23 @@ export const VOLUME_STEP = 0.05;
 // (ayah.arabicIndopak), so components pick the string via lib/arabic pickArabic.
 export type ArabicFont = "uthmani" | "amiri" | "indopak";
 
+// Which parts of the teaching layer zen mode hides. Each flag is only consulted
+// while zenMode is on; defaulting them all to true reproduces the original
+// "hide everything" behaviour, while a user can now keep individual pieces.
+// Transliteration is intentionally NOT here — it has its own showTransliteration
+// toggle and is never governed by zen mode.
+export interface ZenHide {
+  // The surah overview block (summary, banners, theme pills).
+  overview: boolean;
+  // The stat row in the surah banner.
+  stats: boolean;
+  // Section notes: the core message plus memory hooks and extra notes.
+  notes: boolean;
+  // The Sections / Vocab / Recitation tab bar (and its vocab & recitation
+  // panels, which are only reachable through it).
+  tabs: boolean;
+}
+
 export interface Settings {
   arabicScale: number;
   englishScale: number;
@@ -31,8 +48,11 @@ export interface Settings {
   // subcontinental IndoPak orthography in a self-hosted Nastaleeq face.
   arabicFont: ArabicFont;
   // Zen mode: strip the teaching layer (overview, notes, tabs, vocab, etc.)
-  // and show only the Arabic text with its English translation.
+  // and show only the Arabic text with its English translation. What exactly it
+  // hides is refined by zenHide below.
   zenMode: boolean;
+  // Finer-grained control over what zen mode hides (only applied when zenMode).
+  zenHide: ZenHide;
   // Show the romanized (ALA-LC) transliteration line beneath each verse.
   showTransliteration: boolean;
   // Play a subtle click sound when tapping buttons, links, and other controls.
@@ -42,7 +62,17 @@ export interface Settings {
   soundVolume: number;
 }
 
-export const DEFAULTS: Settings = {arabicScale: 1, englishScale: 1, arabicFont: "uthmani", zenMode: false, showTransliteration: true, clickSound: true, soundVolume: 1};
+export const DEFAULTS: Settings = {
+  arabicScale: 1,
+  englishScale: 1,
+  arabicFont: "uthmani",
+  zenMode: false,
+  // Defaults mirror the original zen behaviour: hide the whole teaching layer.
+  zenHide: {overview: true, stats: true, notes: true, tabs: true},
+  showTransliteration: true,
+  clickSound: true,
+  soundVolume: 1,
+};
 
 let cache: Settings | null = null;
 const listeners = new Set<() => void>();
@@ -56,7 +86,13 @@ function read(): Settings {
   if (typeof window !== "undefined") {
     try {
       const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (raw) value = {...DEFAULTS, ...JSON.parse(raw)};
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        // Shallow-merge top level, but deep-merge zenHide so a value stored
+        // before this setting existed (or with only some keys) still fills in
+        // the missing flags from DEFAULTS rather than dropping them.
+        value = {...DEFAULTS, ...parsed, zenHide: {...DEFAULTS.zenHide, ...(parsed.zenHide ?? {})}};
+      }
     } catch {
       value = DEFAULTS;
     }
@@ -109,6 +145,12 @@ export function setSetting<K extends keyof Settings>(key: K, value: Settings[K])
   // volume have different bounds, so pick the clamp by key.
   const next = typeof value === "number" ? (key === "soundVolume" ? clampVolume(value) : clamp(value)) : value;
   write({...read(), [key]: next});
+}
+
+// Toggle a single zen-hide flag, preserving the rest of the nested object.
+export function setZenHide<K extends keyof ZenHide>(key: K, value: boolean): void {
+  const cur = read();
+  write({...cur, zenHide: {...cur.zenHide, [key]: value}});
 }
 
 export function resetSettings(): void {

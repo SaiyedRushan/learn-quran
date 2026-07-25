@@ -2,8 +2,17 @@
 
 import {useEffect, useState} from "react";
 import {createPortal} from "react-dom";
-import {useSettings, setSetting, resetSettings, SCALE_MIN, SCALE_MAX, SCALE_STEP, VOLUME_MIN, VOLUME_MAX, VOLUME_STEP, DEFAULTS} from "@/lib/settings";
+import {useSettings, setSetting, setZenHide, resetSettings, SCALE_MIN, SCALE_MAX, SCALE_STEP, VOLUME_MIN, VOLUME_MAX, VOLUME_STEP, DEFAULTS, type ZenHide} from "@/lib/settings";
 import {playClick, setClickVolume} from "@/lib/clickSound";
+
+// The pieces zen mode can hide, in display order, with their labels. Each maps
+// to a flag in settings.zenHide (see lib/settings).
+const ZEN_PARTS: {key: keyof ZenHide; label: string}[] = [
+  {key: "overview", label: "Overview"},
+  {key: "stats", label: "Surah stats"},
+  {key: "notes", label: "Section notes & memory hooks"},
+  {key: "tabs", label: "Vocab & recitation tabs"},
+];
 
 export default function SettingsControl() {
   const [open, setOpen] = useState(false);
@@ -28,6 +37,7 @@ export default function SettingsControl() {
     settings.englishScale === DEFAULTS.englishScale &&
     settings.arabicFont === DEFAULTS.arabicFont &&
     settings.zenMode === DEFAULTS.zenMode &&
+    (Object.keys(DEFAULTS.zenHide) as (keyof ZenHide)[]).every((k) => settings.zenHide[k] === DEFAULTS.zenHide[k]) &&
     settings.showTransliteration === DEFAULTS.showTransliteration &&
     settings.clickSound === DEFAULTS.clickSound &&
     settings.soundVolume === DEFAULTS.soundVolume;
@@ -142,7 +152,7 @@ export default function SettingsControl() {
               <div className='setting-toggle'>
                 <div className='toggle-copy'>
                   <span className='setting-label'>Zen mode</span>
-                  <span className='toggle-desc'>Keep the sections and memorization, but hide the overview, memory hooks, vocabulary and recitation notes — just the Arabic and English.</span>
+                  <span className='toggle-desc'>Keep the sections and memorization, but strip the teaching layer to focus on the Arabic and English. Choose exactly what to hide below. (Transliteration has its own toggle above.)</span>
                 </div>
                 <button
                   type='button'
@@ -155,6 +165,22 @@ export default function SettingsControl() {
                   <span className='switch-knob' />
                 </button>
               </div>
+
+              {settings.zenMode && (
+                <div className='zen-suboptions' role='group' aria-label='What zen mode hides'>
+                  <div className='zen-suboptions-label'>Hide in zen mode</div>
+                  {ZEN_PARTS.map(({key, label}) => (
+                    <label className='zen-part' key={key}>
+                      <input
+                        type='checkbox'
+                        checked={settings.zenHide[key]}
+                        onChange={(e) => setZenHide(key, e.target.checked)}
+                      />
+                      <span>{label}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
 
               <div className='setting-toggle'>
                 <div className='toggle-copy'>
