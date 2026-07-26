@@ -18,7 +18,7 @@ function Html({ html, className }: { html: string; className?: string }) {
 
 export default function DuasView({ duas }: { duas: DuasContent }) {
   const conf = useAllDuaConfidence();
-  const { zenMode } = useSettings();
+  const { zenMode, showTransliteration } = useSettings();
   const levelOf = (name: string) => (conf[name] ?? 0) as ConfidenceLevel;
 
   // A dua link from Today's plan arrives as /duas/#dua-… — scroll to that card
@@ -95,7 +95,7 @@ export default function DuasView({ duas }: { duas: DuasContent }) {
                         <div className="dua-ar" dir="rtl">
                           {line.arabic}
                         </div>
-                        {!zenMode && (
+                        {showTransliteration && (
                           <div className="dua-translit">{line.transliteration}</div>
                         )}
                         <div className="dua-trans">{line.translation}</div>

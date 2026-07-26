@@ -60,7 +60,13 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
   const [memorizeScope, setMemorizeScope] = useState<MemorizeScope | null>(null);
   const confidence = useConfidence(guide.meta.slug);
   const learnedSections = new Set(useLearnedSections(guide.meta.slug));
-  const {zenMode, showTransliteration, arabicFont} = useSettings();
+  const {zenMode, zenHide, showTransliteration, arabicFont} = useSettings();
+  // Zen mode hides the teaching layer, but which pieces is now user-configurable
+  // (see settings → Zen mode). Each flag only bites while zen mode is on.
+  const hideOverview = zenMode && zenHide.overview;
+  const hideStats = zenMode && zenHide.stats;
+  const hideNotes = zenMode && zenHide.notes;
+  const hideTabs = zenMode && zenHide.tabs;
   // Section currently at the top of the viewport — highlighted in the side nav.
   const [activeSec, setActiveSec] = useState(0);
 
@@ -183,7 +189,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
             </span>
           ))}
         </div>
-        {!zenMode && showTransliteration && (
+        {showTransliteration && (
           <div className='vtranslit'>
             {ayahs.map((a, idx) => (
               <span key={a.number}>
@@ -318,7 +324,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
         </div>
         <div className='meta'>{metaLine}</div>
         <div className='ar-title'>{m.arabicName}</div>
-        {!zenMode && (
+        {!hideStats && (
           <div className='stats'>
             {m.stats.map((s) => (
               <div className='stat' key={s.label}>
@@ -331,7 +337,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
       </div>
 
       {/* Overview */}
-      {!zenMode && (
+      {!hideOverview && (
       <div className='overview'>
         <button
           className='ov-toggle'
@@ -372,7 +378,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
       )}
 
       {/* Tabs */}
-      {!zenMode && (
+      {!hideTabs && (
       <div className='tabs'>
         <button className={`tab ${tab === "sections" ? "active" : ""}`} onClick={() => setTab("sections")}>
           Sections
@@ -387,7 +393,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
       )}
 
       {/* Sections */}
-      <div className={`panel ${zenMode || tab === "sections" ? "active" : ""}`}>
+      <div className={`panel ${hideTabs || tab === "sections" ? "active" : ""}`}>
         {sectionsTotal > 1 && (
           <div className='sec-progress'>
             <span className='sp-label'>
@@ -423,7 +429,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
               </div>
               {isOpen && (
                 <div className='sec-body'>
-                  {!zenMode &&
+                  {!hideNotes &&
                     sec.notes
                       .filter((n) => n.kind === "core")
                       .map((n, ni) => {
@@ -436,7 +442,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
                         );
                       })}
                   <div className='verses'>{sec.groups.map((g, gi) => renderGroup(g, gi))}</div>
-                  {!zenMode &&
+                  {!hideNotes &&
                     sec.notes
                       .filter((n) => n.kind !== "core")
                       .map((n, ni) => {
@@ -459,7 +465,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
       </div>
 
       {/* Vocab */}
-      {!zenMode && (
+      {!hideTabs && (
       <div className={`panel ${tab === "vocab" ? "active" : ""}`}>
         <div className='vocab-list'>
           {guide.vocab.map((grp, gi) => (
@@ -482,7 +488,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
       )}
 
       {/* Recitation */}
-      {!zenMode && (
+      {!hideTabs && (
       <div className={`panel ${tab === "recitation" ? "active" : ""}`}>
         {guide.recitation.intro && (
           <div className='rec-card' style={{background: "#0d2e24", borderColor: "#1D9E75"}}>
