@@ -14,6 +14,11 @@ export const duaAnchor = (name: string): string =>
 /** Anchor id for a surah-guide section, keyed on its index in the guide. */
 export const sectionAnchor = (index: number): string => `sec-${index}`;
 
+/** URL fragment that tells the surah guide to open straight into "Test myself
+ * on the whole surah". Used by Today's-plan review links so a surah marked for
+ * review lands directly in its test, instead of the reading page. */
+export const TEST_SURAH_HASH = "test";
+
 /** The `#…` fragment (without the `#`) of the current URL, or "" if none. */
 export function currentHash(): string {
   if (typeof window === "undefined") return "";

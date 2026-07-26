@@ -17,7 +17,7 @@ import {
 import {useSettings} from "@/lib/settings";
 import {pickArabic} from "@/lib/arabic";
 import {MIN_ORDERABLE_SECTIONS} from "@/lib/content";
-import {sectionAnchor, currentHash, flashScrollTo} from "@/lib/anchors";
+import {sectionAnchor, currentHash, flashScrollTo, TEST_SURAH_HASH} from "@/lib/anchors";
 import MemorizeMode, {type MemorizeScope} from "@/components/MemorizeMode";
 
 // Confidence levels offered by the picker at the foot of the guide.
@@ -70,10 +70,15 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
   // Section currently at the top of the viewport — highlighted in the side nav.
   const [activeSec, setActiveSec] = useState(0);
 
-  // A "next section" link from Today's plan arrives as /surah/slug/#sec-N —
-  // open that section (so its verses are visible) and scroll to it on mount.
+  // Deep links from Today's plan arrive as a URL fragment we read on mount:
+  //   #test  → a surah up for review opens straight into the whole-surah test
+  //   #sec-N → a "next section" link opens section N and scrolls to it
   useEffect(() => {
     const hash = currentHash();
+    if (hash === TEST_SURAH_HASH) {
+      setMemorizeScope({kind: "surah"});
+      return;
+    }
     const match = /^sec-(\d+)$/.exec(hash);
     if (!match) return;
     const i = Number(match[1]);

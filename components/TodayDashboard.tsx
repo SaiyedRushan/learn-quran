@@ -15,7 +15,7 @@ import {
   useAllLearnedSectionKeys,
   CONFIDENCE,
 } from "@/lib/progress";
-import { duaAnchor, sectionAnchor } from "@/lib/anchors";
+import { duaAnchor, sectionAnchor, TEST_SURAH_HASH } from "@/lib/anchors";
 
 export interface DashSection {
   title: string;
@@ -212,7 +212,10 @@ export default function TodayDashboard({
           <div className="td-group-label">Review next</div>
           <div className="td-group-list">
           {reviewToday.map((s) => (
-            <Link href={`/surah/${s.slug}/`} className="td-item" key={s.slug}>
+            // A surah up for review goes straight into "Test myself on the whole
+            // surah" (the #test fragment the guide reads on mount), rather than
+            // the reading page.
+            <Link href={`/surah/${s.slug}/#${TEST_SURAH_HASH}`} className="td-item" key={s.slug}>
               <span className="td-dot review" />
               <span className="td-item-main">
                 <span className="td-item-name">{s.name}</span>
