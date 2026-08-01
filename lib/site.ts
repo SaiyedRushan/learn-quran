@@ -20,6 +20,51 @@ export const APPS = {
   ios: null as string | null,
 } as const;
 
+// The other apps built for the same reason. The full cards (<MoreApps />) run
+// on the home page only; every other page gets just the one-line `short` list
+// in the footer, so interior pages stay about the surah you came for. Each
+// entry is duplicated (deliberately) in the sibling repos' own cross-promo
+// blocks; keep the wording in sync when one of them changes. Omits Learn Quran
+// itself.
+export const FAMILY = [
+  {
+    name: "Hayya — Prayer Alarm",
+    short: "Hayya",
+    url: "https://saiyedrushan.github.io/hayya-site/",
+    icon: "📞",
+    platform: "iPhone · Android",
+    blurb:
+      "Prayer times that ring like an incoming call — full-screen, with a real ringtone, calling back until you answer. Answering logs the prayer and grows a streak you have to earn.",
+  },
+  {
+    name: "Lower Your Gaze",
+    short: "Lower Your Gaze",
+    url: "https://lower-your-gaze.vercel.app",
+    icon: "🌿",
+    platform: "Web",
+    blurb:
+      "A quiet companion for guarding your gaze — a daily reminder, a check-in streak, a library of practical tactics, and a full-screen refuge for the moment an urge hits.",
+  },
+  {
+    name: "HadithBot",
+    short: "HadithBot",
+    url: "https://saiyedrushan.github.io/HadithBot/",
+    icon: "💬",
+    platform: "Discord",
+    blurb:
+      "A Discord bot that posts a hadith and one of Allah's 99 names to your server every day, with slash commands to pull one whenever you want.",
+  },
+  {
+    name: "Marketplace Du'a",
+    short: "Marketplace Du'a",
+    url: "https://saiyedrushan.github.io/marketplace-dua/",
+    icon: "🛒",
+    platform: "Chrome extension",
+    blurb:
+      "A browser extension that gently reminds you of the du'a for entering the marketplace when you land on Amazon, eBay, or any shop you add yourself.",
+  },
+] as const;
+
 /** Absolute URL for a site-relative path (e.g. "/blog/" → "https://…/blog/"). */
 export function absoluteUrl(path: string): string {
   return new URL(path, SITE.url).toString();

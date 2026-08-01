@@ -4,6 +4,7 @@ import IntentionBlock from "@/components/IntentionBlock";
 import TodayDashboard, { type DashSurah, type DashDua } from "@/components/TodayDashboard";
 import PrayerCta from "@/components/PrayerCta";
 import AppDownloadCta from "@/components/AppDownloadCta";
+import MoreApps from "@/components/MoreApps";
 import duas from "@/content/duas";
 
 export default function Home() {
@@ -67,6 +68,8 @@ export default function Home() {
 
       <div className="list-heading">Learn the Prayer</div>
       <PrayerCta duaIds={dashDuas.map((d) => d.name)} />
+
+      <MoreApps />
     </>
   );
 }

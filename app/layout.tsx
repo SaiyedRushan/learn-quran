@@ -5,7 +5,7 @@ import PrimaryNav from "@/components/PrimaryNav";
 import Walkthrough from "@/components/Walkthrough";
 import ClickSounds from "@/components/ClickSounds";
 import JsonLd from "@/components/JsonLd";
-import {APPS, SITE} from "@/lib/site";
+import {APPS, FAMILY, SITE} from "@/lib/site";
 import {Analytics} from "@vercel/analytics/next";
 import "./globals.css";
 
@@ -98,6 +98,17 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           A free, open resource for reading, understanding, and memorizing the Quran.
           <div style={{marginTop: 10}}>
             <Link href='/about/'>About</Link> · <Link href='/contact/'>Contact</Link> · <Link href='/privacy/'>Privacy</Link>
+          </div>
+          <div style={{marginTop: 6}}>
+            More apps:{" "}
+            {FAMILY.map((app, i) => (
+              <span key={app.url}>
+                {i > 0 ? " · " : ""}
+                <a href={app.url} target='_blank' rel='noopener noreferrer' title={app.blurb}>
+                  {app.short}
+                </a>
+              </span>
+            ))}
           </div>
           <div style={{marginTop: 6}}>
             Get the app:{" "}
