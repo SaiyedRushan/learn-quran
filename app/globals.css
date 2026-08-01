@@ -107,15 +107,20 @@ a {
   flex: 1 0 auto;
 }
 
-/* Home page only: widen the column and the navbar to the surah-grid measure
-   so the whole page shares one width instead of the cards breaking out of a
-   narrower column. Scoped via the (sr-only) `.home-intro` marker so surah
-   reading pages keep their 720px column and fixed side rails. Kept to >=1080px
-   — the same point the grid goes 2-column — and capped at 94vw to stay clear
-   of the scrollbar. Other routes are untouched. */
+/* Wide screens: every route shares the home page's wider column and navbar,
+   so the site doesn't jump between a 1040px home and a 720px About/Blog.
+   Kept to >=1080px — the same point the surah grid goes 2-column — and capped
+   at 94vw to stay clear of the scrollbar.
+
+   The surah guide is the one exception: its section/practice rails are pinned
+   to calc(50% ± 384px), i.e. to the edges of the 720px column, so a wider
+   .wrap would run the content straight into them. Excluded via its
+   `.guide-shell` marker. Text-heavy surfaces on the widened pages keep their
+   own inner measure (see .blog-post, .contact-form, .dua-trans) so nothing
+   stretches into unreadably long lines. */
 @media (min-width: 1080px) {
-  .wrap:has(.home-intro),
-  body:has(.home-intro) .site-header-inner {
+  .wrap:not(:has(.guide-shell)),
+  body:not(:has(.guide-shell)) .site-header-inner {
     max-width: min(1040px, 94vw);
   }
 }
@@ -890,6 +895,7 @@ a {
   color: var(--color-text-secondary);
   line-height: 1.6;
   margin: -4px 2px 12px;
+  max-width: 80ch;
 }
 .sc-ar {
   font-family: var(--font-serif);
@@ -2221,6 +2227,7 @@ a.store-btn:active {
   color: var(--color-text-secondary);
   line-height: 1.75;
   margin-bottom: 1.25rem;
+  max-width: 78ch;
 }
 .dua-list {
   display: flex;
@@ -2308,17 +2315,21 @@ a.store-btn:active {
   font-size: calc(22px * var(--scale-ar));
   margin-bottom: 8px;
 }
+/* Transliteration and translation keep a reading measure — a dua card spans
+   the full column, and these are the only lines long enough to suffer for it. */
 .dua-translit {
   font-size: calc(13px * var(--scale-en));
   color: #1d9e75;
   font-style: italic;
   line-height: 1.6;
   margin-bottom: 4px;
+  max-width: 80ch;
 }
 .dua-trans {
   font-size: calc(13px * var(--scale-en));
   color: var(--color-text-secondary);
   line-height: 1.6;
+  max-width: 80ch;
 }
 .dua-note {
   font-size: 12px;
@@ -2377,8 +2388,11 @@ a.store-btn:active {
 }
 
 /* ── Blog post ── */
+/* Long-form: hold a comfortable measure and centre it, so the article stays
+   readable rather than filling the wider column edge to edge. */
 .blog-post {
-  max-width: 62ch;
+  max-width: 66ch;
+  margin-inline: auto;
 }
 .bp-meta {
   font-size: 12px;
@@ -2907,9 +2921,11 @@ a.store-btn:active {
 }
 
 /* ── About page ──────────────────────────────────────────────────────────── */
+/* Auto-fill so the cards go three-up on the wider column instead of two
+   stretched ones; still two-up at the old 720px measure. */
 .feature-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 10px;
 }
 .feature-card {
@@ -2976,6 +2992,8 @@ a.store-btn:active {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  /* Inputs and the message box read badly at full width on wide screens. */
+  max-width: 640px;
 }
 .field-row {
   display: grid;
