@@ -10,6 +10,16 @@ export const SITE = {
   locale: "en_US",
 } as const;
 
+// Mobile app store links. The Android build is on Play's open testing track —
+// the link below is the tester opt-in page, not a normal store listing. The
+// iOS build is still in App Store review, so there is no public URL yet: set
+// `ios` to the App Store link once it's approved and the UI flips itself from
+// "coming soon" to a live download button.
+export const APPS = {
+  android: "https://play.google.com/store/apps/details?id=app.learnquran.mobile",
+  ios: null as string | null,
+} as const;
+
 /** Absolute URL for a site-relative path (e.g. "/blog/" → "https://…/blog/"). */
 export function absoluteUrl(path: string): string {
   return new URL(path, SITE.url).toString();

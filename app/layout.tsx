@@ -5,12 +5,14 @@ import PrimaryNav from "@/components/PrimaryNav";
 import Walkthrough from "@/components/Walkthrough";
 import ClickSounds from "@/components/ClickSounds";
 import JsonLd from "@/components/JsonLd";
-import {SITE} from "@/lib/site";
+import {APPS, SITE} from "@/lib/site";
 import {Analytics} from "@vercel/analytics/next";
 import "./globals.css";
 
-// Applies saved font-size settings before paint, avoiding a flash of default size.
-const NO_FLASH = `(function(){try{var s=JSON.parse(localStorage.getItem('lq:settings:v1')||'{}');var d=document.documentElement;if(s.arabicScale)d.style.setProperty('--scale-ar',s.arabicScale);if(s.englishScale)d.style.setProperty('--scale-en',s.englishScale);d.setAttribute('data-arabic-font',s.arabicFont||'uthmani');}catch(e){}})();`;
+// Applies saved font-size settings before paint, avoiding a flash of default
+// size — and hides the app banner for anyone who already dismissed it, so it
+// never flashes in and shifts the page (see lib/appPromo).
+const NO_FLASH = `(function(){try{var s=JSON.parse(localStorage.getItem('lq:settings:v1')||'{}');var d=document.documentElement;if(s.arabicScale)d.style.setProperty('--scale-ar',s.arabicScale);if(s.englishScale)d.style.setProperty('--scale-en',s.englishScale);d.setAttribute('data-arabic-font',s.arabicFont||'uthmani');if(localStorage.getItem('lq:app-cta-dismissed:v1')==='1')d.setAttribute('data-app-cta','off');}catch(e){}})();`;
 
 const HOME_TITLE = `${SITE.name} — Juz 29 & 30 Memorization Guides`;
 
@@ -96,6 +98,20 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           A free, open resource for reading, understanding, and memorizing the Quran.
           <div style={{marginTop: 10}}>
             <Link href='/about/'>About</Link> · <Link href='/contact/'>Contact</Link> · <Link href='/privacy/'>Privacy</Link>
+          </div>
+          <div style={{marginTop: 6}}>
+            Get the app:{" "}
+            <a href={APPS.android} target='_blank' rel='noopener noreferrer'>
+              Android (open testing)
+            </a>{" "}
+            ·{" "}
+            {APPS.ios ? (
+              <a href={APPS.ios} target='_blank' rel='noopener noreferrer'>
+                iOS
+              </a>
+            ) : (
+              "iOS coming soon"
+            )}
           </div>
         </footer>
         <Analytics />

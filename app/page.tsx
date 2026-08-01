@@ -3,6 +3,7 @@ import SurahIndexView, { type SurahListItem } from "@/components/SurahIndexView"
 import IntentionBlock from "@/components/IntentionBlock";
 import TodayDashboard, { type DashSurah, type DashDua } from "@/components/TodayDashboard";
 import PrayerCta from "@/components/PrayerCta";
+import AppDownloadCta from "@/components/AppDownloadCta";
 import duas from "@/content/duas";
 
 export default function Home() {
@@ -55,6 +56,8 @@ export default function Home() {
           recitation breakdowns. Pick a surah below to begin, and mark it learned as you go.
         </p>
       </section>
+
+      <AppDownloadCta />
 
       <IntentionBlock />
 
