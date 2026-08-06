@@ -48,7 +48,7 @@ export const FAMILY = [
   {
     name: "HadithBot",
     short: "HadithBot",
-    url: "https://saiyedrushan.github.io/HadithBot/",
+    url: "https://hadithbot.app",
     icon: "💬",
     platform: "Discord",
     blurb:
