@@ -10,11 +10,15 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "check": "tsc --noEmit && next lint",
+    "test:recite": "node --test lib/recite/matcher.test.ts",
     "fetch:verses": "node scripts/fetch-verses.mjs",
     "fetch:verses:juz29": "node scripts/fetch-verses-juz29.mjs",
-    "fetch:transliteration": "node scripts/fetch-transliteration.mjs"
+    "fetch:transliteration": "node scripts/fetch-transliteration.mjs",
+    "fetch:recitation-audio": "node scripts/fetch-recitation-audio.mjs",
+    "fetch:tarteel-model": "node scripts/fetch-tarteel-model.mjs"
   },
   "dependencies": {
+    "@huggingface/transformers": "^3.8.1",
     "@vercel/analytics": "^2.0.1",
     "next": "15.3.9",
     "react": "19.1.8",

@@ -4777,3 +4777,101 @@ a.store-btn:active {
     display: none;
   }
 }
+
+/* ---- Recitation practice (/surah/[slug]/recite/) ---- */
+.recite {
+  margin-top: 18px;
+}
+.recite-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.recite-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid #14503c;
+  background: #0d2e24;
+  color: var(--accent-bright);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.recite-btn:hover {
+  border-color: var(--accent);
+}
+.recite-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.recite-btn-secondary {
+  border-color: #3a3a34;
+  background: transparent;
+  color: var(--color-text-secondary);
+}
+.recite-status {
+  font-size: 12.5px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.recite-note {
+  color: #e0a84a;
+}
+.recite-debug {
+  opacity: 0.7;
+  font-size: 11.5px;
+}
+.recite-progress {
+  height: 3px;
+  border-radius: 2px;
+  background: #22221e;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.recite-progress-fill {
+  height: 100%;
+  background: var(--accent-bright);
+  transition: width 0.2s;
+}
+.recite-ar {
+  font-size: calc(26px * var(--scale-ar));
+  direction: rtl;
+  text-align: right;
+  color: #4fd4a8;
+  font-family: var(--font-serif);
+  line-height: 2.3;
+  margin: 0;
+}
+.recite-word {
+  display: inline;
+  border-radius: 3px;
+  padding: 0 2px;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, opacity 0.12s;
+}
+.recite-word:hover {
+  background: rgba(224, 168, 74, 0.14);
+}
+.recite-word.done {
+  opacity: 0.45;
+}
+.recite-word.current {
+  background: rgba(224, 168, 74, 0.18);
+  box-shadow: 0 0 0 2px rgba(224, 168, 74, 0.18);
+}
+.recite-word.hint {
+  color: #f0c878;
+  text-decoration: underline wavy #e0a84a;
+  text-underline-offset: 6px;
+}
+.recite-ayah-num {
+  font-size: 0.6em;
+  color: var(--color-text-secondary);
+  user-select: none;
+}

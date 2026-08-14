@@ -29,3 +29,6 @@ next-env.d.ts
 
 # playwright test artifacts
 /.playwright-mcp/
+
+# Quranic ASR model + onnxruntime wasm (fetched via `npm run fetch:tarteel-model`)
+/public/models/
