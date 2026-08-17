@@ -2,8 +2,41 @@ import type { DuasContent } from "@/content/types";
 
 const duas: DuasContent = {
   intro:
-    "These are the core duas and adhkar of the daily prayer (salah) — from the call to prayer (adhan) and the opening takbir through to the salam. Learn each one by its sound (transliteration) and its meaning so the words live in the heart, not just on the tongue. Wordings and points of fiqh differ between the schools, so always verify the exact text and practice with a qualified teacher.",
+    "These are the core duas and adhkar of the daily prayer (salah) — from the wudu that precedes it and the call to prayer (adhan), through the opening takbir, to the salam. Learn each one by its sound (transliteration) and its meaning so the words live in the heart, not just on the tongue. Wordings and points of fiqh differ between the schools, so always verify the exact text and practice with a qualified teacher.",
   sections: [
+    {
+      title: "After wudu",
+      intro:
+        "The prayer begins before the prayer. When the wudu is complete, turn from washing the limbs to affirming the faith — the Prophet ﷺ tied a great reward to these words said at exactly this moment.",
+      duas: [
+        {
+          name: "Dua after wudu",
+          when: "On completing the wudu, facing the qiblah if convenient",
+          lines: [
+            {
+              arabic: "أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ،",
+              transliteration: "Ash-hadu an la ilaha illa-llahu wahdahu la sharika lah,",
+              translation:
+                "I bear witness that there is no god but Allah alone, with no partner,",
+            },
+            {
+              arabic: "وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ.",
+              transliteration: "wa ash-hadu anna Muhammadan ʿabduhu wa rasuluh.",
+              translation:
+                "and I bear witness that Muhammad is His servant and His Messenger.",
+            },
+            {
+              arabic: "اللَّهُمَّ اجْعَلْنِي مِنَ التَّوَّابِينَ وَاجْعَلْنِي مِنَ الْمُتَطَهِّرِينَ.",
+              transliteration: "Allahumma-jʿalni mina-t-tawwabina wa-jʿalni mina-l-mutatahhirin.",
+              translation:
+                "O Allah, make me of those who turn to You in repentance, and make me of those who purify themselves.",
+            },
+          ],
+          note: "The Prophet ﷺ said that whoever performs wudu well and then says the first two lines, \"the eight gates of Paradise are opened for him — he may enter through whichever of them he wishes.\" The third line is an addition reported by <a class='cite-link' href='https://sunnah.com/tirmidhi:55' target='_blank' rel='noopener noreferrer'>Tirmidhi</a>; scholars have graded that addition differently, so the two shahadah lines are the established core and the third is commonly added.",
+          source: "<a class='cite-link' href='https://sunnah.com/muslim:234' target='_blank' rel='noopener noreferrer'>Muslim</a> (ʿUmar ibn al-Khattab); the addition, <a class='cite-link' href='https://sunnah.com/tirmidhi:55' target='_blank' rel='noopener noreferrer'>Tirmidhi</a>",
+        },
+      ],
+    },
     {
       title: "Hearing the adhan",
       intro:
