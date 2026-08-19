@@ -4814,6 +4814,59 @@ a.store-btn:active {
   background: transparent;
   color: var(--color-text-secondary);
 }
+/* Live mic meter. --level (0..1) is written per animation frame from the mic
+   RMS in ReciteMode; everything here is driven off it. */
+.recite-mic {
+  --level: 0;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin-left: auto;
+  align-self: center;
+  flex: none;
+}
+.recite-mic-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--accent-bright);
+  opacity: calc(0.1 + var(--level) * 0.35);
+  transform: scale(calc(0.62 + var(--level) * 0.38));
+}
+.recite-mic-icon {
+  position: relative;
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: var(--accent-bright);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+.recite-mic-icon rect {
+  fill: var(--accent-bright);
+  stroke: none;
+}
+/* Hint audio is playing, so mic chunks are being dropped — say so rather than
+   sitting at a dead zero that reads as "it stopped hearing me". */
+.recite-mic[data-muted="1"] .recite-mic-ring {
+  opacity: 0.08;
+}
+.recite-mic[data-muted="1"] .recite-mic-icon {
+  stroke: var(--color-text-secondary);
+  opacity: 0.55;
+}
+.recite-mic[data-muted="1"] .recite-mic-icon rect {
+  fill: var(--color-text-secondary);
+}
+@media (prefers-reduced-motion: reduce) {
+  .recite-mic-ring {
+    transform: scale(0.8);
+  }
+}
+
 .recite-status {
   font-size: 12.5px;
   color: var(--color-text-secondary);
@@ -4868,6 +4921,13 @@ a.store-btn:active {
 .recite-word.hint {
   color: #f0c878;
   text-decoration: underline wavy #e0a84a;
+  text-underline-offset: 6px;
+}
+/* Recited straight past. Underlined rather than recoloured so it still reads
+   as done-and-moved-on, and stays legible over .done/.current. */
+.recite-word.missed {
+  color: #e0764a;
+  text-decoration: underline wavy #e0764a 1px;
   text-underline-offset: 6px;
 }
 .recite-ayah-num {

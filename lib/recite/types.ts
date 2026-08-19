@@ -9,7 +9,9 @@ export type ReciteInbound =
   /** Sent once: the expected words for this passage, so the worker can track
    *  position by alignment instead of searching the whole Quran. */
   | {type: "init"; tokens: MatchToken[]; device: ReciteDevice; model: ReciteModel}
-  | {type: "audio"; samples: Float32Array}
+  /** `voiced` is the engine's verdict on whether this chunk is speech rather
+   *  than room noise — see ReciteEngine.detectVoice. */
+  | {type: "audio"; samples: Float32Array; voiced: boolean}
   /** User tapped a word — move the matcher's cursor there. */
   | {type: "seek"; index: number}
   | {type: "reset"};
@@ -20,8 +22,19 @@ export type ReciteEvent =
   | {type: "ready"; device: ReciteDevice; warmMs: number}
   | {type: "error"; message: string}
   /** Cursor moved. `flat` indexes the UI's word list; -1 means the passage is
-   *  finished. `matched` of `total` expected words confirmed. */
-  | {type: "progress"; flat: number; matched: number; total: number}
+   *  finished. `matched` of `total` expected words confirmed. `skipped` holds
+   *  flat indices of whole verses passed without reciting; `repeated` means the
+   *  cursor rewound because the reciter went back over earlier text; `lost`
+   *  means what's being recited isn't in this passage at all. */
+  | {
+      type: "progress";
+      flat: number;
+      matched: number;
+      total: number;
+      skipped: number[];
+      repeated: boolean;
+      lost: boolean;
+    }
   /** Whatever the model heard in the last window — debug readout only. */
   | {type: "transcript"; text: string}
   | {type: "perf"; runMs: number; audioSec: number; device: string};

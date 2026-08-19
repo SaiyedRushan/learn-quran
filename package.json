@@ -10,7 +10,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "check": "tsc --noEmit && next lint",
-    "test:recite": "node --test lib/recite/matcher.test.ts",
+    "test:recite": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test lib/recite/*.test.ts",
+    "eval:recite": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/eval-recite.mjs",
     "fetch:verses": "node scripts/fetch-verses.mjs",
     "fetch:verses:juz29": "node scripts/fetch-verses-juz29.mjs",
     "fetch:transliteration": "node scripts/fetch-transliteration.mjs",
@@ -30,6 +31,8 @@
     "@types/react-dom": "^19.1.0",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.3.9",
+    "mpg123-decoder": "^1.0.3",
+    "onnxruntime-web": "^1.27.0",
     "typescript": "^5.8.3"
   }
 }

@@ -47,6 +47,15 @@ const MODELS = {
     repo: "omartariq612/tarteel-ai-whisper-tiny-ar-quran-onnx",
     files: [...SHARED_FILES, "onnx/encoder_model_q4.onnx", "onnx/decoder_model_merged_q4.onnx"],
   },
+  // FastConformer CTC (general Arabic, not Quran-tuned). Kept as a comparison
+  // point for `npm run eval:recite -- --model fastconformer`: its cost scales
+  // with the audio you give it, where Whisper always pays for a padded 30 s.
+  // MIT code, CC-BY-4.0 model, from nvidia/stt_ar_fastconformer_hybrid_large.
+  fastconformer: {
+    evalOnly: true,
+    base: "https://github.com/yazinsai/tilawa/releases/download/v0.2.0",
+    files: ["fastconformer_full_mixed.onnx", "vocab.json", "export_metadata.json"],
+  },
   tarteel: {
     // config.json records `_name_or_path: "tarteel-ai/whisper-base-ar-quran"`,
     // and generation_config.json keeps the `alignment_heads` needed if we ever
@@ -71,13 +80,13 @@ async function exists(path) {
   );
 }
 
-async function download(dir, repo, name) {
+async function download(dir, repo, name, base) {
   const dest = join(ROOT, "public", "models", dir, name);
   if (await exists(dest)) {
     console.log(`skip ${dir}/${name} (already present)`);
     return;
   }
-  const url = `https://huggingface.co/${repo}/resolve/main/${name}`;
+  const url = base ? `${base}/${name}` : `https://huggingface.co/${repo}/resolve/main/${name}`;
   console.log(`fetch ${url}`);
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
@@ -90,9 +99,15 @@ async function download(dir, repo, name) {
 async function main() {
   await mkdir(ORT_DIR, { recursive: true });
 
-  for (const [dir, {repo, files}] of Object.entries(MODELS)) {
+  // The eval-only models aren't shipped, so don't make everyone download them.
+  const wantEval = process.argv.includes("--eval-models");
+  for (const [dir, {repo, files, base, evalOnly}] of Object.entries(MODELS)) {
+    if (evalOnly && !wantEval) {
+      console.log(`skip ${dir} (eval only — pass --eval-models to fetch)`);
+      continue;
+    }
     await mkdir(join(ROOT, "public", "models", dir, "onnx"), { recursive: true });
-    for (const name of files) await download(dir, repo, name);
+    for (const name of files) await download(dir, repo, name, base);
   }
 
   const ortDist = join(ROOT, "node_modules", "@huggingface", "transformers", "dist");

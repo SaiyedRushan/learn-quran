@@ -36,8 +36,14 @@ const MIN_WINDOW_SEC = 8;
 const WINDOW_SAMPLES = SAMPLE_RATE * MAX_WINDOW_SEC;
 /** Don't bother running on less than this much audio. */
 const MIN_RUN_SAMPLES = SAMPLE_RATE * 0.8;
-/** Whisper hallucinates confidently on silence — cheaper not to ask it. */
-const SILENCE_RMS = 0.004;
+/**
+ * Whisper hallucinates confidently on silence, so we only run it when there is
+ * fresh speech to transcribe. This is a hangover after the last voiced chunk
+ * rather than a level check on the window: the window holds 8-28 s of audio, so
+ * its average stays above any threshold for that long after a single word —
+ * which had inference (and hallucinated transcripts) churning away in silence.
+ */
+const VOICE_HANGOVER_MS = 1200;
 const MAX_NEW_TOKENS = 220;
 
 /** Files that must exist before we hand off to transformers.js, so a missing
@@ -66,15 +72,11 @@ const ring = new Float32Array(WINDOW_SAMPLES);
 let ringLen = 0;
 let running = false;
 let failed = false;
+/** performance.now() of the last chunk the engine judged to be speech. */
+let lastVoicedAt = 0;
 
 function post(msg: ReciteEvent) {
   self.postMessage(msg);
-}
-
-function rms(samples: Float32Array): number {
-  let sum = 0;
-  for (let i = 0; i < samples.length; i++) sum += samples[i] * samples[i];
-  return Math.sqrt(sum / Math.max(1, samples.length));
 }
 
 /** Append to the rolling window, dropping the oldest samples past the window. */
@@ -210,8 +212,9 @@ async function pump() {
   if (running || failed || !model || !matcher || matcher.done) return;
   if (ringLen < MIN_RUN_SAMPLES) return;
 
+  if (performance.now() - lastVoicedAt > VOICE_HANGOVER_MS) return;
+
   const audio = ring.slice(0, ringLen);
-  if (rms(audio) < SILENCE_RMS) return;
 
   running = true;
   try {
@@ -232,11 +235,17 @@ async function pump() {
 
     const result = matcher.update(text);
     if (result) {
+      // A rewind means the window still holds the pass we just backed out of;
+      // leaving it in would drag the cursor straight forward again.
+      if (result.repeated) ringLen = 0;
       post({
         type: "progress",
         flat: matcher.current ? matcher.current.flat : -1,
         matched: result.matched,
         total: matcher.total,
+        skipped: result.skipped.map((i) => matcher!.tokenAt(i)?.flat ?? -1).filter((f) => f >= 0),
+        repeated: result.repeated,
+        lost: result.lost,
       });
     }
   } catch (e) {
@@ -260,6 +269,7 @@ self.onmessage = async (event: MessageEvent<ReciteInbound>) => {
       }
       break;
     case "audio":
+      if (msg.voiced) lastVoicedAt = performance.now();
       pushAudio(msg.samples);
       void pump();
       break;

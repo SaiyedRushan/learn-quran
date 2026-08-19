@@ -30,11 +30,11 @@ type AyahAudio = {url: string; segments: [number, number, number][]};
 
 type Phase = "idle" | "loading" | "listening" | "denied" | "unsupported" | "error" | "done";
 
-const HINT_WORDS = 3;
+const HINT_WORDS = 5;
 const SILENCE_MS = 5000;
-// Mic RMS above this counts as "the user is speaking" — the hint timer resets
-// on real voice activity, not just on recognizer progress (which can lag).
-const SPEECH_RMS = 0.008;
+/** Cap on a correction replay — one skipped verse is worth hearing back, three
+ *  is a lecture. */
+const CORRECTION_MAX_WORDS = 15;
 
 export default function ReciteMode({
   surahNumber,
@@ -69,6 +69,7 @@ export default function ReciteMode({
   const [errorMsg, setErrorMsg] = useState("");
   const [cursor, setCursor] = useState(firstFlat);
   const [hintFlats, setHintFlats] = useState<number[] | null>(null);
+  const [missed, setMissed] = useState<ReadonlySet<number>>(() => new Set<number>());
   const [heard, setHeard] = useState("");
   const [matched, setMatched] = useState("");
   const [perf, setPerf] = useState("");
@@ -84,6 +85,11 @@ export default function ReciteMode({
   const audioMapRef = useRef<Record<string, AyahAudio> | null>(null);
   const handleEventRef = useRef<(msg: ReciteEvent) => void>(() => {});
   const onSpeechRef = useRef<() => void>(() => {});
+  const micRef = useRef<HTMLSpanElement | null>(null);
+  const levelRef = useRef(0);
+  const missedRef = useRef<Set<number>>(new Set());
+  const correctionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const toneCtxRef = useRef<AudioContext | null>(null);
 
   phaseRef.current = phase;
   onSpeechRef.current = resetSilenceTimer;
@@ -102,12 +108,41 @@ export default function ReciteMode({
     };
   }, [surahNumber]);
 
+  // Mic meter. The level is written straight into a CSS variable on the icon
+  // instead of React state: chunks arrive ~7×/s and the word list can be 1500+
+  // spans (Al-Kahf), so re-rendering on each one would visibly stutter.
+  useEffect(() => {
+    if (phase !== "listening") return;
+    let raf = 0;
+    let shown = 0;
+    const tick = () => {
+      const target = speakingRef.current ? 0 : levelRef.current;
+      // Fast attack, slow release — jumps on a syllable, eases back down.
+      shown += (target - shown) * (target > shown ? 0.45 : 0.11);
+      const el = micRef.current;
+      if (el) {
+        el.style.setProperty("--level", shown.toFixed(3));
+        el.dataset.muted = speakingRef.current ? "1" : "";
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [phase]);
+
   useEffect(() => {
     return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
+      // Stop playback first, then clear timers: tearing a hint down re-arms the
+      // silence timer, so clearing in the other order leaves one live on an
+      // unmounted component — which then starts reciting on whatever page the
+      // user navigated to.
       hintStopRef.current?.();
+      if (correctionTimerRef.current) clearTimeout(correctionTimerRef.current);
+      if (timerRef.current) clearTimeout(timerRef.current);
       audioRef.current?.pause();
       audioRef.current = null;
+      void toneCtxRef.current?.close();
+      toneCtxRef.current = null;
       engineRef.current?.dispose();
       engineRef.current = null;
     };
@@ -143,85 +178,209 @@ export default function ReciteMode({
   }
 
   function stopHint() {
+    if (correctionTimerRef.current) {
+      clearTimeout(correctionTimerRef.current);
+      correctionTimerRef.current = null;
+    }
     hintStopRef.current?.();
+    // Tearing a hint down re-arms the silence timer (see `finish`), which is
+    // right when the hint ends on its own and wrong whenever we're stopping it
+    // deliberately. Callers that mean to keep listening re-arm it themselves.
+    clearTimer();
   }
 
-  /** Play [start of first hint word -> end of last] from the ayah recording,
-   *  with the recognizer muted so it doesn't track the reciter's voice. */
-  function playHintAudio(hint: number[]) {
-    const engine = engineRef.current;
-    const ayah = words[hint[0]].ayah;
-    const entry = audioMapRef.current?.[ayah];
-    const flats = ayahFlats.get(ayah);
-    if (!engine || !entry || !flats) return false;
+  /** Short descending two-tone. Synthesised rather than shipped as an asset —
+   *  it's two oscillators, and the page already can't work offline anyway. */
+  function playErrorChime() {
+    let ctx = toneCtxRef.current;
+    if (!ctx) {
+      try {
+        ctx = new AudioContext();
+        toneCtxRef.current = ctx;
+      } catch {
+        return;
+      }
+    }
+    void ctx.resume();
+    const now = ctx.currentTime;
+    [440, 330].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.value = freq;
+      const at = now + i * 0.13;
+      gain.gain.setValueAtTime(0, at);
+      gain.gain.linearRampToValueAtTime(0.13, at + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.12);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(at);
+      osc.stop(at + 0.14);
+    });
+  }
 
-    const firstWord = flats.indexOf(hint[0]) + 1;
-    const lastWord = flats.indexOf(hint[hint.length - 1]) + 1;
-    const first = entry.segments.find((s) => s[0] === firstWord);
-    const last = entry.segments.find((s) => s[0] === lastWord);
-    if (!first || !last) return false;
-    const startSec = first[1] / 1000;
-    const endSec = last[2] / 1000;
+  function markMissed(next: Set<number>) {
+    missedRef.current = next;
+    setMissed(next);
+  }
+
+  /** Chime, then play the passage back from `from`. Shared by the two things
+   *  we trust ourselves to detect: a verse passed over, and a recitation that
+   *  isn't in this passage at all. */
+  function correctFrom(from: number, atLeast: number) {
+    // Don't talk over a hint or a correction already in flight.
+    if (speakingRef.current || correctionTimerRef.current) return;
+    clearTimer();
+    playErrorChime();
+
+    // Replay contiguously from where they went wrong. Hearing isolated words
+    // out of context is no use; this carries them back into the passage.
+    const want = Math.min(CORRECTION_MAX_WORDS, Math.max(HINT_WORDS, atLeast));
+    const range: number[] = [];
+    for (let i = from; i < words.length && range.length < want; i++) {
+      if (words[i].matchable) range.push(i);
+    }
+    if (!range.length) return;
+    setHintFlats(range);
+
+    correctionTimerRef.current = setTimeout(() => {
+      correctionTimerRef.current = null;
+      if (!playWordRange(range)) resetSilenceTimer();
+    }, 420);
+  }
+
+  /** A whole verse went by without being recited. */
+  function reportSkips(flats: number[]) {
+    const fresh = flats.filter((f) => !missedRef.current.has(f) && words[f]?.matchable);
+    if (!fresh.length) return;
+    markMissed(new Set([...missedRef.current, ...fresh]));
+    correctFrom(fresh[0], fresh.length);
+  }
+
+  /** They're reciting something that isn't in this passage — another surah, or
+   *  a verse from somewhere else. Put them back at the cursor. */
+  function reportLost() {
+    correctFrom(cursorRef.current, HINT_WORDS);
+  }
+
+  /** The ayah recordings that cover `range`, in order. One clip per ayah: a
+   *  range spanning a verse boundary spans two mp3 files, so it has to be
+   *  played as a sequence rather than a single slice. */
+  function clipsFor(range: number[]): {url: string; startSec: number; endSec: number}[] {
+    const clips: {url: string; startSec: number; endSec: number}[] = [];
+    for (let i = 0; i < range.length; ) {
+      const ayah = words[range[i]].ayah;
+      const group: number[] = [];
+      while (i < range.length && words[range[i]].ayah === ayah) group.push(range[i++]);
+      const entry = audioMapRef.current?.[ayah];
+      const flats = ayahFlats.get(ayah);
+      if (!entry || !flats) continue;
+      const first = entry.segments.find((s) => s[0] === flats.indexOf(group[0]) + 1);
+      const last = entry.segments.find((s) => s[0] === flats.indexOf(group[group.length - 1]) + 1);
+      if (!first || !last) continue;
+      clips.push({url: entry.url, startSec: first[1] / 1000, endSec: last[2] / 1000});
+    }
+    return clips;
+  }
+
+  /** Play the given words in al-`Afasy's voice, with the recognizer muted so it
+   *  doesn't track him. Used for both silence hints and skip corrections. */
+  function playWordRange(range: number[]) {
+    const engine = engineRef.current;
+    const clips = clipsFor(range);
+    if (!engine || !clips.length) return false;
 
     const audio = hintAudio();
     speakingRef.current = true;
     engine.muted = true;
+    // Nothing may be pending while we hold the audio element: a second call
+    // would attach its own listeners to the same element and seek it back to
+    // the first clip. `finish` re-arms it when playback is really over.
+    clearTimer();
 
+    let index = 0;
+    let stopped = false;
+    let switching = false;
     let fallback: ReturnType<typeof setTimeout> | null = null;
-    const onTime = () => {
-      if (audio.currentTime >= endSec) stop();
-    };
-    const onPlaying = () => {
-      // Generous fallback in case timeupdate never crosses endSec.
-      fallback = setTimeout(stop, (endSec - startSec) * 1000 + 600);
-    };
-    const stop = () => {
+
+    const finish = () => {
+      if (stopped) return;
+      stopped = true;
       audio.pause();
       audio.removeEventListener("timeupdate", onTime);
       audio.removeEventListener("playing", onPlaying);
-      audio.removeEventListener("ended", stop);
-      audio.removeEventListener("error", stop);
+      audio.removeEventListener("ended", advance);
+      audio.removeEventListener("error", finish);
       if (fallback) clearTimeout(fallback);
       hintStopRef.current = null;
       speakingRef.current = false;
       engine.muted = false;
       resetSilenceTimer();
     };
-    hintStopRef.current = stop;
 
-    const begin = () => {
-      audio.currentTime = startSec;
-      audio.play().catch(stop);
+    function advance() {
+      if (stopped || switching) return;
+      switching = true;
+      if (++index >= clips.length) {
+        finish();
+        return;
+      }
+      begin();
+    }
+
+    const onTime = () => {
+      if (!switching && audio.currentTime >= clips[index].endSec) advance();
     };
+    const onPlaying = () => {
+      // Generous fallback in case timeupdate never crosses endSec.
+      if (fallback) clearTimeout(fallback);
+      const clip = clips[index];
+      fallback = setTimeout(advance, (clip.endSec - clip.startSec) * 1000 + 600);
+    };
+
+    function begin() {
+      const clip = clips[index];
+      const play = () => {
+        audio.currentTime = clip.startSec;
+        switching = false;
+        audio.play().catch(finish);
+      };
+      if (audio.src !== clip.url) {
+        audio.src = clip.url;
+        audio.addEventListener("loadedmetadata", play, {once: true});
+      } else if (audio.readyState >= 1) {
+        play();
+      } else {
+        audio.addEventListener("loadedmetadata", play, {once: true});
+      }
+    }
+
+    hintStopRef.current = finish;
     audio.addEventListener("timeupdate", onTime);
     audio.addEventListener("playing", onPlaying);
-    audio.addEventListener("ended", stop);
-    audio.addEventListener("error", stop);
-    if (audio.src !== entry.url) {
-      audio.src = entry.url;
-      audio.addEventListener("loadedmetadata", begin, {once: true});
-    } else if (audio.readyState >= 1) {
-      begin();
-    } else {
-      audio.addEventListener("loadedmetadata", begin, {once: true});
-    }
+    audio.addEventListener("ended", advance);
+    audio.addEventListener("error", finish);
+    begin();
     return true;
   }
 
   function fireHint() {
+    // A timer can outlive the state that armed it — a correction, for one,
+    // schedules playback 420 ms out, and a progress event landing in that gap
+    // re-arms silence. Firing then restarts the clip from the top part-way
+    // through, so the hint is heard twice.
+    if (phaseRef.current !== "listening" || speakingRef.current) return;
     if (cursorRef.current >= words.length) return;
-    // Hint words come from the cursor's ayah only — an audio slice can't span
-    // two mp3 files, so near the ayah end the hint is just shorter.
-    const ayah = words[cursorRef.current]?.ayah;
+    // Runs on past the end of the ayah — stopping there meant a hint on the
+    // last word of a verse played that one word and nothing else, which is
+    // exactly when you most need to hear what comes next.
     const hint: number[] = [];
     for (let i = cursorRef.current; i < words.length && hint.length < HINT_WORDS; i++) {
-      if (words[i].ayah !== ayah) break;
       if (words[i].matchable) hint.push(i);
     }
     if (!hint.length) return;
     setHintFlats(hint);
 
-    if (!playHintAudio(hint)) {
+    if (!playWordRange(hint)) {
       resetSilenceTimer(); // visual hint only; refresh in another 5s
     }
   }
@@ -236,12 +395,19 @@ export default function ReciteMode({
   /** Move the cursor to a flat word index (the next word expected), or finish
    *  the passage when the matcher reports -1. Forward-only — the matcher is
    *  already monotonic, but a stray event must never pull the cursor back. */
-  function advanceTo(flat: number) {
+  /** Follow the matcher's cursor. Moves both ways: forward as they recite,
+   *  backward when they go back over earlier text. */
+  function moveTo(flat: number) {
     if (flat < 0) {
       finish();
       return;
     }
-    if (flat > cursorRef.current) {
+    if (flat !== cursorRef.current) {
+      // Anything at or after the new cursor hasn't been recited yet, so a word
+      // previously flagged as skipped is fair game again.
+      if (flat < cursorRef.current && missedRef.current.size) {
+        markMissed(new Set([...missedRef.current].filter((f) => f < flat)));
+      }
       cursorRef.current = flat;
       setCursor(flat);
       setHintFlats(null);
@@ -251,7 +417,7 @@ export default function ReciteMode({
   }
 
   function finish() {
-    clearTimer();
+    phaseRef.current = "done";
     stopHint();
     cursorRef.current = words.length;
     setCursor(words.length);
@@ -293,7 +459,9 @@ export default function ReciteMode({
         break;
       case "progress":
         setMatched(`${msg.matched}/${msg.total}`);
-        advanceTo(msg.flat);
+        if (msg.skipped.length) reportSkips(msg.skipped);
+        else if (msg.lost) reportLost();
+        moveTo(msg.flat);
         break;
       case "transcript":
         setHeard(msg.text.slice(-60));
@@ -322,8 +490,9 @@ export default function ReciteMode({
       setLoadMsg("Starting…");
       engineRef.current = new ReciteEngine(
         (msg) => handleEventRef.current(msg),
-        (rms) => {
-          if (rms > SPEECH_RMS) onSpeechRef.current();
+        (level, voiced) => {
+          levelRef.current = level;
+          if (voiced) onSpeechRef.current();
         },
       );
       // WebGPU by default: without COOP/COEP we only get one WASM thread, and
@@ -341,7 +510,8 @@ export default function ReciteMode({
   }
 
   function stop() {
-    clearTimer();
+    // Ahead of the re-render, so anything still in flight sees that we've quit.
+    phaseRef.current = "idle";
     stopHint();
     speakingRef.current = false;
     if (engineRef.current) engineRef.current.muted = false;
@@ -352,6 +522,7 @@ export default function ReciteMode({
 
   function restart() {
     stopHint();
+    markMissed(new Set());
     cursorRef.current = firstFlat;
     setCursor(firstFlat);
     setHintFlats(null);
@@ -366,6 +537,7 @@ export default function ReciteMode({
     const target = words[flat].matchable ? flat : nextMatchableAfter(flat);
     if (target === null) return;
     stopHint();
+    markMissed(new Set([...missedRef.current].filter((f) => f < target)));
     cursorRef.current = target;
     setCursor(target);
     setHintFlats(null);
@@ -413,6 +585,18 @@ export default function ReciteMode({
         <button className='recite-btn recite-btn-secondary' onClick={restart}>
           ↺ Restart
         </button>
+        {listening && (
+          // Decorative: `.recite-status` already announces listening state in
+          // text, and a live region firing on every frame would be unusable.
+          <span className='recite-mic' ref={micRef} aria-hidden='true'>
+            <span className='recite-mic-ring' />
+            <svg className='recite-mic-icon' viewBox='0 0 24 24'>
+              <rect x='9' y='2.5' width='6' height='11' rx='3' />
+              <path d='M5.5 11a6.5 6.5 0 0 0 13 0' />
+              <path d='M12 17.5V21' />
+            </svg>
+          </span>
+        )}
       </div>
 
       <div className='recite-status'>
@@ -443,6 +627,7 @@ export default function ReciteMode({
             w.flat < cursor ? "done" : "",
             w.flat === cursor ? "current" : "",
             hintFlats?.includes(w.flat) ? "hint" : "",
+            missed.has(w.flat) ? "missed" : "",
           ]
             .filter(Boolean)
             .join(" ");

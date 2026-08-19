@@ -161,3 +161,124 @@ test("reports done at the end of the passage", () => {
   assert.equal(m.done, true);
   assert.equal(m.current, null);
 });
+
+// --- mistakes we trust ourselves to report ---
+
+test("says nothing about a single word, however it was mangled", () => {
+  const m = makeMatcher();
+  // A word left out, and a word replaced. Neither is reported: text-only ASR
+  // can't tell "you didn't say this" from "I didn't hear this", and guessing
+  // chimed at flawless recitation. Verses are the unit we can be sure about.
+  m.update("بسم قل الله أحد");
+  assert.deepEqual(m.update("بسم قل الله أحد")?.skipped, [], "word left out");
+  const n = makeMatcher();
+  n.update("بسم قل شيء الله أحد");
+  assert.deepEqual(n.update("بسم قل شيء الله أحد")?.skipped, [], "word replaced");
+});
+
+test("reports a verse passed over entirely", () => {
+  const m = makeMatcher();
+  m.update("قل هو الله أحد");
+  // Ayah 2 (ٱللَّهُ ٱلصَّمَدُ, tokens 4-5) never recited. A whole verse absent from
+  // the transcript is not something a mishearing produces.
+  const res = m.update("قل هو الله أحد لم يلد ولم يولد");
+  assert.deepEqual(res?.skipped, [4, 5]);
+});
+
+test("a verse only partly crossed is not a skipped verse", () => {
+  const m = makeMatcher();
+  // Mid-verse, with the cursor inside ayah 3 rather than past it.
+  m.update("قل هو الله أحد الله الصمد");
+  const res = m.update("الله الصمد لم يلد");
+  assert.deepEqual(res?.skipped, []);
+});
+
+test("says nothing while the recitation is clean", () => {
+  const m = makeMatcher();
+  m.update("قل هو الله أحد");
+  const res = m.update("قل هو الله أحد الله الصمد");
+  assert.deepEqual(res?.skipped, []);
+  assert.equal(res?.lost, false);
+});
+
+test("reports being lost when the recitation isn't in this passage", () => {
+  const m = makeMatcher();
+  m.update("قل هو الله أحد");
+  // Reciting something from another surah entirely. Inference only runs on
+  // speech, so a run of unmatchable windows means they've wandered off.
+  let lost = false;
+  for (let i = 0; i < 4; i++) lost = m.update("الحمد لله رب العالمين")?.lost ?? lost;
+  assert.equal(lost, true);
+  assert.equal(m.anchored, false, "drops its anchor so it can re-find them");
+});
+
+// --- skipped words -----------------------------------------------------------
+
+test("follows the voice into a verse that was skipped outright", () => {
+  const m = makeMatcher();
+  m.update("قل هو الله أحد");
+  const at = m.matched;
+  // They jump from ayah 1 to ayah 3, leaving ayah 2 unsaid. The cursor has to
+  // follow — with a symmetric gap penalty the aligner used to abandon the run
+  // rather than bridge the omission, and simply stalled here.
+  m.update("قل هو الله أحد لم يلد ولم يولد");
+  assert.ok(m.matched > at + 2, `cursor stalled at ${m.matched}`);
+});
+
+test("a clean recitation reports no skips", () => {
+  const m = makeMatcher();
+  m.update("قل هو الله أحد");
+  const res = m.update("قل هو الله أحد الله الصمد");
+  assert.deepEqual(res?.skipped, []);
+});
+
+// --- going back --------------------------------------------------------------
+
+test("rewinds when the reciter goes back over an earlier ayah", () => {
+  const m = makeMatcher();
+  m.update("قل هو الله أحد الله الصمد لم يلد ولم يولد");
+  assert.equal(m.matched, 10, "through the end of ayah 3");
+
+  // They stop and start again from the top. The tail is what gives it away —
+  // the full transcript still contains the first pass.
+  const tail = "قل هو الله أحد الله الصمد لم يلد ولم يولد قل هو الله أحد";
+  const first = m.update(tail);
+  assert.equal(first?.repeated ?? false, false, "one window is not enough to rewind");
+  const second = m.update(tail);
+  assert.equal(second?.repeated, true);
+  assert.equal(m.matched, 4, "back to just after أحد");
+});
+
+test("identical repeated ayahs are not mistaken for going back", () => {
+  // Al-Kafirun 3 and 5 are word-for-word identical.
+  const m = makeMatcher([
+    [1, "قُلْ يَٰٓأَيُّهَا ٱلْكَٰفِرُونَ"],
+    [2, "لَآ أَعْبُدُ مَا تَعْبُدُونَ"],
+    [3, "وَلَآ أَنتُمْ عَٰبِدُونَ مَآ أَعْبُدُ"],
+    [4, "وَلَآ أَنَا۠ عَابِدٌ مَّا عَبَدتُّمْ"],
+    [5, "وَلَآ أَنتُمْ عَٰبِدُونَ مَآ أَعْبُدُ"],
+  ]);
+  m.update("قل يا أيها الكافرون لا أعبد ما تعبدون ولا أنتم عابدون ما أعبد");
+  m.update("ولا أنا عابد ما عبدتم ولا أنتم عابدون ما أعبد");
+  const at = m.matched;
+  const res = m.update("ولا أنا عابد ما عبدتم ولا أنتم عابدون ما أعبد");
+  assert.equal(res?.repeated ?? false, false);
+  assert.ok(m.matched >= at, "ayah 5 must not read as a rewind to ayah 3");
+});
+
+test("small backward jitter never rewinds the cursor", () => {
+  const m = makeMatcher();
+  m.update("قل هو الله أحد الله الصمد");
+  const at = m.matched;
+  m.update("قل هو الله أحد الله");
+  m.update("قل هو الله أحد الله");
+  assert.equal(m.matched, at);
+});
+
+test("re-searches the whole passage after repeated failures", () => {
+  const m = makeMatcher();
+  m.update("قل هو الله");
+  assert.ok(m.anchored);
+  for (let i = 0; i < 4; i++) m.update("كلام لا علاقة له بالنص");
+  assert.equal(m.anchored, false, "gives up its anchor so it can re-find them");
+});

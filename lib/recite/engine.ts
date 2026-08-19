@@ -1,6 +1,7 @@
 // Client-side wrapper around the recitation ASR worker + mic capture, so the UI
 // component only deals with cursor events.
 import type {MatchToken} from "./matcher.ts";
+import {VoiceDetector} from "./vad.ts";
 import type {ReciteDevice, ReciteEvent, ReciteInbound, ReciteModel} from "./types.ts";
 
 export type {ReciteEvent, ReciteDevice, ReciteModel} from "./types.ts";
@@ -15,13 +16,14 @@ export class ReciteEngine {
   private audioCtx: AudioContext | null = null;
   private node: AudioWorkletNode | null = null;
   private onEvent: (msg: ReciteEvent) => void;
-  private onLevel?: (rms: number) => void;
+  private onLevel?: (rms: number, voiced: boolean) => void;
+  private vad = new VoiceDetector();
 
   constructor(
     onEvent: (msg: ReciteEvent) => void,
-    /** Called with the RMS level of each mic chunk (skipped while muted), so
-     *  the UI can tell "user is speaking" apart from "recognizer advanced". */
-    onLevel?: (rms: number) => void,
+    /** Per mic chunk (skipped while muted): a 0..1 meter level scaled against
+     *  the measured noise floor, and whether the chunk counts as speech. */
+    onLevel?: (level: number, voiced: boolean) => void,
   ) {
     this.onEvent = onEvent;
     this.onLevel = onLevel;
@@ -73,12 +75,18 @@ export class ReciteEngine {
     node.port.onmessage = (e: MessageEvent) => {
       if (this.muted || !this.worker) return;
       const samples = new Float32Array(e.data as ArrayBuffer);
+      let sum = 0;
+      for (let i = 0; i < samples.length; i++) sum += samples[i] * samples[i];
+      const level = Math.sqrt(sum / samples.length);
+      const voiced = this.vad.push(level);
       if (this.onLevel) {
-        let sum = 0;
-        for (let i = 0; i < samples.length; i++) sum += samples[i] * samples[i];
-        this.onLevel(Math.sqrt(sum / samples.length));
+        // Scaled against the room, not an absolute number, so the meter rests
+        // at zero on a hot mic instead of sitting permanently lit.
+        const floor = this.vad.floor;
+        const span = Math.max(0.02, floor * 8);
+        this.onLevel(Math.min(1, Math.sqrt(Math.max(0, level - floor) / span)), voiced);
       }
-      this.send({type: "audio", samples}, [samples.buffer]);
+      this.send({type: "audio", samples, voiced}, [samples.buffer]);
     };
     source.connect(node);
     if (audioCtx.state === "suspended") await audioCtx.resume();
@@ -88,6 +96,7 @@ export class ReciteEngine {
   }
 
   stopMic(): void {
+    this.vad.reset(); // a new session re-learns the room from scratch
     this.node?.port.close();
     this.node?.disconnect();
     this.node = null;

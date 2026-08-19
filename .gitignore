@@ -32,3 +32,6 @@ next-env.d.ts
 
 # Quranic ASR model + onnxruntime wasm (fetched via `npm run fetch:tarteel-model`)
 /public/models/
+
+# recitation eval audio cache (npm run eval:recite)
+/.cache/
