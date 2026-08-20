@@ -22,7 +22,7 @@ import {normalizeArabicWords} from "../lib/recite/arabic.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
-const TEXT_DIR = join(ROOT, "content", "quran-text");
+const TEXT_DIR = join(ROOT, "public", "quran");
 const OUT = join(ROOT, "public", "recite", "quran-locate.json");
 
 async function main() {

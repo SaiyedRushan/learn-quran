@@ -15,6 +15,10 @@ export type ReciteInbound =
   | {type: "audio"; samples: Float32Array; voiced: boolean}
   /** User tapped a word — move the matcher's cursor there. */
   | {type: "seek"; index: number}
+  /** The passage itself grew (continuous mode loading the next surah as the
+   *  reciter approaches the end of this one). Rebuilds the matcher over the
+   *  longer token list and puts the cursor back where it was. */
+  | {type: "retarget"; tokens: MatchToken[]; index: number}
   | {type: "reset"};
 
 export type ReciteEvent =

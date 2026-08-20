@@ -19,10 +19,10 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
-// content/quran-text holds all 114 surahs (content/quran holds only the 51 with
+// public/quran holds all 114 surahs (content/quran holds only the 51 with
 // a guide), so hints work anywhere recitation practice does. The Arabic in the
 // two is byte-identical where they overlap — both are Quran.com text_uthmani.
-const QURAN_DIR = join(ROOT, "content", "quran-text");
+const QURAN_DIR = join(ROOT, "public", "quran");
 const OUT_DIR = join(ROOT, "public", "recite", "audio", "alafasy");
 
 const RECITATION_ID = 7; // Mishari Rashid al-`Afasy

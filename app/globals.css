@@ -5045,3 +5045,32 @@ a.store-btn:active {
   color: var(--color-text-secondary);
   opacity: 0.5;
 }
+
+/* ---- Continuous recitation (/recite/) ---- */
+.continuous {
+  margin-top: 18px;
+}
+.continuous-where {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 14px 0 4px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+.continuous-where-surah [dir="rtl"] {
+  font-family: var(--font-serif);
+  font-size: 14px;
+}
+/* Where one surah ends and the next begins in a continuous passage — ayah
+   numbers restart at 1, so without this the join is invisible. */
+.recite-surah-break {
+  display: block;
+  margin: 22px 0 14px;
+  padding-top: 14px;
+  border-top: 0.5px solid #2a2a26;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  color: var(--accent);
+}

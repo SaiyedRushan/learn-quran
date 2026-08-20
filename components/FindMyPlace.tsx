@@ -64,7 +64,10 @@ export default function FindMyPlace() {
 
   function goTo(hit: LocateHit) {
     engineRef.current?.stopMic();
-    router.push(`/recite/${hit.surah}/?ayah=${hit.ayah}`);
+    // Into continuous mode, carrying the position we just recognized so they
+    // aren't asked to recite the same ayah again. It runs on from there across
+    // surah boundaries; /recite/[surah]/ stays for practising one surah.
+    router.push(`/recite/?surah=${hit.surah}&ayah=${hit.ayah}`);
   }
 
   function handle(msg: LocateEvent) {

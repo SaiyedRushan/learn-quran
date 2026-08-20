@@ -1,13 +1,14 @@
 // Fetches the Arabic text of all 114 surahs from Quran.com's KFGQPC Uthmani
-// edition into content/quran-text/{num}.json.
+// edition into public/quran/{num}.json.
 //
 // This is a SEPARATE artifact from content/quran/{num}.json, deliberately:
 //   - content/quran/    — the 51 surahs with a memorization guide. Arabic +
 //                         IndoPak + transliteration + Sahih International
 //                         translation. Drives the guide pages.
-//   - content/quran-text/ — all 114, Arabic only. Drives whole-Quran recitation
-//                         recognition and the practice route for surahs that
-//                         have no guide.
+//   - public/quran/     — all 114, Arabic only. Drives whole-Quran recognition
+//                         and recitation practice for surahs with no guide.
+//                         It lives under public/ rather than content/ because
+//                         continuous mode fetches surahs lazily in the browser.
 //
 // Arabic only, and that is the point: the Quranic text is in the public domain,
 // whereas the Sahih International translation is not, so recognition (which
@@ -29,7 +30,7 @@ import {fileURLToPath} from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
-const OUT_DIR = join(ROOT, "content", "quran-text");
+const OUT_DIR = join(ROOT, "public", "quran");
 const API = "https://api.quran.com/api/v4";
 
 const FORCE = process.argv.includes("--force");

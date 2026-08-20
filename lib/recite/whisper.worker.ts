@@ -277,6 +277,13 @@ self.onmessage = async (event: MessageEvent<ReciteInbound>) => {
       matcher?.seek(msg.index);
       ringLen = 0; // stale audio would only argue for the old position
       break;
+    case "retarget": {
+      // Same recitation, longer passage. Rebuild over the new tokens and
+      // restore the cursor; the audio window is still valid, so it's kept.
+      matcher = new RecitationMatcher(msg.tokens);
+      matcher.seek(msg.index);
+      break;
+    }
     case "reset":
       matcher?.reset();
       ringLen = 0;

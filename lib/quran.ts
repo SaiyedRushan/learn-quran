@@ -7,14 +7,14 @@ import path from "node:path";
 import type { VerseData, Ayah } from "@/content/types";
 
 const QURAN_DIR = path.join(process.cwd(), "content", "quran");
-const TEXT_DIR = path.join(process.cwd(), "content", "quran-text");
+const TEXT_DIR = path.join(process.cwd(), "public", "quran");
 
 export function getVerseData(num: number): VerseData {
   const raw = fs.readFileSync(path.join(QURAN_DIR, `${num}.json`), "utf8");
   return JSON.parse(raw) as VerseData;
 }
 
-/** Arabic-only text for any of the 114 surahs (content/quran-text). Unlike
+/** Arabic-only text for any of the 114 surahs (public/quran). Unlike
  *  getVerseData this carries no translation or transliteration — it backs
  *  recitation practice for surahs that have no memorization guide. */
 export interface SurahText {

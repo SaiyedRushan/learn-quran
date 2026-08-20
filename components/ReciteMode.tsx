@@ -19,10 +19,14 @@ import {buildTokens} from "@/lib/recite/matcher";
 // IndoPak script setting is ignored here because it tokenizes differently.
 type WordTok = {
   flat: number;
+  surah: number;
   ayah: number;
   display: string;
   matchable: boolean; // false for standalone waqf/pause marks
 };
+
+/** Ayah numbers restart per surah, so anything keyed by verse needs both. */
+const ayahKey = (surah: number, ayah: number) => `${surah}:${ayah}`;
 
 /** Per-ayah reciter audio: mp3 url + [wordNumber(1-based), startMs, endMs]. */
 type AyahAudio = {url: string; segments: [number, number, number][]};
@@ -88,42 +92,63 @@ const AyahRow = memo(function AyahRow({
 const CORRECTION_MAX_WORDS = 15;
 
 /** Only the Arabic is needed here, so this accepts both the guide's VerseData
- *  and the Arabic-only SurahText that backs the other 63 surahs. */
-type RecitePassage = {ayahs: {number: number; arabic: string}[]};
+ *  and the Arabic-only SurahText that backs the other 63 surahs. `surah` is set
+ *  only in continuous mode, where the passage runs across surah boundaries;
+ *  otherwise every ayah belongs to `surahNumber`. */
+export type RecitePassage = {
+  ayahs: {number: number; arabic: string; surah?: number}[];
+};
 
 export default function ReciteMode({
   surahNumber,
   verses,
+  startAt,
+  autoStart = false,
+  onAdvance,
 }: {
   surahNumber: number;
   verses: RecitePassage;
+  /** Where to put the cursor initially. Continuous mode passes the ayah that
+   *  recognition landed on; otherwise ?ayah=N in the URL is used. */
+  startAt?: {surah: number; ayah: number};
+  /** Begin listening as soon as the model is ready, without a further tap —
+   *  continuous mode arrives here mid-recitation. */
+  autoStart?: boolean;
+  /** Called as the cursor moves, so continuous mode knows when to pull in the
+   *  next surah. */
+  onAdvance?: (surah: number, ayah: number) => void;
 }) {
   const {words, ayahFlats, firstFlat, tokens, tokenByFlat, ayahGroups} = useMemo(() => {
     const words: WordTok[] = [];
-    // ayah number -> flat indices of its matchable words, in recitation order
-    const ayahFlats = new Map<number, number[]>();
+    // "surah:ayah" -> flat indices of its matchable words, in recitation order.
+    // Keyed by both because a continuous passage spans surahs, and ayah numbers
+    // restart at 1 in each.
+    const ayahFlats = new Map<string, number[]>();
+    const ayahGroups: {key: string; surah: number; ayah: number; words: WordTok[]}[] = [];
     for (const a of verses.ayahs) {
+      const surah = a.surah ?? surahNumber;
+      const key = ayahKey(surah, a.number);
       const flats: number[] = [];
+      const group: WordTok[] = [];
       for (const t of a.arabic.split(/\s+/).filter(Boolean)) {
         const matchable = isArabicWord(t);
         if (matchable) flats.push(words.length);
-        words.push({flat: words.length, ayah: a.number, display: t, matchable});
+        const word = {flat: words.length, surah, ayah: a.number, display: t, matchable};
+        words.push(word);
+        group.push(word);
       }
-      ayahFlats.set(a.number, flats);
+      ayahFlats.set(key, flats);
+      // Rendering is grouped by ayah so each verse can memoize independently —
+      // Al-Baqarah is 6,607 words, and re-rendering all of them every time the
+      // cursor advances one word is what makes a long surah stutter.
+      ayahGroups.push({key, surah, ayah: a.number, words: group});
     }
     const firstFlat = words.findIndex((w) => w.matchable);
     // The matcher works on the same words, minus the unmatchable ones.
     const tokens = buildTokens(words);
     const tokenByFlat = new Map(tokens.map((t, i) => [t.flat, i]));
-    // Rendering is grouped by ayah so each verse can memoize independently —
-    // Al-Baqarah is 6,607 words, and re-rendering all of them every time the
-    // cursor advances one word is what makes a long surah stutter.
-    const ayahGroups = verses.ayahs.map((a) => ({
-      ayah: a.number,
-      words: words.filter((w) => w.ayah === a.number),
-    }));
     return {words, ayahFlats, firstFlat, tokens, tokenByFlat, ayahGroups};
-  }, [verses]);
+  }, [verses, surahNumber]);
 
   const [phase, setPhase] = useState<Phase>("idle");
   const [loadPct, setLoadPct] = useState(0);
@@ -144,7 +169,8 @@ export default function ReciteMode({
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hintStopRef = useRef<(() => void) | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const audioMapRef = useRef<Record<string, AyahAudio> | null>(null);
+  /** surah -> its ayah timings (null once known to be unavailable). */
+  const audioMapRef = useRef<Map<number, Record<string, AyahAudio> | null>>(new Map());
   const handleEventRef = useRef<(msg: ReciteEvent) => void>(() => {});
   const onSpeechRef = useRef<() => void>(() => {});
   const micRef = useRef<HTMLSpanElement | null>(null);
@@ -160,32 +186,54 @@ export default function ReciteMode({
   const seekRef = useRef<(flat: number) => void>(() => {});
   const onSeek = useCallback((flat: number) => seekRef.current(flat), []);
 
+  const advanceRef = useRef(onAdvance);
+  advanceRef.current = onAdvance;
+
   // Deep link from whole-Quran recognition on the home page: ?ayah=N starts the
   // cursor there instead of at the top. Read after mount rather than during
   // render — the page is prerendered at build time, so touching location during
   // render would mismatch hydration.
+  const startAppliedRef = useRef(false);
   useEffect(() => {
-    const raw = new URLSearchParams(window.location.search).get("ayah");
-    const ayah = raw ? Number(raw) : NaN;
-    if (!Number.isInteger(ayah)) return;
-    const flats = ayahFlats.get(ayah);
+    // Once only: in continuous mode `ayahFlats` is rebuilt every time a surah is
+    // appended, and re-running this would yank the cursor back mid-recitation.
+    if (startAppliedRef.current) return;
+    let target = startAt;
+    if (!target) {
+      const raw = new URLSearchParams(window.location.search).get("ayah");
+      const ayah = raw ? Number(raw) : NaN;
+      if (Number.isInteger(ayah)) target = {surah: surahNumber, ayah};
+    }
+    if (!target) return;
+    const flats = ayahFlats.get(ayahKey(target.surah, target.ayah));
     if (!flats?.length) return;
+    startAppliedRef.current = true;
     cursorRef.current = flats[0];
     setCursor(flats[0]);
-  }, [ayahFlats]);
+  }, [ayahFlats, surahNumber, startAt]);
 
-  // Reciter audio timings for this surah; hints stay visual-only if missing.
+  // Continuous mode appends the next surah as the reciter nears the end of this
+  // one. Words are only ever added after the ones already there, so every flat
+  // index — and the cursor — stays valid; the matcher just needs the longer
+  // list. Skipped until the worker has been initialized, since `init` carries
+  // the tokens itself.
+  const trackingRef = useRef(false);
   useEffect(() => {
-    let cancelled = false;
-    fetch(`/recite/audio/alafasy/${surahNumber}.json`)
-      .then((res) => (res.ok ? res.json() : null))
-      .then((json) => {
-        if (!cancelled) audioMapRef.current = json;
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
+    if (!trackingRef.current) return;
+    engineRef.current?.retarget(tokens, tokenByFlat.get(cursorRef.current) ?? 0);
+  }, [tokens, tokenByFlat]);
+
+  // Continuous mode arrives here already reciting, so don't make them tap again.
+  const startRef = useRef<() => void>(() => {});
+  useEffect(() => {
+    if (autoStart) startRef.current();
+  }, [autoStart]);
+
+  // Reciter audio timings, fetched per surah and cached: in continuous mode the
+  // passage crosses into surahs that weren't loaded when it started. Hints stay
+  // visual-only for any surah whose timings are missing.
+  useEffect(() => {
+    void ensureAudio(surahNumber);
   }, [surahNumber]);
 
   // Mic meter. The level is written straight into a CSS variable on the icon
@@ -249,9 +297,23 @@ export default function ReciteMode({
     return audioRef.current;
   }
 
-  /** Keep the current ayah's mp3 warm so the first hint doesn't wait on it. */
-  function preloadAyah(ayah: number) {
-    const entry = audioMapRef.current?.[ayah];
+  /** Load (once) the reciter timings for a surah. */
+  async function ensureAudio(surah: number) {
+    if (audioMapRef.current.has(surah)) return;
+    audioMapRef.current.set(surah, null); // claim it so we only fetch once
+    try {
+      const res = await fetch(`/recite/audio/alafasy/${surah}.json`);
+      audioMapRef.current.set(surah, res.ok ? await res.json() : null);
+    } catch {
+      // Leave it null — hints degrade to visual-only for this surah.
+    }
+  }
+
+  /** Keep the current ayah's mp3 warm so the first hint doesn't wait on it, and
+   *  pull in the next surah's timings before the reciter gets there. */
+  function preloadAyah(surah: number, ayah: number) {
+    void ensureAudio(surah);
+    const entry = audioMapRef.current.get(surah)?.[ayah];
     if (!entry || speakingRef.current) return;
     const audio = hintAudio();
     if (audio.src !== entry.url) audio.src = entry.url;
@@ -348,11 +410,13 @@ export default function ReciteMode({
   function clipsFor(range: number[]): {url: string; startSec: number; endSec: number}[] {
     const clips: {url: string; startSec: number; endSec: number}[] = [];
     for (let i = 0; i < range.length; ) {
-      const ayah = words[range[i]].ayah;
+      const {surah, ayah} = words[range[i]];
       const group: number[] = [];
-      while (i < range.length && words[range[i]].ayah === ayah) group.push(range[i++]);
-      const entry = audioMapRef.current?.[ayah];
-      const flats = ayahFlats.get(ayah);
+      while (i < range.length && words[range[i]].ayah === ayah && words[range[i]].surah === surah) {
+        group.push(range[i++]);
+      }
+      const entry = audioMapRef.current.get(surah)?.[ayah];
+      const flats = ayahFlats.get(ayahKey(surah, ayah));
       if (!entry || !flats) continue;
       const first = entry.segments.find((s) => s[0] === flats.indexOf(group[0]) + 1);
       const last = entry.segments.find((s) => s[0] === flats.indexOf(group[group.length - 1]) + 1);
@@ -491,7 +555,8 @@ export default function ReciteMode({
       cursorRef.current = flat;
       setCursor(flat);
       setHintFlats(null);
-      preloadAyah(words[flat].ayah);
+      preloadAyah(words[flat].surah, words[flat].ayah);
+      advanceRef.current?.(words[flat].surah, words[flat].ayah);
     }
     resetSilenceTimer();
   }
@@ -513,7 +578,8 @@ export default function ReciteMode({
       await engine.startMic();
       setPhase("listening");
       phaseRef.current = "listening";
-      preloadAyah(words[cursorRef.current]?.ayah ?? verses.ayahs[0].number);
+      const at = words[cursorRef.current];
+      if (at) preloadAyah(at.surah, at.ayah);
       resetSilenceTimer();
     } catch {
       setPhase("denied");
@@ -584,11 +650,13 @@ export default function ReciteMode({
       const device: ReciteDevice = params.get("device") === "wasm" ? "wasm" : "webgpu";
       const model: ReciteModel = params.get("model") === "base" ? "tarteel" : "tarteel-tiny";
       engineRef.current.init(tokens, device, model);
+      trackingRef.current = true;
     } else if (readyRef.current) {
       setPhase("loading");
       void beginListening();
     }
   }
+  startRef.current = () => void start();
 
   function stop() {
     // Ahead of the re-render, so anything still in flight sees that we've quit.
@@ -625,7 +693,7 @@ export default function ReciteMode({
     // Point the matcher at the same word so it resumes from here rather than
     // re-anchoring wherever it last heard us.
     engineRef.current?.seek(tokenByFlat.get(target) ?? 0);
-    preloadAyah(words[target].ayah);
+    preloadAyah(words[target].surah, words[target].ayah);
     resetSilenceTimer();
   }
   seekRef.current = seekTo;
@@ -710,21 +778,26 @@ export default function ReciteMode({
       )}
 
       <p className='recite-ar' dir='rtl' lang='ar'>
-        {ayahGroups.map((group) => {
+        {ayahGroups.map((group, i) => {
           // Collapse the cursor to a per-ayah value so verses the cursor is
           // nowhere near get a stable prop and skip re-rendering entirely.
           const last = group.words[group.words.length - 1].flat;
           const state = cursor > last ? DONE : cursor < group.words[0].flat ? AHEAD : cursor;
+          // Continuous mode runs several surahs together, and ayah numbers
+          // restart at 1 in each — so mark where one ends and the next begins.
+          const newSurah = i > 0 && ayahGroups[i - 1].surah !== group.surah;
           return (
-            <AyahRow
-              key={group.ayah}
-              ayah={group.ayah}
-              words={group.words}
-              cursorState={state}
-              hintFlats={hintFlats}
-              missed={missed}
-              onSeek={onSeek}
-            />
+            <span key={group.key}>
+              {newSurah && <span className='recite-surah-break'>﴿ {group.surah} ﴾</span>}
+              <AyahRow
+                ayah={group.ayah}
+                words={group.words}
+                cursorState={state}
+                hintFlats={hintFlats}
+                missed={missed}
+                onSeek={onSeek}
+              />
+            </span>
           );
         })}
       </p>

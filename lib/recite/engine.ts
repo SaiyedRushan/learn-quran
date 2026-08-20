@@ -79,6 +79,12 @@ export class ReciteEngine {
     this.send({type: "seek", index: tokenIndex});
   }
 
+  /** The passage grew — track against the longer token list, resuming at
+   *  `tokenIndex` (which indexes the NEW list). */
+  retarget(tokens: MatchToken[], tokenIndex: number): void {
+    this.send({type: "retarget", tokens, index: tokenIndex});
+  }
+
   /** Reset the matcher for a fresh recitation. */
   reset(): void {
     this.send({type: "reset"});
