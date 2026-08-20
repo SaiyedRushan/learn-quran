@@ -544,7 +544,8 @@ export default function ReciteMode({
         moveTo(msg.flat);
         break;
       case "transcript":
-        setHeard(msg.text.slice(-60));
+        // The window holds up to 28 s, so the tail is the part still relevant.
+        setHeard(msg.text.slice(-140));
         break;
       case "perf":
         setPerf(`${msg.device} · run ${msg.runMs}ms/${msg.audioSec}s`);
@@ -688,13 +689,20 @@ export default function ReciteMode({
         {perf && (listening || phase === "loading") && (
           <span className='recite-debug'> · {perf}</span>
         )}
-        {heard && listening && (
-          <span className='recite-debug' dir='rtl' lang='ar'>
-            {" "}
-            · {heard}
-          </span>
-        )}
       </div>
+
+      {listening && (
+        // What the recognizer actually heard. This is the one readout that
+        // explains a wrong cursor — if this text is right and the cursor is
+        // wrong the fault is in the matcher, and if it's wrong it's the model —
+        // so it's worth showing properly rather than as a cramped debug tail.
+        <div className='recite-heard' aria-live='off'>
+          <span className='recite-heard-label'>Heard</span>
+          <span className='recite-heard-text' dir='rtl' lang='ar'>
+            {heard || <span className='recite-heard-idle'>…</span>}
+          </span>
+        </div>
+      )}
       {phase === "loading" && loadPct > 0 && (
         <div className='recite-progress'>
           <div className='recite-progress-fill' style={{width: `${loadPct}%`}} />

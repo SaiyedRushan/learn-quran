@@ -5006,3 +5006,42 @@ a.store-btn:active {
   font-size: 16px;
   color: var(--color-text-secondary);
 }
+
+/* Live recognizer transcript, shared by the practice page and the home page.
+   Fixed min-height so the layout doesn't jump as text arrives and is replaced. */
+.recite-heard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  margin: 10px 0 14px;
+  padding: 8px 14px;
+  border: 0.5px solid #23231f;
+  border-radius: var(--border-radius-md);
+  background: #0c0c0b;
+  overflow: hidden;
+}
+.recite-heard-label {
+  flex: none;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+}
+.recite-heard-text {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-serif);
+  font-size: 19px;
+  line-height: 1.9;
+  color: var(--accent-bright);
+  white-space: nowrap;
+  overflow: hidden;
+  /* The tail is the live edge; fade the far end rather than clipping hard. */
+  mask-image: linear-gradient(to left, #000 82%, transparent 100%);
+}
+.recite-heard-idle {
+  color: var(--color-text-secondary);
+  opacity: 0.5;
+}

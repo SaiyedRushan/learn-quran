@@ -28,6 +28,7 @@ export default function FindMyPlace() {
   const [loadPct, setLoadPct] = useState(0);
   const [loadMsg, setLoadMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [heardText, setHeardText] = useState("");
   const [heardWords, setHeardWords] = useState(0);
   const [needed, setNeeded] = useState(8);
   const [hits, setHits] = useState<LocateHit[]>([]);
@@ -79,6 +80,7 @@ export default function FindMyPlace() {
         void begin();
         break;
       case "heard":
+        setHeardText(msg.text.slice(-140));
         setHeardWords(msg.words);
         setNeeded(msg.needed);
         break;
@@ -119,6 +121,7 @@ export default function FindMyPlace() {
       return;
     }
     setHits([]);
+    setHeardText("");
     setHeardWords(0);
     if (engineRef.current) {
       engineRef.current.reset();
@@ -177,6 +180,15 @@ export default function FindMyPlace() {
       {phase === "loading" && loadPct > 0 && (
         <div className='recite-progress'>
           <div className='recite-progress-fill' style={{width: `${loadPct}%`}} />
+        </div>
+      )}
+
+      {listening && (
+        <div className='recite-heard'>
+          <span className='recite-heard-label'>Heard</span>
+          <span className='recite-heard-text' dir='rtl' lang='ar'>
+            {heardText || <span className='recite-heard-idle'>…</span>}
+          </span>
         </div>
       )}
 
