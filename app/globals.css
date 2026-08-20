@@ -4935,3 +4935,74 @@ a.store-btn:active {
   color: var(--color-text-secondary);
   user-select: none;
 }
+
+/* ---- Whole-Quran recognition on the home page (FindMyPlace) ---- */
+.find-place {
+  margin: 20px 0 8px;
+  padding: 16px 18px;
+  border: 0.5px solid #2a2a26;
+  border-radius: var(--border-radius-lg);
+  background: linear-gradient(180deg, #131311 0%, #101010 100%);
+}
+.find-place-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.find-place-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.find-place-status {
+  margin: 6px 0 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+.find-place-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.find-place-count {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-tertiary, var(--color-text-secondary));
+}
+.find-place-hits {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.find-place-hit {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 14px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid #2a2a26;
+  background: #0e0e0d;
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.find-place-hit:hover {
+  border-color: var(--accent);
+}
+.find-place-hit-name {
+  font-weight: 500;
+}
+.find-place-hit-ar {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--color-text-secondary);
+}

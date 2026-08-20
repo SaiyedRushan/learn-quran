@@ -32,6 +32,23 @@ export function normalizeArabicWord(token: string): string {
   return folded;
 }
 
+/**
+ * Fold a normalized word further, to a skeleton with no alefs at all.
+ *
+ * The Uthmani text writes many long ā's as a superscript dagger alef, which
+ * `normalizeArabicWord` strips as a diacritic — so `مَـٰلِكِ` becomes `ملك`
+ * while a recognizer, transcribing in plain spelling, gives `مالك`. The two are
+ * the same word and must match.
+ *
+ * The matcher handles this by falling back to an alef-stripped comparison when
+ * the direct one fails (see `saidSame`). An inverted index has no such fallback
+ * — a hash lookup either hits or doesn't — so anything keyed by word has to
+ * apply this to BOTH sides up front.
+ */
+export function alefSkeleton(word: string): string {
+  return word.replace(/ا/g, "");
+}
+
 /** Split a transcript into normalized words, dropping anything that folds away. */
 export function normalizeArabicWords(text: string): string[] {
   return text

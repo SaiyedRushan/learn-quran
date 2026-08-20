@@ -5,6 +5,7 @@ import TodayDashboard, { type DashSurah, type DashDua } from "@/components/Today
 import PrayerCta from "@/components/PrayerCta";
 import AppDownloadCta from "@/components/AppDownloadCta";
 import MoreApps from "@/components/MoreApps";
+import FindMyPlace from "@/components/FindMyPlace";
 import duas from "@/content/duas";
 
 export default function Home() {
@@ -59,6 +60,8 @@ export default function Home() {
       </section>
 
       <AppDownloadCta />
+
+      <FindMyPlace />
 
       <IntentionBlock />
 

@@ -19,7 +19,10 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
-const QURAN_DIR = join(ROOT, "content", "quran");
+// content/quran-text holds all 114 surahs (content/quran holds only the 51 with
+// a guide), so hints work anywhere recitation practice does. The Arabic in the
+// two is byte-identical where they overlap — both are Quran.com text_uthmani.
+const QURAN_DIR = join(ROOT, "content", "quran-text");
 const OUT_DIR = join(ROOT, "public", "recite", "audio", "alafasy");
 
 const RECITATION_ID = 7; // Mishari Rashid al-`Afasy
@@ -47,10 +50,14 @@ async function fetchAudioFiles(surah) {
 async function main() {
   await mkdir(OUT_DIR, { recursive: true });
   const surahFiles = (await readdir(QURAN_DIR)).filter((f) => /^\d+\.json$/.test(f));
+  // 114 surahs of paginated segment data is a slow fetch; make reruns resumable.
+  const force = process.argv.includes("--force");
+  const have = new Set(force ? [] : await readdir(OUT_DIR).catch(() => []));
   let mismatches = 0;
 
   for (const file of surahFiles.sort((a, b) => parseInt(a) - parseInt(b))) {
     const surah = parseInt(file, 10);
+    if (have.has(file)) continue;
     const verseData = JSON.parse(await readFile(join(QURAN_DIR, file), "utf8"));
     const audioFiles = await fetchAudioFiles(surah);
 

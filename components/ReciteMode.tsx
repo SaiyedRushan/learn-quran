@@ -4,8 +4,7 @@
 // across the Arabic text as on-device ASR (Tarteel's Quranic Whisper) tracks
 // their position, and after 5 seconds of silence plays the next few words in
 // Mishari Rashid al-`Afasy's voice (word-level slices of quran.com ayah audio).
-import {useEffect, useMemo, useRef, useState} from "react";
-import type {VerseData} from "@/content/types";
+import {memo, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {isArabicWord} from "@/lib/drills/text";
 import {
   ReciteEngine,
@@ -32,18 +31,74 @@ type Phase = "idle" | "loading" | "listening" | "denied" | "unsupported" | "erro
 
 const HINT_WORDS = 5;
 const SILENCE_MS = 5000;
+
+/** Sentinel cursor states for an ayah the cursor isn't inside: entirely recited,
+ *  or entirely still to come. Both are stable as the cursor moves elsewhere,
+ *  which is what lets a verse skip re-rendering. */
+const DONE = -1;
+const AHEAD = -2;
+
+/** One verse. Memoized: with 6,607 words in Al-Baqarah, re-rendering every span
+ *  on every cursor step is the difference between smooth and stuttering. Only
+ *  the verse holding the cursor re-renders as it advances — the props of the
+ *  rest don't change (`hintFlats` and `missed` keep their identity between the
+ *  rare updates that replace them). */
+const AyahRow = memo(function AyahRow({
+  ayah,
+  words,
+  cursorState,
+  hintFlats,
+  missed,
+  onSeek,
+}: {
+  ayah: number;
+  words: WordTok[];
+  cursorState: number;
+  hintFlats: number[] | null;
+  missed: ReadonlySet<number>;
+  onSeek: (flat: number) => void;
+}) {
+  return (
+    <span>
+      {words.map((w) => {
+        const done = cursorState === DONE || (cursorState >= 0 && w.flat < cursorState);
+        const cls = [
+          "recite-word",
+          done ? "done" : "",
+          w.flat === cursorState ? "current" : "",
+          hintFlats?.includes(w.flat) ? "hint" : "",
+          missed.has(w.flat) ? "missed" : "",
+        ]
+          .filter(Boolean)
+          .join(" ");
+        return (
+          <span key={w.flat}>
+            <span className={cls} onClick={() => onSeek(w.flat)}>
+              {w.display}
+            </span>{" "}
+          </span>
+        );
+      })}
+      <span className='recite-ayah-num'>﴿{ayah}﴾ </span>
+    </span>
+  );
+});
 /** Cap on a correction replay — one skipped verse is worth hearing back, three
  *  is a lecture. */
 const CORRECTION_MAX_WORDS = 15;
+
+/** Only the Arabic is needed here, so this accepts both the guide's VerseData
+ *  and the Arabic-only SurahText that backs the other 63 surahs. */
+type RecitePassage = {ayahs: {number: number; arabic: string}[]};
 
 export default function ReciteMode({
   surahNumber,
   verses,
 }: {
   surahNumber: number;
-  verses: VerseData;
+  verses: RecitePassage;
 }) {
-  const {words, ayahFlats, firstFlat, tokens, tokenByFlat} = useMemo(() => {
+  const {words, ayahFlats, firstFlat, tokens, tokenByFlat, ayahGroups} = useMemo(() => {
     const words: WordTok[] = [];
     // ayah number -> flat indices of its matchable words, in recitation order
     const ayahFlats = new Map<number, number[]>();
@@ -60,7 +115,14 @@ export default function ReciteMode({
     // The matcher works on the same words, minus the unmatchable ones.
     const tokens = buildTokens(words);
     const tokenByFlat = new Map(tokens.map((t, i) => [t.flat, i]));
-    return {words, ayahFlats, firstFlat, tokens, tokenByFlat};
+    // Rendering is grouped by ayah so each verse can memoize independently —
+    // Al-Baqarah is 6,607 words, and re-rendering all of them every time the
+    // cursor advances one word is what makes a long surah stutter.
+    const ayahGroups = verses.ayahs.map((a) => ({
+      ayah: a.number,
+      words: words.filter((w) => w.ayah === a.number),
+    }));
+    return {words, ayahFlats, firstFlat, tokens, tokenByFlat, ayahGroups};
   }, [verses]);
 
   const [phase, setPhase] = useState<Phase>("idle");
@@ -93,6 +155,24 @@ export default function ReciteMode({
 
   phaseRef.current = phase;
   onSpeechRef.current = resetSilenceTimer;
+
+  // Stable identity so the memoized rows aren't invalidated every render.
+  const seekRef = useRef<(flat: number) => void>(() => {});
+  const onSeek = useCallback((flat: number) => seekRef.current(flat), []);
+
+  // Deep link from whole-Quran recognition on the home page: ?ayah=N starts the
+  // cursor there instead of at the top. Read after mount rather than during
+  // render — the page is prerendered at build time, so touching location during
+  // render would mismatch hydration.
+  useEffect(() => {
+    const raw = new URLSearchParams(window.location.search).get("ayah");
+    const ayah = raw ? Number(raw) : NaN;
+    if (!Number.isInteger(ayah)) return;
+    const flats = ayahFlats.get(ayah);
+    if (!flats?.length) return;
+    cursorRef.current = flats[0];
+    setCursor(flats[0]);
+  }, [ayahFlats]);
 
   // Reciter audio timings for this surah; hints stay visual-only if missing.
   useEffect(() => {
@@ -547,6 +627,7 @@ export default function ReciteMode({
     preloadAyah(words[target].ayah);
     resetSilenceTimer();
   }
+  seekRef.current = seekTo;
 
   const listening = phase === "listening";
   const status = (() => {
@@ -621,24 +702,21 @@ export default function ReciteMode({
       )}
 
       <p className='recite-ar' dir='rtl' lang='ar'>
-        {words.map((w, i) => {
-          const cls = [
-            "recite-word",
-            w.flat < cursor ? "done" : "",
-            w.flat === cursor ? "current" : "",
-            hintFlats?.includes(w.flat) ? "hint" : "",
-            missed.has(w.flat) ? "missed" : "",
-          ]
-            .filter(Boolean)
-            .join(" ");
-          const ayahEnds = i === words.length - 1 || words[i + 1].ayah !== w.ayah;
+        {ayahGroups.map((group) => {
+          // Collapse the cursor to a per-ayah value so verses the cursor is
+          // nowhere near get a stable prop and skip re-rendering entirely.
+          const last = group.words[group.words.length - 1].flat;
+          const state = cursor > last ? DONE : cursor < group.words[0].flat ? AHEAD : cursor;
           return (
-            <span key={w.flat}>
-              <span className={cls} onClick={() => seekTo(w.flat)}>
-                {w.display}
-              </span>{" "}
-              {ayahEnds && <span className='recite-ayah-num'>﴿{w.ayah}﴾ </span>}
-            </span>
+            <AyahRow
+              key={group.ayah}
+              ayah={group.ayah}
+              words={group.words}
+              cursorState={state}
+              hintFlats={hintFlats}
+              missed={missed}
+              onSeek={onSeek}
+            />
           );
         })}
       </p>
