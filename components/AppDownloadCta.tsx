@@ -1,8 +1,8 @@
 "use client";
 
 // Store links for the mobile app. Android is on Play's open testing track, so
-// its button says "join the test" rather than "download"; iOS renders as a
-// disabled "coming soon" chip until APPS.ios is filled in (see lib/site).
+// its button says "join the test" rather than "download"; iOS is a normal
+// App Store listing (see lib/site).
 //
 // Dismissable, and the dismissal sticks — see lib/appPromo for why this hides
 // via CSS instead of a storage read at render time.
@@ -75,28 +75,18 @@ export default function AppDownloadCta() {
           </span>
         </a>
 
-        {APPS.ios ? (
-          <a
-            className="store-btn"
-            href={APPS.ios}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <AppleGlyph />
-            <span className="store-btn-main">
-              <span className="store-btn-sub">Download on the</span>
-              <span className="store-btn-name">App Store</span>
-            </span>
-          </a>
-        ) : (
-          <span className="store-btn store-btn-soon" aria-disabled="true">
-            <AppleGlyph />
-            <span className="store-btn-main">
-              <span className="store-btn-sub">iOS — in review</span>
-              <span className="store-btn-name">Coming soon</span>
-            </span>
+        <a
+          className="store-btn"
+          href={APPS.ios}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <AppleGlyph />
+          <span className="store-btn-main">
+            <span className="store-btn-sub">Download on the</span>
+            <span className="store-btn-name">App Store</span>
           </span>
-        )}
+        </a>
       </div>
     </section>
   );

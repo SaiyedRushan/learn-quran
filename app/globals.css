@@ -1841,13 +1841,22 @@ a {
     opacity: 1;
   }
 }
+/* Bottom sheet on phones, centred card from 560px up. Either way it is capped
+   to the viewport and scrolls — body scroll is locked while it is open, so
+   anything taller than the screen would otherwise be unreachable. */
 .modal {
   width: 100%;
   max-width: 460px;
+  max-height: 92vh;
+  max-height: 92svh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   background: var(--color-background-primary);
   border: 0.5px solid var(--color-border-secondary);
   border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
   padding: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
   box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.4);
 }
 @media (min-width: 560px) {
@@ -1856,8 +1865,43 @@ a {
     padding: 16px;
   }
   .modal {
+    max-height: calc(100svh - 32px);
     border-radius: var(--border-radius-lg);
+    padding-bottom: 20px;
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Long dialogs (display settings) scroll their body rather than the whole
+   sheet, so the title stays put and Reset/Done stay reachable without
+   scrolling to the very bottom. */
+.modal-sheet {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+.modal-sheet .modal-head {
+  flex: none;
+  padding: 16px 20px 12px;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+}
+.modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 12px 20px 0;
+}
+.modal-sheet .modal-actions {
+  flex: none;
+  padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+  border-top: 0.5px solid var(--color-border-tertiary);
+}
+@media (min-width: 560px) {
+  .modal-sheet .modal-actions {
+    padding-bottom: 12px;
   }
 }
 .modal-head {
@@ -1874,7 +1918,7 @@ a {
   font-size: 12px;
   color: var(--color-text-secondary);
   line-height: 1.6;
-  margin: 4px 0 18px;
+  margin: 0 0 18px;
 }
 .setting {
   margin-bottom: 16px;
@@ -1938,6 +1982,7 @@ a {
 }
 .seg-opt {
   flex: 1;
+  min-width: 0;
   padding: 9px 10px;
   border: 1px solid var(--color-border-secondary);
   background: transparent;
@@ -1964,6 +2009,19 @@ a {
   font-weight: 400;
   color: var(--color-text-tertiary);
   margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 400px) {
+  .segmented {
+    gap: 4px;
+  }
+  .seg-opt {
+    padding: 8px 5px;
+    font-size: 12px;
+  }
+  .seg-opt-sub {
+    font-size: 10px;
+  }
 }
 .preview-ar {
   font-family: var(--font-serif);
@@ -2224,10 +2282,6 @@ a.store-btn:hover {
 }
 a.store-btn:active {
   transform: scale(0.98);
-}
-.store-btn-soon {
-  opacity: 0.55;
-  cursor: default;
 }
 .store-glyph {
   width: 19px;

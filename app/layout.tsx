@@ -116,13 +116,9 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
               Android (open testing)
             </a>{" "}
             ·{" "}
-            {APPS.ios ? (
-              <a href={APPS.ios} target='_blank' rel='noopener noreferrer'>
-                iOS
-              </a>
-            ) : (
-              "iOS coming soon"
-            )}
+            <a href={APPS.ios} target='_blank' rel='noopener noreferrer'>
+              iOS (App Store)
+            </a>
           </div>
         </footer>
         <Analytics />

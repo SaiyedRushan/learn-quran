@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import Link from "next/link";
 import TakeTheTourButton from "@/components/TakeTheTourButton";
+import {APPS} from "@/lib/site";
 
 const DESCRIPTION =
   "What Learn Quran is, the features it offers, how its content is sourced, and how to send feedback or report a correction.";
@@ -97,6 +98,18 @@ export default function AboutPage() {
               Instead of just showing you Arabic to repeat, each surah is broken into themed sections with a plain-English
               explanation and a memory hook, so what you memorise actually means something. There's no account to create and
               nothing to install — open it, start learning, and your progress is saved right in your browser.
+            </p>
+            <p>
+              There's a mobile app too, with the same guides, drills and duas — free, ad-free, and fully offline. Get it on
+              the{" "}
+              <a className='cite-link' href={APPS.ios} target='_blank' rel='noreferrer'>
+                App Store
+              </a>{" "}
+              for iPhone and iPad, or{" "}
+              <a className='cite-link' href={APPS.android} target='_blank' rel='noreferrer'>
+                Google Play
+              </a>{" "}
+              for Android (currently on the open testing track).
             </p>
           </div>
         </div>

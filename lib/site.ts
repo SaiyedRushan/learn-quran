@@ -12,12 +12,10 @@ export const SITE = {
 
 // Mobile app store links. The Android build is on Play's open testing track —
 // the link below is the tester opt-in page, not a normal store listing. The
-// iOS build is still in App Store review, so there is no public URL yet: set
-// `ios` to the App Store link once it's approved and the UI flips itself from
-// "coming soon" to a live download button.
+// iOS build is live on the App Store.
 export const APPS = {
   android: "https://play.google.com/store/apps/details?id=app.learnquran.mobile",
-  ios: null as string | null,
+  ios: "https://apps.apple.com/us/app/learn-quran/id6794491500",
 } as const;
 
 // The other apps built for the same reason. The full cards (<MoreApps />) run

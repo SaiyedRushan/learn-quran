@@ -54,182 +54,184 @@ export default function SettingsControl() {
       {open &&
         createPortal(
           <div className='modal-overlay' onClick={() => setOpen(false)} role='presentation'>
-            <div className='modal' role='dialog' aria-modal='true' aria-label='Display settings' onClick={(e) => e.stopPropagation()}>
+            <div className='modal modal-sheet' role='dialog' aria-modal='true' aria-label='Display settings' onClick={(e) => e.stopPropagation()}>
               <div className='modal-head'>
                 <span className='modal-title'>Display settings</span>
                 <button className='icon-btn' aria-label='Close' onClick={() => setOpen(false)} autoFocus>
                   ✕
                 </button>
               </div>
-              <div className='modal-sub'>Choose the Arabic script and adjust reading sizes. Saved on this device.</div>
+              <div className='modal-body'>
+                <div className='modal-sub'>Choose the Arabic script and adjust reading sizes. Saved on this device.</div>
 
-              <div className='setting'>
-                <div className='setting-row'>
-                  <span className='setting-label'>Script</span>
+                <div className='setting'>
+                  <div className='setting-row'>
+                    <span className='setting-label'>Script</span>
+                  </div>
+                  <div className='segmented' role='group' aria-label='Arabic script'>
+                    <button
+                      type='button'
+                      className={`seg-opt ${settings.arabicFont === "uthmani" ? "active" : ""}`}
+                      aria-pressed={settings.arabicFont === "uthmani"}
+                      onClick={() => setSetting("arabicFont", "uthmani")}
+                    >
+                      Uthmani
+                      <span className='seg-opt-sub'>Mushaf naskh</span>
+                    </button>
+                    <button
+                      type='button'
+                      className={`seg-opt ${settings.arabicFont === "amiri" ? "active" : ""}`}
+                      aria-pressed={settings.arabicFont === "amiri"}
+                      onClick={() => setSetting("arabicFont", "amiri")}
+                    >
+                      Amiri
+                      <span className='seg-opt-sub'>Calligraphic</span>
+                    </button>
+                    <button
+                      type='button'
+                      className={`seg-opt ${settings.arabicFont === "indopak" ? "active" : ""}`}
+                      aria-pressed={settings.arabicFont === "indopak"}
+                      onClick={() => setSetting("arabicFont", "indopak")}
+                    >
+                      IndoPak
+                      <span className='seg-opt-sub'>Subcontinental</span>
+                    </button>
+                  </div>
                 </div>
-                <div className='segmented' role='group' aria-label='Arabic script'>
+
+                <div className='setting'>
+                  <div className='setting-row'>
+                    <span className='setting-label'>Arabic text</span>
+                    <span className='setting-val'>{pct(settings.arabicScale)}</span>
+                  </div>
+                  <input
+                    className='slider'
+                    type='range'
+                    min={SCALE_MIN}
+                    max={SCALE_MAX}
+                    step={SCALE_STEP}
+                    value={settings.arabicScale}
+                    aria-label='Arabic text size'
+                    onChange={(e) => setSetting("arabicScale", Number(e.target.value))}
+                  />
+                </div>
+
+                <div className='setting'>
+                  <div className='setting-row'>
+                    <span className='setting-label'>English text</span>
+                    <span className='setting-val'>{pct(settings.englishScale)}</span>
+                  </div>
+                  <input
+                    className='slider'
+                    type='range'
+                    min={SCALE_MIN}
+                    max={SCALE_MAX}
+                    step={SCALE_STEP}
+                    value={settings.englishScale}
+                    aria-label='English text size'
+                    onChange={(e) => setSetting("englishScale", Number(e.target.value))}
+                  />
+                </div>
+
+                <div className='setting-toggle'>
+                  <div className='toggle-copy'>
+                    <span className='setting-label'>Transliteration</span>
+                    <span className='toggle-desc'>Show the romanized (ALA-LC) pronunciation line beneath each verse. Turn off to read Arabic and English only.</span>
+                  </div>
                   <button
                     type='button'
-                    className={`seg-opt ${settings.arabicFont === "uthmani" ? "active" : ""}`}
-                    aria-pressed={settings.arabicFont === "uthmani"}
-                    onClick={() => setSetting("arabicFont", "uthmani")}
+                    role='switch'
+                    aria-checked={settings.showTransliteration}
+                    aria-label='Transliteration'
+                    className={`switch ${settings.showTransliteration ? "on" : ""}`}
+                    onClick={() => setSetting("showTransliteration", !settings.showTransliteration)}
                   >
-                    Uthmani
-                    <span className='seg-opt-sub'>Mushaf naskh</span>
+                    <span className='switch-knob' />
                   </button>
+                </div>
+
+                <div className='setting-toggle'>
+                  <div className='toggle-copy'>
+                    <span className='setting-label'>Zen mode</span>
+                    <span className='toggle-desc'>Keep the sections and memorization, but strip the teaching layer to focus on the Arabic and English. Choose exactly what to hide below. (Transliteration has its own toggle above.)</span>
+                  </div>
                   <button
                     type='button'
-                    className={`seg-opt ${settings.arabicFont === "amiri" ? "active" : ""}`}
-                    aria-pressed={settings.arabicFont === "amiri"}
-                    onClick={() => setSetting("arabicFont", "amiri")}
+                    role='switch'
+                    aria-checked={settings.zenMode}
+                    aria-label='Zen mode'
+                    className={`switch ${settings.zenMode ? "on" : ""}`}
+                    onClick={() => setSetting("zenMode", !settings.zenMode)}
                   >
-                    Amiri
-                    <span className='seg-opt-sub'>Calligraphic</span>
+                    <span className='switch-knob' />
                   </button>
+                </div>
+
+                {settings.zenMode && (
+                  <div className='zen-suboptions' role='group' aria-label='What zen mode hides'>
+                    <div className='zen-suboptions-label'>Hide in zen mode</div>
+                    {ZEN_PARTS.map(({key, label}) => (
+                      <label className='zen-part' key={key}>
+                        <input
+                          type='checkbox'
+                          checked={settings.zenHide[key]}
+                          onChange={(e) => setZenHide(key, e.target.checked)}
+                        />
+                        <span>{label}</span>
+                      </label>
+                    ))}
+                  </div>
+                )}
+
+                <div className='setting-toggle'>
+                  <div className='toggle-copy'>
+                    <span className='setting-label'>Click sounds</span>
+                    <span className='toggle-desc'>Play a subtle click when you tap buttons, links, and other controls. Turn off for a silent, distraction-free experience.</span>
+                  </div>
                   <button
                     type='button'
-                    className={`seg-opt ${settings.arabicFont === "indopak" ? "active" : ""}`}
-                    aria-pressed={settings.arabicFont === "indopak"}
-                    onClick={() => setSetting("arabicFont", "indopak")}
+                    role='switch'
+                    aria-checked={settings.clickSound}
+                    aria-label='Click sounds'
+                    className={`switch ${settings.clickSound ? "on" : ""}`}
+                    onClick={() => setSetting("clickSound", !settings.clickSound)}
                   >
-                    IndoPak
-                    <span className='seg-opt-sub'>Subcontinental</span>
+                    <span className='switch-knob' />
                   </button>
                 </div>
-              </div>
 
-              <div className='setting'>
-                <div className='setting-row'>
-                  <span className='setting-label'>Arabic text</span>
-                  <span className='setting-val'>{pct(settings.arabicScale)}</span>
+                <div className='setting' aria-disabled={!settings.clickSound} style={settings.clickSound ? undefined : {opacity: 0.45}}>
+                  <div className='setting-row'>
+                    <span className='setting-label'>Sound volume</span>
+                    <span className='setting-val'>{pct(settings.soundVolume)}</span>
+                  </div>
+                  <input
+                    className='slider'
+                    type='range'
+                    min={VOLUME_MIN}
+                    max={VOLUME_MAX}
+                    step={VOLUME_STEP}
+                    value={settings.soundVolume}
+                    disabled={!settings.clickSound}
+                    aria-label='Sound volume'
+                    onChange={(e) => {
+                      const v = Number(e.target.value);
+                      setSetting("soundVolume", v);
+                      // Preview the new loudness immediately. setSetting also syncs
+                      // it via the ClickSounds effect, but that runs after commit —
+                      // set it here so this click uses the value just chosen.
+                      setClickVolume(v);
+                      if (v > 0) playClick();
+                    }}
+                  />
                 </div>
-                <input
-                  className='slider'
-                  type='range'
-                  min={SCALE_MIN}
-                  max={SCALE_MAX}
-                  step={SCALE_STEP}
-                  value={settings.arabicScale}
-                  aria-label='Arabic text size'
-                  onChange={(e) => setSetting("arabicScale", Number(e.target.value))}
-                />
-              </div>
 
-              <div className='setting'>
-                <div className='setting-row'>
-                  <span className='setting-label'>English text</span>
-                  <span className='setting-val'>{pct(settings.englishScale)}</span>
+                <div className='preview' aria-hidden='true'>
+                  <div className='preview-ar'>بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+                  <div className='preview-en'>In the name of Allah, the Entirely Merciful, the Especially Merciful.</div>
                 </div>
-                <input
-                  className='slider'
-                  type='range'
-                  min={SCALE_MIN}
-                  max={SCALE_MAX}
-                  step={SCALE_STEP}
-                  value={settings.englishScale}
-                  aria-label='English text size'
-                  onChange={(e) => setSetting("englishScale", Number(e.target.value))}
-                />
+
               </div>
-
-              <div className='setting-toggle'>
-                <div className='toggle-copy'>
-                  <span className='setting-label'>Transliteration</span>
-                  <span className='toggle-desc'>Show the romanized (ALA-LC) pronunciation line beneath each verse. Turn off to read Arabic and English only.</span>
-                </div>
-                <button
-                  type='button'
-                  role='switch'
-                  aria-checked={settings.showTransliteration}
-                  aria-label='Transliteration'
-                  className={`switch ${settings.showTransliteration ? "on" : ""}`}
-                  onClick={() => setSetting("showTransliteration", !settings.showTransliteration)}
-                >
-                  <span className='switch-knob' />
-                </button>
-              </div>
-
-              <div className='setting-toggle'>
-                <div className='toggle-copy'>
-                  <span className='setting-label'>Zen mode</span>
-                  <span className='toggle-desc'>Keep the sections and memorization, but strip the teaching layer to focus on the Arabic and English. Choose exactly what to hide below. (Transliteration has its own toggle above.)</span>
-                </div>
-                <button
-                  type='button'
-                  role='switch'
-                  aria-checked={settings.zenMode}
-                  aria-label='Zen mode'
-                  className={`switch ${settings.zenMode ? "on" : ""}`}
-                  onClick={() => setSetting("zenMode", !settings.zenMode)}
-                >
-                  <span className='switch-knob' />
-                </button>
-              </div>
-
-              {settings.zenMode && (
-                <div className='zen-suboptions' role='group' aria-label='What zen mode hides'>
-                  <div className='zen-suboptions-label'>Hide in zen mode</div>
-                  {ZEN_PARTS.map(({key, label}) => (
-                    <label className='zen-part' key={key}>
-                      <input
-                        type='checkbox'
-                        checked={settings.zenHide[key]}
-                        onChange={(e) => setZenHide(key, e.target.checked)}
-                      />
-                      <span>{label}</span>
-                    </label>
-                  ))}
-                </div>
-              )}
-
-              <div className='setting-toggle'>
-                <div className='toggle-copy'>
-                  <span className='setting-label'>Click sounds</span>
-                  <span className='toggle-desc'>Play a subtle click when you tap buttons, links, and other controls. Turn off for a silent, distraction-free experience.</span>
-                </div>
-                <button
-                  type='button'
-                  role='switch'
-                  aria-checked={settings.clickSound}
-                  aria-label='Click sounds'
-                  className={`switch ${settings.clickSound ? "on" : ""}`}
-                  onClick={() => setSetting("clickSound", !settings.clickSound)}
-                >
-                  <span className='switch-knob' />
-                </button>
-              </div>
-
-              <div className='setting' aria-disabled={!settings.clickSound} style={settings.clickSound ? undefined : {opacity: 0.45}}>
-                <div className='setting-row'>
-                  <span className='setting-label'>Sound volume</span>
-                  <span className='setting-val'>{pct(settings.soundVolume)}</span>
-                </div>
-                <input
-                  className='slider'
-                  type='range'
-                  min={VOLUME_MIN}
-                  max={VOLUME_MAX}
-                  step={VOLUME_STEP}
-                  value={settings.soundVolume}
-                  disabled={!settings.clickSound}
-                  aria-label='Sound volume'
-                  onChange={(e) => {
-                    const v = Number(e.target.value);
-                    setSetting("soundVolume", v);
-                    // Preview the new loudness immediately. setSetting also syncs
-                    // it via the ClickSounds effect, but that runs after commit —
-                    // set it here so this click uses the value just chosen.
-                    setClickVolume(v);
-                    if (v > 0) playClick();
-                  }}
-                />
-              </div>
-
-              <div className='preview' aria-hidden='true'>
-                <div className='preview-ar'>بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
-                <div className='preview-en'>In the name of Allah, the Entirely Merciful, the Especially Merciful.</div>
-              </div>
-
               <div className='modal-actions'>
                 <button className='btn' onClick={resetSettings} disabled={isDefault}>
                   Reset to default
