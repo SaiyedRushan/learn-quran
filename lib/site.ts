@@ -63,6 +63,38 @@ export const FAMILY = [
   },
 ] as const;
 
+// The Islamic decks on MugUp — one app, three decks, so they render as a list
+// inside a single card rather than three cards competing with the apps above.
+// Public deck pages (`/decks/:id`), never the `/dashboard/decks/:id` ones,
+// which sit behind a login a visitor without a MugUp account can't pass.
+// Mirrored in the sibling repos' cross-promo blocks; keep the wording in sync.
+export const MUGUP = {
+  name: "Islamic decks on MugUp",
+  short: "MugUp decks",
+  url: "https://mugup.app",
+  icon: "🧠",
+  platform: "Web · free to clone",
+  blurb:
+    "Three decks of drills — quizzes, flashcards and fill-in-the-blanks — free to copy into your own account and learn at your own pace.",
+  decks: [
+    {
+      name: "99 Names of Allah",
+      blurb: "Meaning, root, and which name to invoke for which need",
+      url: "https://mugup.app/decks/101",
+    },
+    {
+      name: "Surahs of the Quran",
+      blurb: "Every surah by name, meaning, place and theme",
+      url: "https://mugup.app/decks/102",
+    },
+    {
+      name: "80% of Quranic Words",
+      blurb: "The vocabulary that covers most of what you recite",
+      url: "https://mugup.app/decks/103",
+    },
+  ],
+} as const;
+
 /** Absolute URL for a site-relative path (e.g. "/blog/" → "https://…/blog/"). */
 export function absoluteUrl(path: string): string {
   return new URL(path, SITE.url).toString();

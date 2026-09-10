@@ -5,7 +5,7 @@ import PrimaryNav from "@/components/PrimaryNav";
 import Walkthrough from "@/components/Walkthrough";
 import ClickSounds from "@/components/ClickSounds";
 import JsonLd from "@/components/JsonLd";
-import {APPS, FAMILY, SITE} from "@/lib/site";
+import {APPS, FAMILY, MUGUP, SITE} from "@/lib/site";
 import {Analytics} from "@vercel/analytics/next";
 import "./globals.css";
 
@@ -109,6 +109,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
                 </a>
               </span>
             ))}
+            {" · "}
+            <a href={MUGUP.url} target='_blank' rel='noopener noreferrer' title={MUGUP.blurb}>
+              {MUGUP.short}
+            </a>
           </div>
           <div style={{marginTop: 6}}>
             Get the app:{" "}

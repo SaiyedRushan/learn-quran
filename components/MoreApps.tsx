@@ -2,7 +2,7 @@
 // interior pages get the compact one-line list in the footer instead, so a
 // surah guide isn't tailed by a wall of other products.
 
-import { FAMILY } from "@/lib/site";
+import { FAMILY, MUGUP } from "@/lib/site";
 
 export default function MoreApps() {
   return (
@@ -36,6 +36,46 @@ export default function MoreApps() {
             </span>
           </a>
         ))}
+        {/* One card, three deck rows: a <div>, not an <a>, since the rows
+            inside are links of their own. */}
+        <div className="more-app more-decks">
+          <span className="more-app-icon" aria-hidden="true">
+            {MUGUP.icon}
+          </span>
+          <span className="more-app-main">
+            <span className="more-app-name">{MUGUP.name}</span>
+            <span className="more-app-platform">{MUGUP.platform}</span>
+            <span className="more-app-blurb">{MUGUP.blurb}</span>
+            <ul className="more-decks-list">
+              {MUGUP.decks.map((deck) => (
+                <li key={deck.url}>
+                  <a
+                    className="more-deck"
+                    href={deck.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="more-deck-main">
+                      <span className="more-deck-name">{deck.name}</span>
+                      <span className="more-deck-blurb">{deck.blurb}</span>
+                    </span>
+                    <span className="more-app-arrow" aria-hidden="true">
+                      ↗
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a
+              className="more-decks-go"
+              href={MUGUP.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              mugup.app ↗
+            </a>
+          </span>
+        </div>
       </div>
     </section>
   );
