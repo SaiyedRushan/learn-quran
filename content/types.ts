@@ -70,6 +70,14 @@ export interface GuideBanner {
   attribution?: string;
 }
 
+/** One of the big ideas a surah turns on, shown as a coloured pill.
+ *
+ * ORDER MATTERS: this list's order is the answer key for the Themes stage of
+ * Memorize mode. It usually tracks the order the surah introduces each idea,
+ * but that is NOT guaranteed — a few guides order by prominence instead. See
+ * the KNOWN GAP note in lib/drills/themes.ts before relying on it. Aim for at
+ * least MIN_ORDERABLE_THEMES of them — scripts/validate-guides.mjs warns
+ * below that. */
 export interface Theme {
   text: string;
   color: PillColor;
@@ -140,7 +148,7 @@ export interface SurahGuide {
   meta: SurahMeta;
   overview: string; // paragraphs separated by \n\n; inline <em> allowed
   banners: GuideBanner[];
-  themes: Theme[];
+  themes: Theme[]; // order is meaningful — see Theme
   sections: GuideSection[];
   vocab: VocabGroup[];
   recitation: RecitationGuide;

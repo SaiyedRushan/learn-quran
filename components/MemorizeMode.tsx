@@ -12,6 +12,9 @@ import {
 } from "@/lib/progress";
 import {useSettings} from "@/lib/settings";
 import {pickArabic} from "@/lib/arabic";
+import {MIN_ORDERABLE_THEMES, type ThemeCard} from "@/lib/drills/themes";
+import OrderThemesBoard from "@/components/OrderThemesBoard";
+import {newSeed} from "@/lib/drills/random";
 
 const PILL: Record<PillColor, string> = {
   teal: "tp-teal",
@@ -24,13 +27,34 @@ const PILL: Record<PillColor, string> = {
 // The fading-crutches ladder. Each stage removes one support. Memorization
 // works from Arabic + meaning only; transliteration is deliberately left out of
 // this flow so it never becomes a crutch, even though the dataset now carries it.
-const STAGES = [
+//
+// Midway through sits the one stage that isn't about wording at all: put the
+// surah's themes back in order. It lands after "Arabic only" — once you've read
+// the passage enough times to have a sense of its shape, but before the stages
+// that ask you to produce it from nothing — so the arc is fixed first and the
+// words have something to hang on.
+interface Stage {
+  key: "read" | "arabic" | "themes" | "recall" | "cloze" | "blank";
+  label: string;
+  hint: string;
+}
+
+const READ_STAGES: Stage[] = [
   {key: "read", label: "Read", hint: "Read the Arabic and its meaning together a few times until the flow feels familiar."},
   {key: "arabic", label: "Arabic only", hint: "Read the Arabic aloud. Tap a verse to check its meaning when you need it."},
+];
+
+const THEMES_STAGE: Stage = {
+  key: "themes",
+  label: "Themes",
+  hint: "Put this surah's themes back into the order the guide lists them. Drag a card, or nudge it with ▲ / ▼.",
+};
+
+const RECALL_STAGES: Stage[] = [
   {key: "recall", label: "Recall Arabic", hint: "Read the meaning and recite the Arabic from memory. Stuck? Peek the next letter or word."},
   {key: "cloze", label: "Fill the gaps", hint: "Recite from memory and fill the blanks. Tap any blank to reveal that word."},
   {key: "blank", label: "Blank slate", hint: "Recite the whole section from memory. Peek a letter or word, or reveal the meaning, to check yourself."},
-] as const;
+];
 
 const CLOZE_LEVELS = [
   {label: "Light", density: 0.3},
@@ -112,10 +136,28 @@ export default function MemorizeMode({
         ? learnedSections.has(scope.index)
         : false;
 
+  // The themes stage needs a guide with enough themes to be a real ordering
+  // test. It's skipped for the weak-spot drill, which is a targeted fix-up of
+  // specific words rather than a pass over the surah's shape.
+  const themes: ThemeCard[] = useMemo(
+    () => guide.themes.map((t) => ({text: t.text, color: t.color})),
+    [guide.themes],
+  );
+  const showThemes = !isWeakDrill && themes.length >= MIN_ORDERABLE_THEMES;
+
+  const stages: Stage[] = useMemo(
+    () => (showThemes ? [...READ_STAGES, THEMES_STAGE, ...RECALL_STAGES] : [...READ_STAGES, ...RECALL_STAGES]),
+    [showThemes],
+  );
+  const recallIndex = stages.findIndex((st) => st.key === "recall");
+
   // The whole-surah test and weak-spot drill open as tests: start on "Recall
   // Arabic" (meaning shown as a prompt, recite from memory, peek when stuck).
   // The full stepper stays available for easier/harder crutch levels.
-  const [stage, setStage] = useState(() => (isSurah || isWeakDrill ? 2 : 0));
+  const [stage, setStage] = useState(() => (isSurah || isWeakDrill ? recallIndex : 0));
+
+  // Round seed for the themes board — bumped to re-deal a fresh shuffle.
+  const [themesSeed, setThemesSeed] = useState<number>(() => newSeed());
 
   // Snapshot the weak verses at open time so the drill set doesn't shrink out
   // from under you as you clear flags mid-session.
@@ -208,7 +250,7 @@ export default function MemorizeMode({
     row.words.forEach((_, i) => setWeakSpot(slug, row.ayah.number, i, !anyFlagged));
   }
 
-  const stageDef = STAGES[stage];
+  const stageDef = stages[stage];
 
   // Reset reveals when the stage or cloze density changes.
   useEffect(() => {
@@ -222,7 +264,7 @@ export default function MemorizeMode({
     document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
-      else if (e.key === "ArrowRight") setStage((s) => Math.min(STAGES.length - 1, s + 1));
+      else if (e.key === "ArrowRight") setStage((s) => Math.min(stages.length - 1, s + 1));
       else if (e.key === "ArrowLeft") setStage((s) => Math.max(0, s - 1));
     };
     window.addEventListener("keydown", onKey);
@@ -230,7 +272,7 @@ export default function MemorizeMode({
       document.body.style.overflow = prevOverflow;
       window.removeEventListener("keydown", onKey);
     };
-  }, [onClose]);
+  }, [onClose, stages.length]);
 
   function reveal(key: string) {
     setRevealed((prev) => {
@@ -248,7 +290,7 @@ export default function MemorizeMode({
     });
   }
 
-  const isLast = stage === STAGES.length - 1;
+  const isLast = stage === stages.length - 1;
 
   // A single tappable Arabic word. Tapping toggles its weak-spot flag;
   // flagged words show an amber underline wherever they appear.
@@ -437,7 +479,7 @@ export default function MemorizeMode({
 
         {/* Stage stepper */}
         <div className='mm-steps'>
-          {STAGES.map((s, i) => (
+          {stages.map((s, i) => (
             <button
               key={s.key}
               type='button'
@@ -478,7 +520,32 @@ export default function MemorizeMode({
             </div>
           )}
 
-          {wordRows.length === 0 ? (
+          {stageDef.key === "themes" ? (
+            <div className='mm-themes'>
+              {!isSurah && (
+                <div className='mm-themes-note'>
+                  These are the themes of the whole surah — ordering them places this section inside the
+                  arc it belongs to.
+                </div>
+              )}
+              <OrderThemesBoard
+                key={themesSeed}
+                seed={themesSeed}
+                name={guide.meta.name}
+                themes={themes}
+              >
+                <div className='gm-actions'>
+                  <button
+                    type='button'
+                    className='mm-nav'
+                    onClick={() => setThemesSeed(newSeed())}
+                  >
+                    ↻ Shuffle again
+                  </button>
+                </div>
+              </OrderThemesBoard>
+            </div>
+          ) : wordRows.length === 0 ? (
             <div className='mm-ar-empty'>No weak spots flagged — you&apos;re all clear here.</div>
           ) : (
             <div className='mm-verses'>{wordRows.map((row) => renderVerse(row))}</div>
@@ -496,7 +563,7 @@ export default function MemorizeMode({
             ← Back
           </button>
           <span className='mm-progress'>
-            Stage {stage + 1} / {STAGES.length}
+            Stage {stage + 1} / {stages.length}
           </span>
           {isLast ? (
             <button
