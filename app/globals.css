@@ -1143,19 +1143,6 @@ a {
   margin-top: 4px;
   font-style: normal;
 }
-.theme-block {
-  margin-top: 14px;
-}
-.theme-block-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-text-tertiary);
-}
-.theme-block .theme-row {
-  margin-top: 8px;
-}
 .theme-row {
   display: flex;
   flex-wrap: wrap;
@@ -1167,14 +1154,6 @@ a {
   padding: 4px 10px;
   border-radius: var(--border-radius-md);
   white-space: nowrap;
-}
-/* The themes carry a canonical order, so number them — the order is itself
-   the content, and it's what Memorize mode's Themes stage tests. */
-.theme-pill-num {
-  margin-inline-end: 6px;
-  opacity: 0.6;
-  font-variant-numeric: tabular-nums;
-  font-weight: 700;
 }
 .tp-teal {
   background: #0d2e24;
@@ -4532,25 +4511,12 @@ a.store-btn:active {
   font-variant-numeric: tabular-nums;
 }
 
-/* Order-the-themes board (the Themes stage of Memorize mode) — the sections
-   drill's card layout, but each card carries the theme's own colour pill
-   instead of a plain title. */
-.gth-pill {
-  display: inline-block;
-  font-size: calc(12.5px * var(--scale-en));
-  line-height: 1.5;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: var(--border-radius-md);
-}
-.go-answer-row .gth-pill {
-  margin-top: 2px;
-}
-
-.mm-themes {
+/* The order-the-sections board, embedded as the Sections stage of Memorize
+   mode. The board itself reuses the drill's .go-line / .go-card / .gs-card. */
+.mm-order {
   margin-top: 14px;
 }
-.mm-themes-note {
+.mm-order-note {
   margin-bottom: 12px;
   font-size: 12.5px;
   line-height: 1.6;

@@ -1,56 +1,56 @@
 "use client";
 
-// The order-the-themes board — the Themes stage of MemorizeMode. A guide's
-// `themes` list is authored in the order the surah's ideas unfold, so shuffling
-// it and asking for the sequence back tests the arc of the surah rather than
-// its wording, midway through the fading-crutches ladder.
+// The order-the-sections board: a surah's sections arrive jumbled and you put
+// them back into the order they appear. Cards move by drag (touch-friendly, via
+// useTileDrag) or the ▲ / ▼ buttons; checking reveals each section's verse range
+// and marks the hits and misses. There are no decoys — every card belongs, it's
+// purely a reordering.
 //
-// Deliberately shares the order-the-sections drill's markup (.go-line /
-// .go-card / .gs-card) so the two boards feel identical: drag a card, or nudge
-// it with the ▲ / ▼ buttons, then check.
+// Shared by two callers, which is why the board takes its actions as children
+// rather than owning them: the standalone drill (OrderSectionsDrill) and the
+// Sections stage of MemorizeMode.
 
 import {useState, type ReactNode} from "react";
 import {createPortal} from "react-dom";
+import type {PillColor} from "@/content/types";
 import {mulberry32, shuffled} from "@/lib/drills/random";
 import {useTileDrag} from "@/lib/drills/useTileDrag";
-import type {ThemeCard} from "@/lib/drills/themes";
 
-const PILL: Record<ThemeCard["color"], string> = {
-  teal: "tp-teal",
-  purple: "tp-purple",
-  amber: "tp-amber",
-  coral: "tp-coral",
-  slate: "tp-slate",
-};
-
-interface ThemeTile extends ThemeCard {
-  id: number; // index in the true order — also the answer key
+/** One thematic section, trimmed from a guide for the board. */
+export interface SectionCard {
+  badge: string; // "Section 1"
+  title: string;
+  from: number; // first ayah
+  to: number; // last ayah
+  color: PillColor;
 }
 
-export default function OrderThemesBoard({
-  themes,
+export interface SectionTile extends SectionCard {
+  id: number; // stable within a round, for keys and drag
+}
+
+export default function OrderSectionsBoard({
   seed,
+  answer,
   name,
   onScore,
   children,
 }: {
-  /** The guide's themes, in their true (authored) order. */
-  themes: ThemeCard[];
   /** Round seed — the caller remounts with `key={seed}` to deal a fresh shuffle. */
   seed: number;
+  /** The sections in play, in their true (recited) order. */
+  answer: SectionTile[];
   /** Surah name, for the answer-key caption. */
   name: string;
-  /** Called once, with the percentage of themes that landed in place. */
+  /** Called once, with the percentage of sections that landed in place. */
   onScore?: (pct: number) => void;
   /** Actions rendered under the answer key once the round is checked. */
   children?: ReactNode;
 }) {
-  const answer: ThemeTile[] = themes.map((t, i) => ({...t, id: i}));
   const size = answer.length;
-
-  // Start jumbled — reshuffle until it isn't already in the right order (three
-  // cards shuffle back to identity often enough to hand over the round).
-  const [order, setOrder] = useState<ThemeTile[]>(() => {
+  // Start jumbled — reshuffle until it isn't already in the right order (a
+  // small surah can shuffle back to identity and hand over the round).
+  const [order, setOrder] = useState<SectionTile[]>(() => {
     const rand = mulberry32(seed || 1);
     let out = shuffled(answer, rand);
     for (let tries = 0; tries < 8 && out.every((t, i) => t.id === answer[i].id); tries++) {
@@ -103,7 +103,7 @@ export default function OrderThemesBoard({
 
   return (
     <>
-      <div className='gm-meta go-label'>Your order — the guide&apos;s first theme at the top</div>
+      <div className='gm-meta go-label'>Your order — first in the surah at the top</div>
       <div className={`go-line${over === "line:end" ? " drop-end" : ""}`} data-drop='line:end'>
         {order.map((t, i) => {
           const verdict = done ? (t.id === answer[i].id ? " hit" : " miss") : "";
@@ -112,18 +112,21 @@ export default function OrderThemesBoard({
               key={t.id}
               className={`go-card gs-card${verdict}${over === `line:${i}` ? " drop-before" : ""}`}
               data-drop={`line:${i}`}
-              onPointerDown={done ? undefined : (e) => startDrag(e, t.id, t.text)}
+              onPointerDown={done ? undefined : (e) => startDrag(e, t.id, t.title)}
             >
               <span className='go-num'>{i + 1}</span>
               <span className='go-card-body'>
-                <span className={`gth-pill ${PILL[t.color]}`}>{t.text}</span>
+                <span className='gs-title'>{t.title}</span>
+                {done && (
+                  <span className='go-card-en'>Verses {t.from === t.to ? t.from : `${t.from}–${t.to}`}</span>
+                )}
               </span>
               {!done && (
                 <span className='gs-controls'>
                   <button
                     type='button'
                     className='gs-move'
-                    aria-label={`Move ${t.text} up`}
+                    aria-label={`Move ${t.title} up`}
                     disabled={i === 0}
                     onPointerDown={(e) => e.stopPropagation()}
                     onClick={() => nudge(i, -1)}
@@ -133,7 +136,7 @@ export default function OrderThemesBoard({
                   <button
                     type='button'
                     className='gs-move'
-                    aria-label={`Move ${t.text} down`}
+                    aria-label={`Move ${t.title} down`}
                     disabled={i === size - 1}
                     onPointerDown={(e) => e.stopPropagation()}
                     onClick={() => nudge(i, 1)}
@@ -158,23 +161,25 @@ export default function OrderThemesBoard({
           document.body,
         )}
 
-      {done ? (
+      {done && (
         <>
           <div className={`gm-verdict-big ${score >= 70 ? "good" : score >= 40 ? "mid" : "bad"}`}>{score}%</div>
           <div className='gt-diff'>
-            <div className='gt-diff-label'>The themes of Surah {name}, in order:</div>
+            <div className='gt-diff-label'>The sections of Surah {name}, in order:</div>
             <div className='gt-diff-ref'>
               {answer.map((t, i) => (
                 <div key={t.id} className='go-answer-row'>
-                  <span className='go-num'>{i + 1}</span>{" "}
-                  <span className={`gth-pill ${PILL[t.color]}`}>{t.text}</span>
+                  <span className='go-num'>{i + 1}</span> {t.title}{" "}
+                  <span className='gs-range'>(v.{t.from === t.to ? t.from : `${t.from}–${t.to}`})</span>
                 </div>
               ))}
             </div>
           </div>
           {children}
         </>
-      ) : (
+      )}
+
+      {!done && (
         <div className='gm-actions'>
           <button type='button' className='mm-nav primary' onClick={check}>
             Check

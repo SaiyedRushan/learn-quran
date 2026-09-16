@@ -5,9 +5,6 @@
 //      passages: == the number of ayahs the sections cover).
 //   4. Every vocab Arabic string appears in the verse text (diacritic-insensitive)
 //      — catches hand-typed / mistyped Arabic.
-//   5. The themes list is long enough to drive Memorize mode's Themes stage.
-//      Their order is that stage's answer key — note it is not checked against
-//      the surah's own sequence (see the KNOWN GAP in lib/drills/themes.ts).
 //
 // Run: node --experimental-strip-types scripts/validate-guides.mjs
 
@@ -26,13 +23,9 @@ const files = readdirSync(GUIDES)
   .filter((f) => /^\d+-.+\.ts$/.test(f))
   .sort((a, b) => parseInt(a) - parseInt(b));
 
-// Keep in sync with MIN_ORDERABLE_THEMES in lib/drills/themes.ts.
-const MIN_ORDERABLE_THEMES = 3;
-
 let problems = 0;
 let vocabChecked = 0;
 let vocabMissing = 0;
-let thinThemes = 0;
 
 for (const file of files) {
   const num = parseInt(file);
@@ -71,15 +64,6 @@ for (const file of files) {
   }
   if (!secOk) problems++;
 
-  // themes are the answer key for Memorize mode's Themes stage, so a guide with
-  // too few loses that stage entirely — warn rather than fail.
-  if ((g.themes?.length ?? 0) < MIN_ORDERABLE_THEMES) {
-    thinThemes++;
-    console.log(
-      `  ⚠ ${label}: only ${g.themes?.length ?? 0} themes — needs ${MIN_ORDERABLE_THEMES} for the Themes stage`
-    );
-  }
-
   // vocab tokens present in the (covered) verse text
   const haystack = norm(verses.ayahs.map((a) => a.arabic).join(" "));
   const haystackND = stripMn(haystack);
@@ -101,7 +85,6 @@ for (const file of files) {
 
 console.log(
   `\nChecked ${files.length} guides · ${vocabChecked} vocab items.` +
-    ` Structural problems: ${problems}. Vocab not-found warnings: ${vocabMissing}.` +
-    ` Guides with too few themes: ${thinThemes}.`
+    ` Structural problems: ${problems}. Vocab not-found warnings: ${vocabMissing}.`
 );
 process.exit(problems > 0 ? 1 : 0);

@@ -118,9 +118,6 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
 
   const m = guide.meta;
   const sectionsTotal = guide.sections.length;
-  // The themes' order is what Memorize mode's Themes stage tests, so it's
-  // numbered here rather than shown as a bare bag of pills.
-  const themesTotal = guide.themes.length;
   const sectionsDone = guide.sections.filter((_, i) => learnedSections.has(i)).length;
   const secPct = sectionsTotal ? Math.round((sectionsDone / sectionsTotal) * 100) : 0;
   // Passages (e.g. Ayat al-Kursi) carry only a subset of their surah's verses.
@@ -285,9 +282,7 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
 
   return (
     <div className='guide-shell'>
-      {/* Section navigator — sticky left rail on wide screens. Themes stay out
-          of here: they're a separate, shorter list that doesn't line up with the
-          sections, so side by side the two read as rival contents lists. */}
+      {/* Section navigator — sticky left rail on wide screens. */}
       {sectionsTotal > 1 && (
         <aside className='guide-toc' aria-label='Section navigator'>
           <div className='toc-title'>Sections</div>
@@ -373,17 +368,13 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
                 )}
               </div>
             ))}
-            {themesTotal > 0 && (
-              <div className='theme-block'>
-                <div className='theme-block-label'>Themes — learn them in this order</div>
-                <div className='theme-row'>
-                  {guide.themes.map((t, i) => (
-                    <span className={`theme-pill ${PILL[t.color]}`} key={i}>
-                      <span className='theme-pill-num'>{i + 1}</span>
-                      {t.text}
-                    </span>
-                  ))}
-                </div>
+            {guide.themes.length > 0 && (
+              <div className='theme-row'>
+                {guide.themes.map((t, i) => (
+                  <span className={`theme-pill ${PILL[t.color]}`} key={i}>
+                    {t.text}
+                  </span>
+                ))}
               </div>
             )}
           </div>

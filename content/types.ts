@@ -70,14 +70,11 @@ export interface GuideBanner {
   attribution?: string;
 }
 
-/** One of the big ideas a surah turns on, shown as a coloured pill.
- *
- * ORDER MATTERS: this list's order is the answer key for the Themes stage of
- * Memorize mode. It usually tracks the order the surah introduces each idea,
- * but that is NOT guaranteed — a few guides order by prominence instead. See
- * the KNOWN GAP note in lib/drills/themes.ts before relying on it. Aim for at
- * least MIN_ORDERABLE_THEMES of them — scripts/validate-guides.mjs warns
- * below that. */
+/** One of the big ideas a surah turns on, shown as a coloured pill in the
+ * Overview. A loose highlight list, not a structure: themes carry no verse
+ * ranges, are not guaranteed to cover the surah, and do not line up with the
+ * sections (Al-Kahf has 9 sections and 5 themes, one of which is a recitation
+ * virtue). Anything that needs the surah's actual shape uses `sections`. */
 export interface Theme {
   text: string;
   color: PillColor;
@@ -148,7 +145,7 @@ export interface SurahGuide {
   meta: SurahMeta;
   overview: string; // paragraphs separated by \n\n; inline <em> allowed
   banners: GuideBanner[];
-  themes: Theme[]; // order is meaningful — see Theme
+  themes: Theme[];
   sections: GuideSection[];
   vocab: VocabGroup[];
   recitation: RecitationGuide;

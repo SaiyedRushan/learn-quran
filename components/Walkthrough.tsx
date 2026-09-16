@@ -241,12 +241,12 @@ function DrillsPanel() {
 }
 
 // The phases mirror the ladder in MemorizeMode — each one removes a support
-// until you can recite from a blank slate, with a themes checkpoint midway that
-// tests the shape of the surah rather than its wording.
+// until you can recite from a blank slate, with a structure checkpoint midway
+// that tests the shape of the surah rather than its wording.
 const PHASES: {label: string; hint: string}[] = [
   {label: "Read", hint: "Arabic and meaning together"},
   {label: "Arabic only", hint: "peek the meaning when stuck"},
-  {label: "Themes", hint: "put the guide's themes back in order"},
+  {label: "Sections", hint: "put the surah's sections back in order"},
   {label: "Recall", hint: "recite from the meaning"},
   {label: "Fill the gaps", hint: "words blanked out"},
   {label: "Blank slate", hint: "the whole section from memory"},
@@ -327,7 +327,7 @@ const STEPS: Step[] = [
   },
   {
     title: "Memorize a section in six phases",
-    body: "When you're ready, Memorize mode drills one section at a time and removes a single crutch at each phase — read it with its meaning, then Arabic only, then a themes checkpoint where you put the surah's big ideas back into the order the guide lays them out, then recall it from the meaning, fill in the gaps (words drop out and you fill each blank from memory, dialing them from light to heavy), and finally a blank slate. Letter and word peeks are there whenever you get stuck, and it quietly flags the words you keep forgetting.",
+    body: "When you're ready, Memorize mode drills one section at a time and removes a single crutch at each phase — read it with its meaning, then Arabic only, then a structure checkpoint where you put the surah's sections back into the order they unfold, then recall it from the meaning, fill in the gaps (words drop out and you fill each blank from memory, dialing them from light to heavy), and finally a blank slate. Letter and word peeks are there whenever you get stuck, and it quietly flags the words you keep forgetting.",
     panel: <PhasesPanel />,
   },
   {

@@ -12,8 +12,8 @@ import {
 } from "@/lib/progress";
 import {useSettings} from "@/lib/settings";
 import {pickArabic} from "@/lib/arabic";
-import {MIN_ORDERABLE_THEMES, type ThemeCard} from "@/lib/drills/themes";
-import OrderThemesBoard from "@/components/OrderThemesBoard";
+import {MIN_ORDERABLE_SECTIONS} from "@/lib/content";
+import OrderSectionsBoard, {type SectionTile} from "@/components/OrderSectionsBoard";
 import {newSeed} from "@/lib/drills/random";
 
 const PILL: Record<PillColor, string> = {
@@ -29,12 +29,12 @@ const PILL: Record<PillColor, string> = {
 // this flow so it never becomes a crutch, even though the dataset now carries it.
 //
 // Midway through sits the one stage that isn't about wording at all: put the
-// surah's themes back in order. It lands after "Arabic only" — once you've read
-// the passage enough times to have a sense of its shape, but before the stages
-// that ask you to produce it from nothing — so the arc is fixed first and the
-// words have something to hang on.
+// surah's sections back in order. It lands after "Arabic only" — once you've
+// read the passage enough times to have a sense of its shape, but before the
+// stages that ask you to produce it from nothing — so the structure is fixed
+// first and the words have something to hang on.
 interface Stage {
-  key: "read" | "arabic" | "themes" | "recall" | "cloze" | "blank";
+  key: "read" | "arabic" | "sections" | "recall" | "cloze" | "blank";
   label: string;
   hint: string;
 }
@@ -44,10 +44,10 @@ const READ_STAGES: Stage[] = [
   {key: "arabic", label: "Arabic only", hint: "Read the Arabic aloud. Tap a verse to check its meaning when you need it."},
 ];
 
-const THEMES_STAGE: Stage = {
-  key: "themes",
-  label: "Themes",
-  hint: "Put this surah's themes back into the order the guide lists them. Drag a card, or nudge it with ▲ / ▼.",
+const SECTIONS_STAGE: Stage = {
+  key: "sections",
+  label: "Sections",
+  hint: "Put this surah's sections back into the order they unfold. Drag a card, or nudge it with ▲ / ▼.",
 };
 
 const RECALL_STAGES: Stage[] = [
@@ -136,18 +136,30 @@ export default function MemorizeMode({
         ? learnedSections.has(scope.index)
         : false;
 
-  // The themes stage needs a guide with enough themes to be a real ordering
-  // test. It's skipped for the weak-spot drill, which is a targeted fix-up of
-  // specific words rather than a pass over the surah's shape.
-  const themes: ThemeCard[] = useMemo(
-    () => guide.themes.map((t) => ({text: t.text, color: t.color})),
-    [guide.themes],
+  // The sections stage needs a guide with enough sections to be a real
+  // ordering test — the short surahs (1–2 sections) simply don't get it, and
+  // don't need it. It's also skipped for the weak-spot drill, which is a
+  // targeted fix-up of specific words rather than a pass over the structure.
+  const orderableSections: SectionTile[] = useMemo(
+    () =>
+      guide.sections.map((sec, i) => ({
+        badge: sec.badge,
+        title: sec.title,
+        from: sec.from,
+        to: sec.to,
+        color: sec.color,
+        id: i,
+      })),
+    [guide.sections],
   );
-  const showThemes = !isWeakDrill && themes.length >= MIN_ORDERABLE_THEMES;
+  const showSections = !isWeakDrill && orderableSections.length >= MIN_ORDERABLE_SECTIONS;
 
   const stages: Stage[] = useMemo(
-    () => (showThemes ? [...READ_STAGES, THEMES_STAGE, ...RECALL_STAGES] : [...READ_STAGES, ...RECALL_STAGES]),
-    [showThemes],
+    () =>
+      showSections
+        ? [...READ_STAGES, SECTIONS_STAGE, ...RECALL_STAGES]
+        : [...READ_STAGES, ...RECALL_STAGES],
+    [showSections],
   );
   const recallIndex = stages.findIndex((st) => st.key === "recall");
 
@@ -156,8 +168,8 @@ export default function MemorizeMode({
   // The full stepper stays available for easier/harder crutch levels.
   const [stage, setStage] = useState(() => (isSurah || isWeakDrill ? recallIndex : 0));
 
-  // Round seed for the themes board — bumped to re-deal a fresh shuffle.
-  const [themesSeed, setThemesSeed] = useState<number>(() => newSeed());
+  // Round seed for the sections board — bumped to re-deal a fresh shuffle.
+  const [sectionsSeed, setSectionsSeed] = useState<number>(() => newSeed());
 
   // Snapshot the weak verses at open time so the drill set doesn't shrink out
   // from under you as you clear flags mid-session.
@@ -520,30 +532,26 @@ export default function MemorizeMode({
             </div>
           )}
 
-          {stageDef.key === "themes" ? (
-            <div className='mm-themes'>
+          {stageDef.key === "sections" ? (
+            <div className='mm-order'>
               {!isSurah && (
-                <div className='mm-themes-note'>
-                  These are the themes of the whole surah — ordering them places this section inside the
-                  arc it belongs to.
+                <div className='mm-order-note'>
+                  These are the sections of the whole surah — ordering them places {scopeBadge} in the
+                  structure it belongs to.
                 </div>
               )}
-              <OrderThemesBoard
-                key={themesSeed}
-                seed={themesSeed}
+              <OrderSectionsBoard
+                key={sectionsSeed}
+                seed={sectionsSeed}
                 name={guide.meta.name}
-                themes={themes}
+                answer={orderableSections}
               >
                 <div className='gm-actions'>
-                  <button
-                    type='button'
-                    className='mm-nav'
-                    onClick={() => setThemesSeed(newSeed())}
-                  >
+                  <button type='button' className='mm-nav' onClick={() => setSectionsSeed(newSeed())}>
                     ↻ Shuffle again
                   </button>
                 </div>
-              </OrderThemesBoard>
+              </OrderSectionsBoard>
             </div>
           ) : wordRows.length === 0 ? (
             <div className='mm-ar-empty'>No weak spots flagged — you&apos;re all clear here.</div>
