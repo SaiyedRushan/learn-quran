@@ -84,30 +84,40 @@ export const CONFIDENCE_LABELS = ["Not started", "Learning", "Reviewing", "Solid
 const CONF_KEY = "lq:confidence:v1";
 const LEGACY_LEARNED_KEY = "lq:learned:v2"; // pre-confidence binary store
 
-function createConfidenceStore(key: string, legacyKey?: string) {
-  let cache: Record<string, number> | null = null;
+// ── Generic map store (id → value) ──────────────────────────────────────
+// One JSON object in localStorage, shared by the confidence levels and the
+// reader's own surah notes. Entries whose value is blank are dropped so the
+// stored object only ever holds what the reader actually set.
+function createMapStore<V>(opts: {
+  key: string;
+  /** Value returned for an id that isn't stored. */
+  blank: V;
+  isBlank: (value: V) => boolean;
+  /** One-time import from an older key, read only when `key` has nothing yet. */
+  legacyKey?: string;
+  migrate?: (raw: string) => Record<string, V>;
+}) {
+  const {key, blank, isBlank, legacyKey, migrate} = opts;
+  let cache: Record<string, V> | null = null;
   const listeners = new Set<() => void>();
 
-  function read(): Record<string, number> {
+  function read(): Record<string, V> {
     if (cache) return cache;
     if (typeof window === "undefined") return (cache = {});
     try {
       const raw = window.localStorage.getItem(key);
-      if (raw) return (cache = JSON.parse(raw) as Record<string, number>);
-      // One-time migration: previously-learned items start at SOLID.
-      const legacy = legacyKey ? window.localStorage.getItem(legacyKey) : null;
-      const obj: Record<string, number> = {};
-      if (legacy) {
-        (JSON.parse(legacy) as string[]).forEach((id) => (obj[id] = CONFIDENCE.SOLID));
-        window.localStorage.setItem(key, JSON.stringify(obj));
-      }
-      return (cache = obj);
+      if (raw) return (cache = JSON.parse(raw) as Record<string, V>);
+      const legacy = legacyKey && migrate ? window.localStorage.getItem(legacyKey) : null;
+      if (!legacy || !migrate) return (cache = {});
+      const migrated = migrate(legacy);
+      window.localStorage.setItem(key, JSON.stringify(migrated));
+      return (cache = migrated);
     } catch {
       return (cache = {});
     }
   }
 
-  function write(next: Record<string, number>): void {
+  function write(next: Record<string, V>): void {
     cache = next;
     try {
       window.localStorage.setItem(key, JSON.stringify(next));
@@ -132,20 +142,35 @@ function createConfidenceStore(key: string, legacyKey?: string) {
     };
   }
 
-  function get(slug: string): number {
-    return read()[slug] ?? 0;
+  function get(id: string): V {
+    return read()[id] ?? blank;
   }
 
-  function set(slug: string, level: number): void {
+  function set(id: string, value: V): void {
     const cur = read();
-    if ((cur[slug] ?? 0) === level) return;
+    if ((cur[id] ?? blank) === value) return;
     const next = {...cur};
-    if (level <= 0) delete next[slug];
-    else next[slug] = level;
+    if (isBlank(value)) delete next[id];
+    else next[id] = value;
     write(next);
   }
 
   return {read, subscribe, get, set};
+}
+
+function createConfidenceStore(key: string, legacyKey?: string) {
+  return createMapStore<number>({
+    key,
+    blank: 0,
+    isBlank: (level) => level <= 0,
+    legacyKey,
+    // Previously-learned items start at SOLID.
+    migrate: (raw) => {
+      const obj: Record<string, number> = {};
+      (JSON.parse(raw) as string[]).forEach((id) => (obj[id] = CONFIDENCE.SOLID));
+      return obj;
+    },
+  });
 }
 
 const confStore = createConfidenceStore(CONF_KEY, LEGACY_LEARNED_KEY);
@@ -241,6 +266,31 @@ export function useIntention(): string {
 
 export function setIntention(text: string): void {
   intentionStore.write(text.trim());
+}
+
+// ── Your own notes on a surah (by slug) ─────────────────────────────────
+// Free text the reader writes about a guide: what a verse means to them, a
+// word that keeps slipping, where they got stuck. Stays on their device.
+const noteStore = createMapStore<string>({
+  key: "lq:notes:v1",
+  blank: "",
+  isBlank: (text) => text.trim() === "",
+});
+const EMPTY_NOTES: Record<string, string> = {};
+
+/** Every note the reader has written, keyed by guide slug (reactive). */
+export function useAllNotes(): Record<string, string> {
+  return useSyncExternalStore(noteStore.subscribe, noteStore.read, () => EMPTY_NOTES);
+}
+
+/** The reader's note for one guide (reactive). Empty string when there is none. */
+export function useNote(slug: string): string {
+  return useAllNotes()[slug] ?? "";
+}
+
+/** Save a note, or remove it when the text is empty. */
+export function setNote(slug: string, text: string): void {
+  noteStore.set(slug, text.trim());
 }
 
 // ── Learned sections (by "slug:index") ──────────────────────────────────

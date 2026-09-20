@@ -19,6 +19,7 @@ import {pickArabic} from "@/lib/arabic";
 import {MIN_ORDERABLE_SECTIONS} from "@/lib/content";
 import {sectionAnchor, currentHash, flashScrollTo, TEST_SURAH_HASH} from "@/lib/anchors";
 import MemorizeMode, {type MemorizeScope} from "@/components/MemorizeMode";
+import SurahNote from "@/components/SurahNote";
 
 // Confidence levels offered by the picker at the foot of the guide.
 const CONF_LEVELS: {value: ConfidenceLevel; label: string}[] = [
@@ -534,6 +535,9 @@ export default function SurahGuideView({guide, verses}: {guide: SurahGuide; vers
         )}
       </div>
       )}
+
+      {/* The reader's own note on this surah */}
+      <SurahNote slug={m.slug} surahName={m.name} />
 
       {/* Confidence */}
       {confPicker(false)}

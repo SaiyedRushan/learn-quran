@@ -12,6 +12,7 @@ import {
   useAllLearnedSectionKeys,
   useCollapsedCollections,
   setCollectionCollapsed,
+  useAllNotes,
 } from "@/lib/progress";
 import { searchSurahs } from "@/lib/search";
 import type { Collection } from "@/content/types";
@@ -44,6 +45,9 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
   const collapsed = useCollapsedCollections();
   const isCollapsed = (key: string) => collapsed.includes(key);
 
+  // The reader's own notes, so a surah they've written on says so on the list.
+  const myNotes = useAllNotes();
+
   // count learned sections per guide from the raw keys ("slug:index")
   const learnedSecBySlug = new Map<string, number>();
   for (const key of useAllLearnedSectionKeys()) {
@@ -68,6 +72,7 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
 
   function renderCard(s: SurahListItem) {
     const level = levelOf(s.slug);
+    const myNote = myNotes[s.slug];
     const secLearned = learnedHere(s);
     const secComplete = s.sectionCount > 0 && secLearned === s.sectionCount;
     const secPct = s.sectionCount ? (secLearned / s.sectionCount) * 100 : 0;
@@ -83,6 +88,12 @@ export default function SurahIndexView({ surahs }: { surahs: SurahListItem[] }) 
           <div className="sc-epithet">{s.epithet}</div>
           <div className="sc-meta">{meta}</div>
           {s.note && <div className="sc-note">{s.note}</div>}
+          {myNote && (
+            <div className="sc-mynote">
+              <span className="sc-mynote-label">Your note</span>
+              {myNote}
+            </div>
+          )}
           {s.sectionCount > 0 && (
             <div className="sc-seg">
               {s.sectionCount <= MAX_SEGMENTS ? (
