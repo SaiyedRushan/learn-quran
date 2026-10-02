@@ -28,7 +28,7 @@ export const FAMILY = [
   {
     name: "Hayya — Prayer Alarm",
     short: "Hayya",
-    url: "https://saiyedrushan.github.io/hayya-site/",
+    url: "https://hayyaprayer.com/",
     icon: "📞",
     platform: "iPhone · Android",
     blurb:
